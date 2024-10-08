@@ -3,7 +3,7 @@
 Body::Body() {
 
 }
-Body::Body(Shape shape, float radius, BodyColor color, float mass, FlatVector mass_center):shape_(shape),radius_(radius_),color_(color),mass_center_(mass_center){
+Body::Body(Shape shape, float radius, BodyColor color, float mass, FlatVector mass_center):shape_(shape),radius_(radius),color_(color),mass_center_(mass_center){
 
 }
 
@@ -35,6 +35,9 @@ bool BodyManager::CreateBody(SDL_Vertex* vertices, BodyColor& color, float mass,
 	b1.~Body();
 	return false;
 }
+
+
+
 
 bool BodyManager::DestroyBody() {
 	return false;
