@@ -3,6 +3,7 @@
 #include "2DGEmath.h"
 #include <SDL.h>
 #include <iostream>
+#include "2DGEDraw.h"
 enum Shape {
 	NONE = -1,
 	CIRCLE = 0,
@@ -15,7 +16,9 @@ struct BodyColor
 	int b;
 	int a;
 };
-
+struct FVertices {
+	FlatVector position;
+};
 class Body {
 public:
 	int body_id_ = 0;
@@ -24,11 +27,12 @@ public:
 	float mass_ = 0;
 	BodyColor color_ = { 0,0,0,0 };
 	FlatVector mass_center_ = { 0,0 };
-	SDL_Vertex* vertices_ = {};
+	SDL_Point* vertices_ = {};
+	int vertices_num_ = 0;
 
 	Body();
-	Body(Shape shape, float radius        , BodyColor color, float mass, FlatVector mass_center, int body_id);
-	Body(Shape shape, SDL_Vertex* vertices, BodyColor color, float mass, FlatVector mass_center, int body_id);
+	Body(Shape shape, float radius       , BodyColor color, float mass, FlatVector mass_center, int body_id);
+	Body(Shape shape, SDL_Point* vertices,int vertices_num, BodyColor color, float mass, FlatVector mass_center, int body_id);
 	~Body();
 };
 
@@ -40,10 +44,10 @@ public:
 	std::vector<Body> body_lists_;
 	int id_count = 0;
 	bool CreateBody(float radius        , BodyColor& color, float mass, FlatVector& mass_center);
-	bool CreateBody(SDL_Vertex* vertices, BodyColor& color, float mass, FlatVector& mass_center);
+	bool CreateBody(SDL_Point* vertices, int vertices_num, BodyColor& color, float mass, FlatVector& mass_center);
 	bool DestroyBody(int body_id);
 	std::vector<Body>::iterator FindBody(int body_id);
-
+	void RenderBody(Brush& brush);
 	void CoutBodyList();
 	
 };

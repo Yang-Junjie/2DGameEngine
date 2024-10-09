@@ -33,7 +33,7 @@ void Brush::DrawLine(const FlatVector v1, const FlatVector v2, int r, int g, int
     DrawLine(v1.x, v1.y,v2.x,v2.y, r, g, b, a);
 }
 
-void Brush::DrawFillCircle(float centreX, float centreY, float radius, int r, int g, int b, int a) {
+void Brush::DrawCircle(float centreX, float centreY, float radius, int r, int g, int b, int a) {
     SDL_SetRenderDrawColor(this->renderer_, r, g, b, a);
     const int32_t diameter = (radius * 2);
 
@@ -70,9 +70,10 @@ void Brush::DrawFillCircle(float centreX, float centreY, float radius, int r, in
         }
     }
 }
-void Brush::DrawFillPolygon(const SDL_Vertex* vertices, int num_vertices, const int* indices, int num_indices)
-{
-    SDL_RenderGeometry(this->renderer_, nullptr, vertices, num_vertices, indices, num_indices);
+void Brush::DrawPolygon(SDL_Point* points, int numPoints, int r, int g, int b, int a) {
+   
+    SDL_SetRenderDrawColor(this->renderer_, r, g, b, a);
+    SDL_RenderDrawLines(this->renderer_, points, numPoints); 
 }
 
 

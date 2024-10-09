@@ -12,8 +12,8 @@ Body::Body(Shape shape, float radius, BodyColor color, float mass, FlatVector ma
 	
 }
 
-Body::Body(Shape shape, SDL_Vertex* vertices, BodyColor color, float mass, FlatVector mass_center, int body_id):
-	body_id_(body_id), shape_(shape), vertices_(vertices),color_(color), mass_(mass),mass_center_(mass_center){
+Body::Body(Shape shape, SDL_Point* vertices, int vertices_num, BodyColor color, float mass, FlatVector mass_center, int body_id):
+	body_id_(body_id), shape_(shape),color_(color),vertices_num_(vertices_num), vertices_(vertices), mass_(mass),mass_center_(mass_center){
 	
 }
 
@@ -41,10 +41,10 @@ bool BodyManager::CreateBody(float radius, BodyColor& color, float mass, FlatVec
 	return false;
 }
 
-bool BodyManager::CreateBody(SDL_Vertex* vertices, BodyColor& color, float mass, FlatVector& mass_center) {
+bool BodyManager::CreateBody(SDL_Point* vertices,int vertices_num, BodyColor& color,float mass, FlatVector& mass_center) {
 	//创造多边形并添加至body_list_
 	this->id_count++;
-	Body b1(CIRCLE, vertices, color, mass, mass_center, id_count);
+	Body b1(POLTGON, vertices, vertices_num,color,mass, mass_center, id_count);
 	this->body_lists_.push_back(b1);
 	b1.~Body();
 	return false;
@@ -73,6 +73,20 @@ std::vector<Body>::iterator BodyManager::FindBody(int body_id) {
 		}
 	}
 	return this->body_lists_.end();
+}
+
+void BodyManager::RenderBody(Brush& brush)
+{
+	for (Body& body:this->body_lists_) { 
+		if (body.shape_ == 0) {
+			//圆形
+			brush.DrawCircle(body.mass_center_.x, body.mass_center_.y,body.radius_,body.color_.r,body.color_.g, body.color_.b, body.color_.a);
+		}
+		//else if(body.shape_ == 1){
+		//	
+		//	//brush.DrawFillPolygon()
+		//}
+	}
 }
 
 void BodyManager::CoutBodyList() {
