@@ -1,4 +1,3 @@
 ﻿  2DGEBody.cpp
-  main.cpp
-  正在生成代码...
+D:\C++\2DGameEngine\2DGameEngine\2DGEBody.cpp(57,27): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
   2DGameEngine.vcxproj -> D:\C++\2DGameEngine\x64\Debug\2DGameEngine.exe

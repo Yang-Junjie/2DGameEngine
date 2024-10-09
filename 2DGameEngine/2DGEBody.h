@@ -2,6 +2,7 @@
 #include <vector>
 #include "2DGEmath.h"
 #include <SDL.h>
+#include <iostream>
 enum Shape {
 	NONE = -1,
 	CIRCLE = 0,
@@ -17,6 +18,7 @@ struct BodyColor
 
 class Body {
 public:
+	int body_id_ = 0;
 	Shape shape_ = NONE;
 	float radius_ = 0;
 	float mass_ = 0;
@@ -25,8 +27,8 @@ public:
 	SDL_Vertex* vertices_ = {};
 
 	Body();
-	Body(Shape shape, float radius        , BodyColor color, float mass, FlatVector mass_center);
-	Body(Shape shape, SDL_Vertex* vertices, BodyColor color, float mass, FlatVector mass_center);
+	Body(Shape shape, float radius        , BodyColor color, float mass, FlatVector mass_center, int body_id);
+	Body(Shape shape, SDL_Vertex* vertices, BodyColor color, float mass, FlatVector mass_center, int body_id);
 	~Body();
 };
 
@@ -35,12 +37,14 @@ public:
 	BodyManager();
 	~BodyManager();
 
-	std::vector<Body> body_lists;
-
+	std::vector<Body> body_lists_;
+	int id_count = 0;
 	bool CreateBody(float radius        , BodyColor& color, float mass, FlatVector& mass_center);
 	bool CreateBody(SDL_Vertex* vertices, BodyColor& color, float mass, FlatVector& mass_center);
-	bool DestroyBody();
-	int FindBody();
+	bool DestroyBody(int body_id);
+	std::vector<Body>::iterator FindBody(int body_id);
 
+	void CoutBodyList();
+	
 };
 

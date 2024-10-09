@@ -73,7 +73,18 @@ int main(int argc, char* argv[])
     Brush brush(renderer);
     brush.Clear(255, 245, 238, 255);
 
+    BodyManager1.CreateBody(20,color,20,v1);
+    BodyManager1.CreateBody(40, color, 20, v1);
+    BodyManager1.CreateBody(20, color, 20, v1);
+    BodyManager1.CreateBody(40, color, 20, v1);
 
+    BodyManager1.CoutBodyList();
+
+    //
+    //std::cout << BodyManager1.FindBody(4)->body_id_;
+
+    //BodyManager1.DestroyBody(1);
+    //std::cout << BodyManager1.body_lists_.size();
 
 
 
@@ -92,27 +103,27 @@ int main(int argc, char* argv[])
 
 
 
-        brush.DrawLine(v1,v2,color.r, color.g, color.b, color.a);
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         brush.show();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 
