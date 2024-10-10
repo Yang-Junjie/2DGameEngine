@@ -12,8 +12,8 @@ Body::Body(Shape shape, float radius, BodyColor color, float mass, FlatVector ma
 	
 }
 
-Body::Body(Shape shape, SDL_Point* vertices, int vertices_num, BodyColor color, float mass, FlatVector mass_center, int body_id):
-	body_id_(body_id), shape_(shape),color_(color),vertices_num_(vertices_num), vertices_(vertices), mass_(mass),mass_center_(mass_center){
+Body::Body(Shape shape, std::vector<SDL_Point> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id):
+	body_id_(body_id), shape_(shape),color_(color), vertices_(vertices), mass_(mass),mass_center_(mass_center){
 	
 }
 
@@ -31,7 +31,7 @@ BodyManager::~BodyManager()
 {
 }
 
-bool BodyManager::CreateBody(float radius, BodyColor& color, float mass, FlatVector& mass_center)
+bool BodyManager::CreateBody(float radius, BodyColor color, float mass, FlatVector mass_center)
 {
 	//创造圆形并添加至body_list_
 	this->id_count++;
@@ -41,10 +41,10 @@ bool BodyManager::CreateBody(float radius, BodyColor& color, float mass, FlatVec
 	return false;
 }
 
-bool BodyManager::CreateBody(SDL_Point* vertices,int vertices_num, BodyColor& color,float mass, FlatVector& mass_center) {
+bool BodyManager::CreateBody(std::vector<SDL_Point> vertices, BodyColor color,float mass, FlatVector mass_center) {
 	//创造多边形并添加至body_list_
 	this->id_count++;
-	Body b1(POLTGON, vertices, vertices_num,color,mass, mass_center, id_count);
+	Body b1(POLTGON, vertices, color,mass, mass_center, id_count);
 	this->body_lists_.push_back(b1);
 	b1.~Body();
 	return false;
@@ -82,10 +82,10 @@ void BodyManager::RenderBody(Brush& brush)
 			//圆形
 			brush.DrawCircle(body.mass_center_.x, body.mass_center_.y,body.radius_,body.color_.r,body.color_.g, body.color_.b, body.color_.a);
 		}
-		//else if(body.shape_ == 1){
-		//	
-		//	//brush.DrawFillPolygon()
-		//}
+		else if(body.shape_ == 1){
+			
+			brush.DrawPolygon(body.vertices_, body.color_.r, body.color_.g, body.color_.b, body.color_.a);
+		}
 	}
 }
 
@@ -95,4 +95,17 @@ void BodyManager::CoutBodyList() {
 	for (std::vector<Body>::iterator it = (this->body_lists_).begin(); it != this->body_lists_.end(); ++it) {
 		std::cout <<it->shape_<<"         " << it->body_id_ << "     " << std::endl;
 	}
+}
+
+
+
+FlatVector GetMassCenter(Body& body)
+{
+	if (body.shape_ == 0) {
+		return body.mass_center_;
+	}
+	else if (body.shape_ == 1) {
+		
+	}
+	return FlatVector(0,0);
 }
