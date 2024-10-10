@@ -1,6 +1,7 @@
 #pragma once
 #include <utility> // For std::pair
 #include <cmath>   // For std::cos and std::sin
+#include <iostream>
 
 struct FlatTransform
 {
@@ -17,6 +18,10 @@ struct FlatVector
 
     FlatVector(float x, float y) : x(x), y(y) {}
 
+    friend std::ostream& operator<<(std::ostream& os, const FlatVector& p) {
+        os << "(" << p.x << ", " << p.y << ")";
+        return os; // 返回输出流以便链式调用  
+    }
     // Addition
     FlatVector operator+(const FlatVector& other) const
     {

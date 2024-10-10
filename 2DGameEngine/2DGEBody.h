@@ -43,7 +43,7 @@ public:
 	std::vector<Body> body_lists_;
 	int id_count = 0;
 	bool CreateBody(float radius                   , BodyColor color, float mass, FlatVector mass_center);
-	bool CreateBody(std::vector<SDL_Point> vertices, BodyColor color, float mass, FlatVector mass_center);
+	bool CreateBody(std::vector<SDL_Point> vertices, BodyColor color, float mass);
 	
 	bool DestroyBody(int body_id);
 	std::vector<Body>::iterator FindBody(int body_id);
@@ -54,3 +54,4 @@ public:
 
 
 FlatVector GetMassCenter(Body& body);
+FlatVector GetMassCenter(std::vector<SDL_Point> points);

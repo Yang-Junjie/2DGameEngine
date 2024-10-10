@@ -81,12 +81,16 @@ int main(int argc, char* argv[])
     
 
     
-    //// 定义多边形的顶点（例如，一个四边形）  
+    // 定义多边形的顶点（例如，一个四边形）  
 
-    //std::vector<SDL_Point> points = { {100, 100}, {200, 100}, {300, 200}, {200, 200} ,{200, 400} };
+    std::vector<SDL_Point> points = { {0, 0},
+                                      {100, 0},
+                                      {100, 100},
+                                      {0, 100}};
 
-    //BodyManager1.CreateBody(points,color,20,v1);
-    //
+    BodyManager1.CreateBody(points,color,20);
+    
+    std::cout<<(BodyManager1.FindBody(5))->mass_center_;
 
 
    
