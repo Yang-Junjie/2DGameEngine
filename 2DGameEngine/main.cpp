@@ -90,30 +90,40 @@ int main(int argc, char* argv[])
 
     BodyManager1.CreateBody(points,color,20);
     BodyManager1.CreateBody(points, color, 20);
-    BodyManager1.FindBody(5)->MoveTo(FlatVector(200,200));
+    BodyManager1.FindBody(5)->MoveTo(FlatVector(100,100));
    
        // 运行主循环直到用户关闭窗口
     bool quit = false;
     SDL_Event e;
+    int x = 0;
+    int y = 0;
     while (!quit) {
+        
         while (SDL_PollEvent(&e)) {
             if (e.type == SDL_QUIT) {
                 quit = true;
             } 
+            else if (e.type == SDL_MOUSEMOTION) {
+                x = e.motion.x;
+                y = e.motion.y;
+                printf("Mouse Position: (%d, %d)\n", x, y);
+              
+            }
         } 
         
 
 
 
-        
-        BodyManager1.FindBody(5)->Rotation(1);
+        BodyManager1.FindBody(5)->MoveTo(FlatVector(x, y));
+       BodyManager1.FindBody(5)->Rotation(1);
+       
 
 
 
 
         brush.Clear(255, 245, 238, 255);
        
-        BodyManager1.CoutBodyList();
+       // BodyManager1.CoutBodyList();
         BodyManager1.RenderBody(brush);
 
 

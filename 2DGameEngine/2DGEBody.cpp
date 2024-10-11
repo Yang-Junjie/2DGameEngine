@@ -39,12 +39,18 @@ void Body::MoveTo(FlatVector v1) {
 	}
 	else if(this->shape_ == 1){
 		int vertices_num = this->vertices_.size();
-		for (int i = 0; i < vertices_num; ++i) {
-			/*this->vertices_[i].x += this->mass_center_.x + v1.x;
-			this->vertices_[i].y += this->mass_center_.y + v1.y;*/
-			this->vertices_[i].x +=  v1.x;
-			this->vertices_[i].y +=  v1.y;
+		FlatVector origin = this->mass_center_;
+		for (auto& vertex : vertices_) {
+			vertex.x -= origin.x;
+			vertex.y -= origin.y;
 		}
+
+		// 平移回新的位置
+			for (auto& vertex : vertices_) {
+				vertex.x += v1.x;
+				vertex.y += v1.y;
+			}
+
 		this->mass_center_ = GetMassCenter(this->vertices_);
 	}
 }
