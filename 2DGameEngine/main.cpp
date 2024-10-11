@@ -83,22 +83,15 @@ int main(int argc, char* argv[])
     
     // 定义多边形的顶点（例如，一个四边形）  
 
-    std::vector<SDL_Point> points = { {0, 0},
+    std::vector<SDL_FPoint> points = { {0, 0},
                                       {100, 0},
                                       {100, 100},
                                       {0, 100}};
 
     BodyManager1.CreateBody(points,color,20);
-    
-    std::cout<<(BodyManager1.FindBody(5))->mass_center_;
-
-
+    BodyManager1.CreateBody(points, color, 20);
+    BodyManager1.FindBody(5)->MoveTo(FlatVector(200,200));
    
-   
-
-
-    BodyManager1.CoutBodyList();
-    BodyManager1.RenderBody(brush);
        // 运行主循环直到用户关闭窗口
     bool quit = false;
     SDL_Event e;
@@ -113,7 +106,15 @@ int main(int argc, char* argv[])
 
 
         
-        
+        BodyManager1.FindBody(5)->Rotation(1);
+
+
+
+
+        brush.Clear(255, 245, 238, 255);
+       
+        BodyManager1.CoutBodyList();
+        BodyManager1.RenderBody(brush);
 
 
 

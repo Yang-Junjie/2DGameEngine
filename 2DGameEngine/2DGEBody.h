@@ -16,9 +16,8 @@ struct BodyColor
 	int b;
 	int a;
 };
-struct FVertices {
-	FlatVector position;
-};
+
+
 class Body {
 public:
 	int body_id_ = 0;
@@ -27,12 +26,18 @@ public:
 	float mass_ = 0;
 	BodyColor color_ = { 0,0,0,0 };
 	FlatVector mass_center_ = { 0,0 };
-	std::vector<SDL_Point> vertices_ = {};
+	std::vector<SDL_FPoint> vertices_ = {};
 
 	Body();
-	Body(Shape shape, float radius                   , BodyColor color, float mass, FlatVector mass_center, int body_id);
-	Body(Shape shape, std::vector<SDL_Point> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id);
 	~Body();
+	Body(Shape shape, float radius, BodyColor color, float mass, FlatVector mass_center, int body_id);
+	Body(Shape shape, std::vector<SDL_FPoint> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id);
+
+	void Move(FlatVector v1);
+	void MoveTo(FlatVector v1);
+
+	void Rotation(float angle);
+	
 };
 
 class BodyManager {
@@ -43,7 +48,7 @@ public:
 	std::vector<Body> body_lists_;
 	int id_count = 0;
 	bool CreateBody(float radius                   , BodyColor color, float mass, FlatVector mass_center);
-	bool CreateBody(std::vector<SDL_Point> vertices, BodyColor color, float mass);
+	bool CreateBody(std::vector<SDL_FPoint> vertices, BodyColor color, float mass);
 	
 	bool DestroyBody(int body_id);
 	std::vector<Body>::iterator FindBody(int body_id);
@@ -54,4 +59,4 @@ public:
 
 
 FlatVector GetMassCenter(Body& body);
-FlatVector GetMassCenter(std::vector<SDL_Point> points);
+FlatVector GetMassCenter(std::vector<SDL_FPoint> points);

@@ -2,6 +2,9 @@
 #include <utility> // For std::pair
 #include <cmath>   // For std::cos and std::sin
 #include <iostream>
+#include <SDL_stdinc.h>
+
+
 
 struct FlatTransform
 {
@@ -59,10 +62,13 @@ struct FlatVector
     }
 
     // Transformation operation
-    static FlatVector Transform(const FlatVector& v, const FlatTransform& transform)
+    static void Transform(float &x,float &y,const float angle)
     {
-        return { transform.cos * v.x - transform.sin * v.y + transform.positionX,
-                transform.sin * v.x + transform.cos * v.y + transform.positionY };
+        float cos_angle = std::cos(angle * (M_PI / 180.0));
+        float sin_angle = std::sin(angle * (M_PI / 180.0));
+        float temp_x = cos_angle * x - sin_angle * y;
+        y = sin_angle * x + cos_angle * y;
+        x = temp_x;
     }
 
     // Equality check

@@ -13,12 +13,69 @@ Body::Body(Shape shape, float radius, BodyColor color, float mass, FlatVector ma
 	
 }
 
-Body::Body(Shape shape, std::vector<SDL_Point> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id):
+Body::Body(Shape shape, std::vector<SDL_FPoint> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id):
 	body_id_(body_id), shape_(shape),color_(color), vertices_(vertices), mass_(mass),mass_center_(mass_center){
 	
 }
 
+void Body::Move(FlatVector v1) {
+	if (this->shape_ == 0) {
+		this->mass_center_.y += v1.y;
+		this->mass_center_.x += v1.x;
+	}
+	else if (this->shape_ == 1) {
+		int vertices_num = this->vertices_.size();
+		for (int i = 0; i < vertices_num; ++i) {
+			this->vertices_[i].x += this->mass_center_.x + v1.x;
+			this->vertices_[i].y += this->mass_center_.y + v1.y;
+		}
+		this->mass_center_ = GetMassCenter(this->vertices_);
+	}
+}
 
+void Body::MoveTo(FlatVector v1) {
+	if (this->shape_ == 0) {
+		this->mass_center_ = v1;
+	}
+	else if(this->shape_ == 1){
+		int vertices_num = this->vertices_.size();
+		for (int i = 0; i < vertices_num; ++i) {
+			/*this->vertices_[i].x += this->mass_center_.x + v1.x;
+			this->vertices_[i].y += this->mass_center_.y + v1.y;*/
+			this->vertices_[i].x +=  v1.x;
+			this->vertices_[i].y +=  v1.y;
+		}
+		this->mass_center_ = GetMassCenter(this->vertices_);
+	}
+}
+
+void Body::Rotation(float angle)
+{
+	if (this->shape_ == 0) {
+	}
+	else if (this->shape_ == 1) {
+		int num_vertices = this->vertices_.size();
+		// 平移所有顶点到原点  
+		FlatVector origin = this->mass_center_;
+		for (auto& vertex : vertices_) {
+			vertex.x -= origin.x;
+			vertex.y -= origin.y;
+		}
+
+		// 旋转所有顶点  
+		for (auto& vertex : vertices_) {
+			FlatVector::Transform(vertex.x,vertex.y, angle);
+		}
+
+		// 平移回原来的位置  
+		for (auto& vertex : vertices_) {
+			vertex.x += origin.x;
+			vertex.y += origin.y;
+		}
+
+		this->mass_center_ = GetMassCenter(this->vertices_);
+	}
+}
 
 
 
@@ -42,7 +99,7 @@ bool BodyManager::CreateBody(float radius, BodyColor color, float mass, FlatVect
 	return false;
 }
 
-bool BodyManager::CreateBody(std::vector<SDL_Point> vertices, BodyColor color,float mass) {
+bool BodyManager::CreateBody(std::vector<SDL_FPoint> vertices, BodyColor color,float mass) {
 	//创造多边形并添加至body_list_
 	this->id_count++;
 	Body b1(POLTGON, vertices, color,mass, GetMassCenter(vertices), id_count);
@@ -91,9 +148,20 @@ void BodyManager::RenderBody(Brush& brush)
 
 void BodyManager::CoutBodyList() {
 	//打印bodylist
-	std::cout << "Shape=====id=====总数："<<this->body_lists_.size() << std::endl;
+	std::cout << "Shape=====id=====<<<<<<<<<<<<<eigenvalue>>>>>>>>>>>>>==========mass_center==========总数："<<this->body_lists_.size() << std::endl;
 	for (std::vector<Body>::iterator it = (this->body_lists_).begin(); it != this->body_lists_.end(); ++it) {
-		std::cout <<it->shape_<<"         " << it->body_id_ << "     " << std::endl;
+		//std::cout <<it->shape_<<"         " << it->body_id_ << "     " <<std::endl;
+		if (it->shape_ == 0) {
+			std::cout <<it->shape_<<"         " << it->body_id_ << "           " <<it->radius_<<"                                       " << it->mass_center_ << std::endl;
+		}
+		else if (it->shape_ == 1) {
+			int num_vertices = it->vertices_.size();
+			std::cout << it->shape_ << "         " << it->body_id_ << "     ";
+			for (int i = 0; i < num_vertices; ++i) {
+				std::cout << "(" << it->vertices_[i].x << "," << it->vertices_[i].y << ")";
+			}
+			std::cout <<"                  " << it->mass_center_ << std::endl;
+		}
 	}
 }
 
@@ -122,9 +190,9 @@ FlatVector GetMassCenter(Body& body)
 		float cx = 0.0f, cy = 0.0f;
 
 		for (const auto& indices : triangular_index) {
-			SDL_Point v0 = body.vertices_[indices[0]];
-			SDL_Point v1 = body.vertices_[indices[1]];
-			SDL_Point v2 = body.vertices_[indices[2]];
+			SDL_FPoint v0 = body.vertices_[indices[0]];
+			SDL_FPoint v1 = body.vertices_[indices[1]];
+			SDL_FPoint v2 = body.vertices_[indices[2]];
 
 			float A = 0.5f * (v0.x * (v1.y - v2.y) + v1.x * (v2.y - v0.y) + v2.x * (v0.y - v1.y)); // 三角形面积  
 			total_area += A;
@@ -141,7 +209,7 @@ FlatVector GetMassCenter(Body& body)
 	return FlatVector(0, 0);
 }
 
-FlatVector GetMassCenter(std::vector<SDL_Point> points)
+FlatVector GetMassCenter(std::vector<SDL_FPoint> points)
 {
 	
 	
@@ -164,9 +232,9 @@ FlatVector GetMassCenter(std::vector<SDL_Point> points)
 		float cx = 0.0f, cy = 0.0f;
 
 		for (const auto& indices : triangular_index) {
-			SDL_Point v0 = points[indices[0]];
-			SDL_Point v1 = points[indices[1]];
-			SDL_Point v2 = points[indices[2]];
+			SDL_FPoint v0 = points[indices[0]];
+			SDL_FPoint v1 = points[indices[1]];
+			SDL_FPoint v2 = points[indices[2]];
 
 			float A = 0.5f * (v0.x * (v1.y - v2.y) + v1.x * (v2.y - v0.y) + v2.x * (v0.y - v1.y)); // 三角形面积  
 			total_area += A;
