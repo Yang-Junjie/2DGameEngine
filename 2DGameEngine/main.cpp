@@ -1,7 +1,9 @@
 #include <SDL.h>
+#include <ctime>
 #include <iostream>
 #include "2DGEDraw.h"
 #include "2DGEBody.h"
+#include "2DGEWorld.h"
 int main(int argc, char* argv[])
 {
     
@@ -62,43 +64,46 @@ int main(int argc, char* argv[])
 
 
 
-
+    World world;
     BodyManager BodyManager1;
     BodyColor color = { 255, 100, 100, 255 };
     FlatVector v1 = { 100,100 };
     FlatVector v2 = { 200,200 };
     // 清除屏幕背景色
     Brush brush(renderer);
-    brush.Clear(255, 245, 238, 255);
+    brush.Clear(0, 0, 0, 0);
 
 
 
     BodyManager1.CreateBody(30,color,20,v1);
-    BodyManager1.CreateBody(40, color, 20, v1);
+    BodyManager1.FindBody(1)->SetVelocity(FlatVector(2,0));
+    BodyManager1.FindBody(1)->SetAcceleration(FlatVector(0, 9.8));
+    /*BodyManager1.CreateBody(40, color, 20, v1);
     BodyManager1.CreateBody(50, color, 20, v1);
-    BodyManager1.CreateBody(60, color, 20, v1);
+    BodyManager1.CreateBody(60, color, 20, v1);*/
 
     
 
     
-    // 定义多边形的顶点（例如，一个四边形）  
+    //// 定义多边形的顶点（例如，一个四边形）  
 
-    std::vector<SDL_FPoint> points = { {0, 0},
-                                      {100, 0},
-                                      {100, 100},
-                                      {0, 100}};
+    //std::vector<SDL_FPoint> points = { {0, 0},
+    //                                  {100, 0},
+    //                                  {100, 100},
+    //                                  {0, 100}};
 
-    BodyManager1.CreateBody(points,color,20);
-    BodyManager1.CreateBody(points, color, 20);
-    BodyManager1.FindBody(5)->MoveTo(FlatVector(100,100));
+    //BodyManager1.CreateBody(points,color,20);
+    //BodyManager1.CreateBody(points, color, 20);
+    //BodyManager1.FindBody(5)->MoveTo(FlatVector(100,100));
    
        // 运行主循环直到用户关闭窗口
     bool quit = false;
     SDL_Event e;
     int x = 0;
     int y = 0;
+    float  time = 0;
     while (!quit) {
-        
+        float start = clock();
         while (SDL_PollEvent(&e)) {
             if (e.type == SDL_QUIT) {
                 quit = true;
@@ -106,7 +111,7 @@ int main(int argc, char* argv[])
             else if (e.type == SDL_MOUSEMOTION) {
                 x = e.motion.x;
                 y = e.motion.y;
-                printf("Mouse Position: (%d, %d)\n", x, y);
+               // printf("Mouse Position: (%d, %d)\n", x, y);
               
             }
         } 
@@ -114,14 +119,14 @@ int main(int argc, char* argv[])
 
 
 
-        BodyManager1.FindBody(5)->MoveTo(FlatVector(x, y));
-       BodyManager1.FindBody(5)->Rotation(1);
+       // BodyManager1.FindBody(5)->MoveTo(FlatVector(x, y));
+       //BodyManager1.FindBody(5)->Rotation(1);
        
 
 
 
 
-        brush.Clear(255, 245, 238, 255);
+        brush.Clear(0, 0, 0, 0);
        
        // BodyManager1.CoutBodyList();
         BodyManager1.RenderBody(brush);
@@ -142,9 +147,11 @@ int main(int argc, char* argv[])
 
 
 
-
+        world.Interation(BodyManager1.body_lists_, time);
         brush.show();
-
+        float end = clock();
+        time = (end - start);
+        std::cout << time << std::endl;
     }
 
     // 清理

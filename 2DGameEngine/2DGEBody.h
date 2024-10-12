@@ -20,18 +20,30 @@ struct BodyColor
 
 class Body {
 public:
+
+	//特征值
 	int body_id_ = 0;
 	Shape shape_ = NONE;
 	float radius_ = 0;
-	float mass_ = 0;
 	BodyColor color_ = { 0,0,0,0 };
-	FlatVector mass_center_ = { 0,0 };
 	std::vector<SDL_FPoint> vertices_ = {};
+
+	//物理属性值
+	float mass_ = 0;
+	float inverse_mass_ = 0;
+	FlatVector mass_center_ = { 0,0 };	//position
+	FlatVector velocity_ = { 0,0 };
+	FlatVector acceleration_ = { 0,0 };
+
+
 
 	Body();
 	~Body();
 	Body(Shape shape, float radius, BodyColor color, float mass, FlatVector mass_center, int body_id);
 	Body(Shape shape, std::vector<SDL_FPoint> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id);
+
+	void SetVelocity(FlatVector v1);
+	void SetAcceleration(FlatVector v1);
 
 	void Move(FlatVector v1);
 	void MoveTo(FlatVector v1);

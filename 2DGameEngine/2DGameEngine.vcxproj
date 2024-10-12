@@ -141,12 +141,15 @@
   <ItemGroup>
     <ClCompile Include="2DGEBody.cpp" />
     <ClCompile Include="2DGEDraw.cpp" />
+    <ClCompile Include="2DGEWorld.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DGEBody.h" />
+    <ClInclude Include="2DGECollision.h" />
     <ClInclude Include="2DGEDraw.h" />
     <ClInclude Include="2DGEmath.h" />
+    <ClInclude Include="2DGEWorld.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

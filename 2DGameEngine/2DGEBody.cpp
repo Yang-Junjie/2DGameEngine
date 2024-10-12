@@ -6,16 +6,40 @@ Body::Body() {
 }
 
 Body::~Body() {
+
 }
 
 Body::Body(Shape shape, float radius, BodyColor color, float mass, FlatVector mass_center, int body_id) :
-	body_id_(body_id), shape_(shape), radius_(radius),    color_(color), mass_(mass),mass_center_(mass_center) {
+	body_id_(body_id), shape_(shape), radius_(radius),    color_(color), mass_(mass), mass_center_(mass_center) {
+	if (this->mass_ != 0) {
+		this->inverse_mass_ == 1/this->mass_;
+	}
+	else {
+		std::cout << "质量不能为零已为你析构该对象";
+		Body::~Body();
+	}
 	
 }
 
 Body::Body(Shape shape, std::vector<SDL_FPoint> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id):
-	body_id_(body_id), shape_(shape),color_(color), vertices_(vertices), mass_(mass),mass_center_(mass_center){
-	
+	body_id_(body_id), shape_(shape),color_(color), vertices_(vertices), mass_(mass), mass_center_(mass_center){
+	if (this->mass_ != 0) {
+		this->inverse_mass_ == 1 / this->mass_;
+	}
+	else {
+		std::cout << "质量不能为零已为你析构该对象";
+		Body::~Body();
+	}
+}
+
+void Body::SetVelocity(FlatVector v1)
+{
+	this->velocity_ = v1;
+}
+
+void Body::SetAcceleration(FlatVector v1)
+{
+	this->acceleration_ = v1;
 }
 
 void Body::Move(FlatVector v1) {
