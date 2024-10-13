@@ -89,4 +89,8 @@ struct FlatVector
         return *this == other;
     }
 
+    float len() const {
+        return sqrt(this->x * this->x + this->y * this->y);
+    }
+
 };

@@ -24,16 +24,17 @@ public:
 	//特征值
 	int body_id_ = 0;
 	Shape shape_ = NONE;
-	float radius_ = 0;
+	float radius_ = 0.0f;
 	BodyColor color_ = { 0,0,0,0 };
 	std::vector<SDL_FPoint> vertices_ = {};
 
 	//物理属性值
-	float mass_ = 0;
-	float inverse_mass_ = 0;
-	FlatVector mass_center_ = { 0,0 };	//position
-	FlatVector velocity_ = { 0,0 };
-	FlatVector acceleration_ = { 0,0 };
+	/*由于力在物体上不会直接体现，直接将力转为加速度*/
+	float mass_ = 0.0f;
+	float inverse_mass_ = 0.0f;
+	FlatVector mass_center_ = { 0.0f,0.0f };	//position
+	FlatVector velocity_ = { 0.0f,0.0f };
+	FlatVector acceleration_ = { 0.0f,0.0f };
 
 
 
@@ -49,7 +50,8 @@ public:
 	void MoveTo(FlatVector v1);
 
 	void Rotation(float angle);
-	
+
+	void AddForce(FlatVector v1);
 };
 
 class BodyManager {

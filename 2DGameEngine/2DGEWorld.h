@@ -8,7 +8,7 @@ public:
 	size_t copy_interation_ = 10;
 	size_t max_number_body_ = 100;
 
-	FlatVector gravity = { 0.f,9.8 };
+	FlatVector gravity = { 0.0f,9.8 };
 
 	World();
 	~World();

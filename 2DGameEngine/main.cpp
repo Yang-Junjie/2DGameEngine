@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
     World world;
     BodyManager BodyManager1;
     BodyColor color = { 255, 100, 100, 255 };
-    FlatVector v1 = { 100,100 };
+    FlatVector v1 = { 400,150 };
     FlatVector v2 = { 200,200 };
     // 清除屏幕背景色
     Brush brush(renderer);
@@ -75,9 +75,26 @@ int main(int argc, char* argv[])
 
 
 
-    BodyManager1.CreateBody(30,color,20,v1);
-    BodyManager1.FindBody(1)->SetVelocity(FlatVector(2,0));
-    BodyManager1.FindBody(1)->SetAcceleration(FlatVector(0, 9.8));
+   //BodyManager1.CreateBody(30,color,20,v1);
+
+    std::vector<SDL_FPoint> points = { {0, 0},
+                                      {100, 0},
+                                      {100, 100},
+                                      {0, 100} };
+
+    BodyManager1.CreateBody(points, color, 20);
+    std::vector<Body>::iterator body = BodyManager1.FindBody(1);
+    body->SetVelocity(FlatVector(1,0));
+    
+
+    FlatVector gravity_acceleration = { 0, 9.8 };
+
+   FlatVector gravity_force = body->mass_ * gravity_acceleration;
+     
+    FlatVector center = { 400,300 };
+    
+  
+   
     /*BodyManager1.CreateBody(40, color, 20, v1);
     BodyManager1.CreateBody(50, color, 20, v1);
     BodyManager1.CreateBody(60, color, 20, v1);*/
@@ -85,18 +102,24 @@ int main(int argc, char* argv[])
     
 
     
-    //// 定义多边形的顶点（例如，一个四边形）  
+    // 定义多边形的顶点（例如，一个四边形）  
 
-    //std::vector<SDL_FPoint> points = { {0, 0},
-    //                                  {100, 0},
-    //                                  {100, 100},
-    //                                  {0, 100}};
-
-    //BodyManager1.CreateBody(points,color,20);
+    
     //BodyManager1.CreateBody(points, color, 20);
     //BodyManager1.FindBody(5)->MoveTo(FlatVector(100,100));
    
        // 运行主循环直到用户关闭窗口
+    //body->Move(FlatVector(100, 100));
+    //BodyManager1.CoutBodyList();
+    //std::cout << body->acceleration_ << body->velocity_ << std::endl;
+
+   body->Move(FlatVector(400, 150));
+
+    
+
+
+
+
     bool quit = false;
     SDL_Event e;
     int x = 0;
@@ -116,42 +139,50 @@ int main(int argc, char* argv[])
             }
         } 
         
+       FlatVector force = FlatVector(center - (body->mass_center_)) / FlatVector(center - (body->mass_center_)).len();
+
+        //std::cout << force << std::endl;
+
+       //BodyManager1.FindBody(1)->MoveTo(FlatVector(x, y));
+       BodyManager1.FindBody(1)->Rotation(1);
+       
+        body->AddForce(force);
+
+
+       // std::cout << body->acceleration_ << std::endl;
+
+      
 
 
 
-       // BodyManager1.FindBody(5)->MoveTo(FlatVector(x, y));
-       //BodyManager1.FindBody(5)->Rotation(1);
+       //body->Move(FlatVector(1, 0));
+
+
+
+
+
        
 
 
 
 
-        brush.Clear(0, 0, 0, 0);
+       brush.show();
+
+       brush.Clear(0, 0, 0, 0);
        
-       // BodyManager1.CoutBodyList();
-        BodyManager1.RenderBody(brush);
+       
+       BodyManager1.RenderBody(brush);
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-        world.Interation(BodyManager1.body_lists_, time);
-        brush.show();
+       world.Interation(BodyManager1.body_lists_, time);
+      
         float end = clock();
         time = (end - start);
-        std::cout << time << std::endl;
+       //std::cout << time<< std::endl;
+        //std::cout <<body->mass_center_<< std::endl;
     }
 
     // 清理

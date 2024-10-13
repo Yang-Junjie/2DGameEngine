@@ -11,25 +11,12 @@ Body::~Body() {
 
 Body::Body(Shape shape, float radius, BodyColor color, float mass, FlatVector mass_center, int body_id) :
 	body_id_(body_id), shape_(shape), radius_(radius),    color_(color), mass_(mass), mass_center_(mass_center) {
-	if (this->mass_ != 0) {
-		this->inverse_mass_ == 1/this->mass_;
-	}
-	else {
-		std::cout << "质量不能为零已为你析构该对象";
-		Body::~Body();
-	}
-	
+		this->inverse_mass_ == 1/this->mass_;//有质量才有质量的倒数，inverseMass采用赋值
 }
 
 Body::Body(Shape shape, std::vector<SDL_FPoint> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id):
 	body_id_(body_id), shape_(shape),color_(color), vertices_(vertices), mass_(mass), mass_center_(mass_center){
-	if (this->mass_ != 0) {
 		this->inverse_mass_ == 1 / this->mass_;
-	}
-	else {
-		std::cout << "质量不能为零已为你析构该对象";
-		Body::~Body();
-	}
 }
 
 void Body::SetVelocity(FlatVector v1)
@@ -43,15 +30,17 @@ void Body::SetAcceleration(FlatVector v1)
 }
 
 void Body::Move(FlatVector v1) {
+	//在原来位置基础上位移v1
 	if (this->shape_ == 0) {
+
 		this->mass_center_.y += v1.y;
 		this->mass_center_.x += v1.x;
 	}
 	else if (this->shape_ == 1) {
 		int vertices_num = this->vertices_.size();
 		for (int i = 0; i < vertices_num; ++i) {
-			this->vertices_[i].x += this->mass_center_.x + v1.x;
-			this->vertices_[i].y += this->mass_center_.y + v1.y;
+			this->vertices_[i].x += v1.x;
+			this->vertices_[i].y += v1.y;
 		}
 		this->mass_center_ = GetMassCenter(this->vertices_);
 	}
@@ -62,13 +51,14 @@ void Body::MoveTo(FlatVector v1) {
 		this->mass_center_ = v1;
 	}
 	else if(this->shape_ == 1){
+		//先将多边形的质心平移至原点，在将物体平移值目标位置
+
 		int vertices_num = this->vertices_.size();
 		FlatVector origin = this->mass_center_;
 		for (auto& vertex : vertices_) {
 			vertex.x -= origin.x;
 			vertex.y -= origin.y;
 		}
-
 		// 平移回新的位置
 			for (auto& vertex : vertices_) {
 				vertex.x += v1.x;
@@ -107,6 +97,13 @@ void Body::Rotation(float angle)
 	}
 }
 
+void Body::AddForce(FlatVector F)
+{
+	//直接将力转为加速度
+	this->acceleration_ = this->acceleration_ + (F / this->mass_);
+
+}
+
 
 
 
@@ -122,20 +119,33 @@ BodyManager::~BodyManager()
 bool BodyManager::CreateBody(float radius, BodyColor color, float mass, FlatVector mass_center)
 {
 	//创造圆形并添加至body_list_
-	this->id_count++;
-	Body b1(CIRCLE, radius, color, mass, mass_center,id_count);
-	this->body_lists_.push_back(b1);
-	b1.~Body();
-	return false;
+	if (mass > 0) {
+		this->id_count++;
+		Body b1(CIRCLE, radius, color, mass, mass_center, id_count);
+		this->body_lists_.push_back(b1);
+		return false;
+		b1.~Body();
+	}
+	else {
+		std::cout << "物体的质量不能为0" << std::endl;
+		return false;
+	}
+	
 }
 
 bool BodyManager::CreateBody(std::vector<SDL_FPoint> vertices, BodyColor color,float mass) {
 	//创造多边形并添加至body_list_
-	this->id_count++;
-	Body b1(POLTGON, vertices, color,mass, GetMassCenter(vertices), id_count);
-	this->body_lists_.push_back(b1);
-	b1.~Body();
-	return false;
+	if (mass > 0) {
+		this->id_count++;
+		Body b1(POLTGON, vertices, color, mass, GetMassCenter(vertices), id_count);
+		this->body_lists_.push_back(b1);
+		b1.~Body();
+		return true;
+	}
+	else {
+		std::cout << "物体的质量不能为0" << std::endl;
+		return false;
+	}
 }
 
 bool BodyManager::DestroyBody(int body_id) {
