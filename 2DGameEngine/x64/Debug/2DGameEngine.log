@@ -1,4 +1,37 @@
-﻿  main.cpp
+﻿  2DGEBody.cpp
+D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(67,25): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+  (编译源文件“2DGEBody.cpp”)
+  
+D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(68,25): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+  (编译源文件“2DGEBody.cpp”)
+  
+D:\C++\2DGameEngine\2DGameEngine\2DGEBody.cpp(14,23): warning C4553: “==”: 未使用表达式结果；是否打算使用“=”?
+D:\C++\2DGameEngine\2DGameEngine\2DGEBody.cpp(19,23): warning C4553: “==”: 未使用表达式结果；是否打算使用“=”?
+D:\C++\2DGameEngine\2DGameEngine\2DGEBody.cpp(40,20): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\C++\2DGameEngine\2DGameEngine\2DGEBody.cpp(56,20): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\C++\2DGameEngine\2DGameEngine\2DGEBody.cpp(77,20): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\C++\2DGameEngine\2DGameEngine\2DGEBody.cpp(154,27): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\C++\2DGameEngine\2DGameEngine\2DGEBody.cpp(198,21): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\C++\2DGameEngine\2DGameEngine\2DGEBody.cpp(214,20): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\C++\2DGameEngine\2DGameEngine\2DGEBody.cpp(256,20): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+  2DGEForceGen.cpp
+D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(67,25): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+  (编译源文件“2DGEForceGen.cpp”)
+  
+D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(68,25): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+  (编译源文件“2DGEForceGen.cpp”)
+  
+  2DGEWorld.cpp
+D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(67,25): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+  (编译源文件“2DGEWorld.cpp”)
+  
+D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(68,25): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+  (编译源文件“2DGEWorld.cpp”)
+  
+D:\C++\2DGameEngine\2DGameEngine\2DGEWorld.h(11,30): warning C4305: “参数”: 从“double”到“float”截断
+  (编译源文件“2DGEWorld.cpp”)
+  
+  main.cpp
 D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(67,25): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
   (编译源文件“main.cpp”)
   
@@ -11,4 +44,5 @@ D:\C++\2DGameEngine\2DGameEngine\2DGEWorld.h(11,30): warning C4305: “参数”
 D:\C++\2DGameEngine\2DGameEngine\main.cpp(90,44): warning C4305: “参数”: 从“double”到“float”截断
 D:\C++\2DGameEngine\2DGameEngine\main.cpp(129,21): warning C4244: “初始化”: 从“clock_t”转换到“float”，可能丢失数据
 D:\C++\2DGameEngine\2DGameEngine\main.cpp(182,19): warning C4244: “初始化”: 从“clock_t”转换到“float”，可能丢失数据
+  正在生成代码...
   2DGameEngine.vcxproj -> D:\C++\2DGameEngine\x64\Debug\2DGameEngine.exe

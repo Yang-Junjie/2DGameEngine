@@ -30,7 +30,7 @@ void World::Timepiece()
 
 }
 
-void World::Interation(std::vector<Body>& body_lists,float time)
+void World::Interation(std::vector<Body>& body_lists,float time) const
 
 {
 	

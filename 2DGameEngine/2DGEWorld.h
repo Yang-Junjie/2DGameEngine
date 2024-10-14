@@ -16,8 +16,9 @@ public:
 	void SetInteration(size_t interation);
 	void PauseTime();
 	void OpenTime();
-	void Interation(std::vector<Body>& body_lists , float time);
+	void Interation(std::vector<Body>& body_lists , float time) const;
 
 private:
 	void Timepiece();
+	
 };

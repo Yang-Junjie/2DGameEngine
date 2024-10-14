@@ -163,20 +163,20 @@ bool BodyManager::DestroyBody(int body_id) {
 }
 
 std::vector<Body>::iterator BodyManager::FindBody(int body_id) {
-	//迭代器便利查找Bodyid，找到返回此元素对应迭代器，没找到返回end迭代器
+	//迭代器便利查找Bodyid，找到返回此元素对应迭代器，没找到返回begin（第一个对象）迭代器
 	for (std::vector<Body>::iterator it = (this->body_lists_).begin(); it != this->body_lists_.end();++it) {
 		if (it->body_id_ == body_id) {
 			return it;
 		}
 	}
-	return this->body_lists_.end();
+	return this->body_lists_.begin();
 }
 
 void BodyManager::RenderBody(Brush& brush)
 {
+	//渲染物体
 	for (Body& body:this->body_lists_) { 
 		if (body.shape_ == 0) {
-			//圆形
 			brush.DrawCircle(body.mass_center_.x, body.mass_center_.y,body.radius_,body.color_.r,body.color_.g, body.color_.b, body.color_.a);
 		}
 		else if(body.shape_ == 1){

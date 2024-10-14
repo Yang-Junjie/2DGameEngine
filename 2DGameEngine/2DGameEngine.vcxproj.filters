@@ -27,6 +27,9 @@
     <ClCompile Include="2DGEWorld.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="2DGEForceGen.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DGEDraw.h">
@@ -38,10 +41,10 @@
     <ClInclude Include="2DGEmath.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="2DGECollision.h">
+    <ClInclude Include="2DGEWorld.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="2DGEWorld.h">
+    <ClInclude Include="2DGEForceGen.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
