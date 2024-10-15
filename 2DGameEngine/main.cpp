@@ -72,9 +72,11 @@ int main(int argc, char* argv[])
 
 
     FlatVector anchor = { 400,300 };
-    FixedPointElasticity Elasticity(&anchor,0.05f,60.0f);
+   // FixedPointElasticity Elasticity(&anchor,0.05f,60.0f);
         
-    Resistance fr(1,1);
+
+    FakeSpring fakes(&anchor,0.05f,1.0f);
+    //Resistance fr(1,1);
 
 
 
@@ -96,10 +98,13 @@ int main(int argc, char* argv[])
 
     BodyManager1.CreateBody(points, color, 20);
     std::vector<Body>::iterator body = BodyManager1.FindBody(1);
-   // body->SetVelocity(FlatVector(10,0));
+    body->SetVelocity(FlatVector(10,0));
     body->MoveTo(FlatVector(400, 310));
 
     //Elasticity.UpdateForce(body, 0.0f);
+
+
+    //body->AddForce(body->mass_ * FlatVector(0, 9.8));
     //Gravity_Gen.UpdateForce(body, 0.0f);
     
   
@@ -122,7 +127,8 @@ int main(int argc, char* argv[])
     SDL_Event e;
     int x = 0;
     int y = 0;
-    float  time = 0;
+    float  time = 1;
+   // fakes.UpdateForce(body, time);
     while (!quit) {
         float start = clock();
         while (SDL_PollEvent(&e)) {
@@ -140,9 +146,9 @@ int main(int argc, char* argv[])
       
       // BodyManager1.FindBody(1)->Rotation(1);
       
-        Elasticity.UpdateForce(body, 0.0f);
-        fr.UpdateForce(body, 0.0f);
-
+       // Elasticity.UpdateForce(body, 0.0f);
+       // fr.UpdateForce(body, 0.0f);
+       
 
 
 
