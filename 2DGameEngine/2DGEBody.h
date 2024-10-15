@@ -43,15 +43,15 @@ public:
 	Body(Shape shape, float radius, BodyColor color, float mass, FlatVector mass_center, int body_id);
 	Body(Shape shape, std::vector<SDL_FPoint> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id);
 
-	void SetVelocity(FlatVector v1);
-	void SetAcceleration(FlatVector v1);
+	void SetVelocity(const FlatVector v1);
+	void SetAcceleration(const FlatVector v1);
 
-	void Move(FlatVector v1);
-	void MoveTo(FlatVector v1);
+	void Move(const FlatVector v1);
+	void MoveTo(const FlatVector v1);
 
-	void Rotation(float angle);
+	void Rotation(const float angle);
 
-	void AddForce(FlatVector v1);
+	void AddForce(const FlatVector v1);
 };
 
 class BodyManager {
@@ -64,8 +64,8 @@ public:
 	bool CreateBody(float radius                   , BodyColor color, float mass, FlatVector mass_center);
 	bool CreateBody(std::vector<SDL_FPoint> vertices, BodyColor color, float mass);
 	
-	bool DestroyBody(int body_id);
-	std::vector<Body>::iterator FindBody(int body_id);
+	bool DestroyBody(const int body_id);
+	std::vector<Body>::iterator FindBody(const int body_id);
 	void RenderBody(Brush& brush);
 	void CoutBodyList();
 	

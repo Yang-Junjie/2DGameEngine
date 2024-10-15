@@ -19,17 +19,17 @@ Body::Body(Shape shape, std::vector<SDL_FPoint> vertices, BodyColor color, float
 		this->inverse_mass_ == 1 / this->mass_;
 }
 
-void Body::SetVelocity(FlatVector v1)
+void Body::SetVelocity(const FlatVector v1)
 {
 	this->velocity_ = v1;
 }
 
-void Body::SetAcceleration(FlatVector v1)
+void Body::SetAcceleration(const FlatVector v1)
 {
 	this->acceleration_ = v1;
 }
 
-void Body::Move(FlatVector v1) {
+void Body::Move(const FlatVector v1) {
 	//在原来位置基础上位移v1
 	if (this->shape_ == 0) {
 
@@ -46,7 +46,7 @@ void Body::Move(FlatVector v1) {
 	}
 }
 
-void Body::MoveTo(FlatVector v1) {
+void Body::MoveTo(const FlatVector v1) {
 	if (this->shape_ == 0) {
 		this->mass_center_ = v1;
 	}
@@ -69,7 +69,7 @@ void Body::MoveTo(FlatVector v1) {
 	}
 }
 
-void Body::Rotation(float angle)
+void Body::Rotation(const float angle)
 {
 	if (this->shape_ == 0) {
 	}
@@ -97,7 +97,7 @@ void Body::Rotation(float angle)
 	}
 }
 
-void Body::AddForce(FlatVector F)
+void Body::AddForce(const FlatVector F)
 {
 	//直接将力转为加速度
 	this->acceleration_ = this->acceleration_ + (F / this->mass_);
@@ -148,7 +148,7 @@ bool BodyManager::CreateBody(std::vector<SDL_FPoint> vertices, BodyColor color,f
 	}
 }
 
-bool BodyManager::DestroyBody(int body_id) {
+bool BodyManager::DestroyBody(const int body_id) {
 	//查找bodyid，找到删除返回true，没找到返回false
 	std::vector<Body>::iterator it = BodyManager::FindBody(body_id);
 	int befor_body_list_size = this->body_lists_.size();
@@ -162,7 +162,7 @@ bool BodyManager::DestroyBody(int body_id) {
 	}
 }
 
-std::vector<Body>::iterator BodyManager::FindBody(int body_id) {
+std::vector<Body>::iterator BodyManager::FindBody(const int body_id) {
 	//迭代器便利查找Bodyid，找到返回此元素对应迭代器，没找到返回begin（第一个对象）迭代器
 	for (std::vector<Body>::iterator it = (this->body_lists_).begin(); it != this->body_lists_.end();++it) {
 		if (it->body_id_ == body_id) {

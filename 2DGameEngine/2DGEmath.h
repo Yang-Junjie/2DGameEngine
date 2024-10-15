@@ -18,7 +18,7 @@ struct FlatVector
 {
     float x;
     float y;
-
+    FlatVector() :x(0), y(0) {};
     FlatVector(float x, float y) : x(x), y(y) {}
 
     friend std::ostream& operator<<(std::ostream& os, const FlatVector& p) {
@@ -91,6 +91,12 @@ struct FlatVector
 
     float len() const {
         return sqrt(this->x * this->x + this->y * this->y);
+    }
+
+    void normalize() {
+        float length = this->len();
+        this->x = this->x / length;
+        this->y = this->y / length;
     }
 
 };
