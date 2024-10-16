@@ -73,7 +73,7 @@ void Brush::DrawCircle(float centreX, float centreY, float radius, int r, int g,
 void Brush::DrawPolygon(std::vector<SDL_FPoint> &points, int r, int g, int b, int a) {
    
     SDL_SetRenderDrawColor(this->renderer_, r, g, b, a);
-    for (size_t i = 0; i < points.size(); ++i) {
+    for (int i = 0; i < points.size(); ++i) {
         SDL_RenderDrawLine(this->renderer_, points[i].x, points[i].y, points[(i+1)%points.size()].x, points[(i + 1) % points.size()].y);
     }
    

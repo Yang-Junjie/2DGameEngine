@@ -43,6 +43,7 @@ void World::Interation(std::vector<Body>& body_lists,float time) const
 			FlatVector displacement = body.velocity_ * time + body.acceleration_ * time * time * 0.5;
 			body.velocity_ = body.velocity_ + body.acceleration_ * time;
 			body.Move(displacement);
+			//body.acceleration_ = FlatVector(0.0f, 0.0f);
 			
 		}
 	}

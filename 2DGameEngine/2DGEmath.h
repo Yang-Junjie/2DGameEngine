@@ -18,7 +18,7 @@ struct FlatVector
 {
     float x;
     float y;
-    FlatVector() :x(0), y(0) {};
+    FlatVector() :x(0.0f), y(0.0f) {};
     FlatVector(float x, float y) : x(x), y(y) {}
 
     friend std::ostream& operator<<(std::ostream& os, const FlatVector& p) {

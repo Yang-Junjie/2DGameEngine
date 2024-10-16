@@ -69,20 +69,11 @@ int main(int argc, char* argv[])
 
 
     Gravity Gravity_Gen = FlatVector(0.0f, 9.8f);
-
-
-    FlatVector anchor = { 400,300 };
-   // FixedPointElasticity Elasticity(&anchor,0.05f,60.0f);
-        
-
-    FakeSpring fakes(&anchor,0.05f,1.0f);
-    //Resistance fr(1,1);
-
+    FlatVector choar = { 50,50 };
+    
 
 
     BodyColor color = { 255, 100, 100, 255 };
-    FlatVector v1 = { 400,150 };
-    FlatVector v2 = { 200,200 };
     // 清除屏幕背景色
     Brush brush(renderer);
     brush.Clear(0, 0, 0, 0);
@@ -91,24 +82,17 @@ int main(int argc, char* argv[])
 
    //BodyManager1.CreateBody(30,color,20,v1);
 
-    std::vector<SDL_FPoint> points = { {0, 0},
-                                      {100, 0},
-                                      {100, 100},
-                                      {0, 100} };
+    std::vector<SDL_FPoint> points = { {0.0f, 0.0f},
+                                      {100.0f, 0.0f},
+                                      {100.0f, 100.0f},
+                                      {0.0f, 100.0f} };
 
-    BodyManager1.CreateBody(points, color, 20);
+    BodyManager1.CreateBody(points, color, 20.0f);
     std::vector<Body>::iterator body = BodyManager1.FindBody(1);
-    body->SetVelocity(FlatVector(10,0));
-    body->MoveTo(FlatVector(400, 310));
-
-    //Elasticity.UpdateForce(body, 0.0f);
-
-
-    //body->AddForce(body->mass_ * FlatVector(0, 9.8));
-    //Gravity_Gen.UpdateForce(body, 0.0f);
-    
+    body->MoveTo(FlatVector(50,100));
   
-   
+  
+    
     
    
     // 运行主循环直到用户关闭窗口
@@ -119,16 +103,17 @@ int main(int argc, char* argv[])
   
 
     
+    Gravity_Gen.UpdateForce(body, 0.0f);
 
-
+    
+    
 
 
     bool quit = false;
     SDL_Event e;
     int x = 0;
     int y = 0;
-    float  time = 1;
-   // fakes.UpdateForce(body, time);
+    float  time = 1.0f;
     while (!quit) {
         float start = clock();
         while (SDL_PollEvent(&e)) {
@@ -142,14 +127,16 @@ int main(int argc, char* argv[])
                // body->MoveTo(FlatVector(x, y));
             }
         } 
-        brush.DrawPoint(FlatVector(400, 300), color.r, color.g, color.b, color.a);;
+        brush.DrawPoint(FlatVector(400.0f, 300.0f), color.r, color.g, color.b, color.a);;
       
       // BodyManager1.FindBody(1)->Rotation(1);
       
-       // Elasticity.UpdateForce(body, 0.0f);
-       // fr.UpdateForce(body, 0.0f);
        
-
+        Gravity_Gen.ClearPreviousForce();
+        Gravity_Gen.UpdateForce(body, 0.0f);
+        
+       
+       std::cout << body->acceleration_ << std::endl;
 
 
 

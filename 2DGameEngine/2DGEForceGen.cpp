@@ -8,10 +8,23 @@ Gravity::Gravity(const FlatVector gravity_acceleration):gravity_acceleration_(gr
 {
 }
 
+Gravity::~Gravity()
+{
+	std::cout << "Îö¹¹ÖØÁ¦" << std::endl;
+}
+
 void Gravity::UpdateForce(std::vector<Body>::iterator body, float duration)
 {
 	body->AddForce(this->gravity_acceleration_ * body->mass_);
+	this->last_force = this->gravity_acceleration_ * body->mass_;
+	this->body_ = body;
 }
+
+void Gravity::ClearPreviousForce()
+{
+	this->body_->AddForce(-this->last_force);
+}
+
 
 
 
@@ -67,9 +80,9 @@ FakeSpring::FakeSpring(FlatVector* anchor, float spring_constant, float damping)
 void FakeSpring::UpdateForce(std::vector<Body>::iterator body, float duration)
 {
 	FlatVector position = body->mass_center_;
-	std::cout << position;
-	position = position - (*this->anchor_);
 	
+	position = position - (*this->anchor_);
+	//std::cout << position << std::endl;
 	float gamma = 0.5f * sqrt(4 * this->spring_constant_ - this->damping_ * this->damping_);
 	if (gamma == 0)return;
 	FlatVector c = position * (this->damping_ / (2.0f * gamma)) + body->velocity_ * (1.0f / gamma);
