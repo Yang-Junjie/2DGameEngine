@@ -5,6 +5,7 @@
 #include "2DGEBody.h"
 #include "2DGEWorld.h"
 #include "2DGEForceGen.h"
+#include "2DGEBoundVol.h"
 int main(int argc, char* argv[])
 {
     
@@ -66,33 +67,26 @@ int main(int argc, char* argv[])
 
     World world;
     BodyManager BodyManager1;
-
-
+    AABB aabb;
     Gravity Gravity_Gen = FlatVector(0.0f, 9.8f);
-    FlatVector choar = { 50,50 };
-    
-
-
     BodyColor color = { 255, 100, 100, 255 };
     // 清除屏幕背景色
     Brush brush(renderer);
     brush.Clear(0, 0, 0, 0);
-    
-
-
-   //BodyManager1.CreateBody(30,color,20,v1);
-
-    std::vector<SDL_FPoint> points = { {0.0f, 0.0f},
-                                      {100.0f, 0.0f},
-                                      {100.0f, 100.0f},
-                                      {0.0f, 100.0f} };
-
+    std::vector<SDL_FPoint> points = {{100.0f, 100.0f},
+                                      {200.0f, 100.0f},
+                                      {250.0f, 200.0f},
+                                      {150.0f, 285.0f},
+                                      {50.0f , 200.0f}};
     BodyManager1.CreateBody(points, color, 20.0f);
+
+
+    //BodyManager1.CreateBody(30.0f, color, 30.0f, FlatVector(100, 100));
     std::vector<Body>::iterator body = BodyManager1.FindBody(1);
-    body->MoveTo(FlatVector(50,100));
-  
- 
-    // 运行主循环直到用户关闭窗口
+    //body->MoveTo(FlatVector(50,100));
+    
+    body->SetVelocity(FlatVector(1, 0));
+    
    
     //BodyManager1.CoutBodyList();
     bool quit = false;
@@ -100,6 +94,7 @@ int main(int argc, char* argv[])
     int x = 0;
     int y = 0;
     float  time = 1.0f;
+    // 运行主循环直到用户关闭窗口
     while (!quit) {
         float start = clock();
         while (SDL_PollEvent(&e)) {
@@ -115,18 +110,24 @@ int main(int argc, char* argv[])
         } 
         brush.DrawPoint(FlatVector(400.0f, 300.0f), color.r, color.g, color.b, color.a);;
       
-      // BodyManager1.FindBody(1)->Rotation(1);
+        body->Rotation(1);
       
        
        // Gravity_Gen.ClearPreviousForce();
        
         
-        Gravity_Gen.UpdateForce(body, 0.0f);
-       std::cout << body->acceleration_ << std::endl;
-
-       
+        //Gravity_Gen.UpdateForce(body, 0.0f);
+      // std::cout << body->acceleration_ << std::endl;
 
 
+
+
+
+
+
+
+        aabb.GetAABB(body);
+        aabb.RenderAABB(brush);
         brush.show();
         brush.Clear(0, 0, 0, 0);
         BodyManager1.RenderBody(brush);

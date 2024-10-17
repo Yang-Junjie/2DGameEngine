@@ -14,7 +14,7 @@ struct FlatTransform
     float positionY;    // Translation along the Y-axis
 };
 
-struct FlatVector
+typedef struct FlatVector
 {
     float x;
     float y;

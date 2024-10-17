@@ -1,4 +1,7 @@
 ﻿  main.cpp
+D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(17,16): warning C4091: “typedef ”: 没有声明变量时忽略“FlatVector”的左侧
+  (编译源文件“main.cpp”)
+  
 D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(67,25): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
   (编译源文件“main.cpp”)
   
@@ -8,6 +11,6 @@ D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(68,25): warning C4244: “初始化�
 D:\C++\2DGameEngine\2DGameEngine\2DGEWorld.h(11,44): warning C4305: “参数”: 从“double”到“float”截断
   (编译源文件“main.cpp”)
   
-D:\C++\2DGameEngine\2DGameEngine\main.cpp(118,21): warning C4244: “初始化”: 从“clock_t”转换到“float”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\main.cpp(148,19): warning C4244: “初始化”: 从“clock_t”转换到“float”，可能丢失数据
+D:\C++\2DGameEngine\2DGameEngine\main.cpp(99,21): warning C4244: “初始化”: 从“clock_t”转换到“float”，可能丢失数据
+D:\C++\2DGameEngine\2DGameEngine\main.cpp(135,19): warning C4244: “初始化”: 从“clock_t”转换到“float”，可能丢失数据
   2DGameEngine.vcxproj -> D:\C++\2DGameEngine\x64\Debug\2DGameEngine.exe
