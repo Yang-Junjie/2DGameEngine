@@ -148,6 +148,11 @@ bool BodyManager::CreateBody(std::vector<SDL_FPoint> vertices, BodyColor color,f
 	}
 }
 
+void Body::ClearAcceleration()
+{
+	this->acceleration_ = FlatVector(0, 0);
+}
+
 bool BodyManager::DestroyBody(const int body_id) {
 	//查找bodyid，找到删除返回true，没找到返回false
 	std::vector<Body>::iterator it = BodyManager::FindBody(body_id);

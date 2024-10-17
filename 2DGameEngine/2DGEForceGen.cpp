@@ -16,13 +16,6 @@ Gravity::~Gravity()
 void Gravity::UpdateForce(std::vector<Body>::iterator body, float duration)
 {
 	body->AddForce(this->gravity_acceleration_ * body->mass_);
-	this->last_force = this->gravity_acceleration_ * body->mass_;
-	this->body_ = body;
-}
-
-void Gravity::ClearPreviousForce()
-{
-	this->body_->AddForce(-this->last_force);
 }
 
 

@@ -52,6 +52,9 @@ public:
 	void Rotation(const float angle);
 
 	void AddForce(const FlatVector v1);
+
+	void ClearAcceleration();
+
 };
 
 class BodyManager {
@@ -63,6 +66,7 @@ public:
 	int id_count = 0;
 	bool CreateBody(float radius                   , BodyColor color, float mass, FlatVector mass_center);
 	bool CreateBody(std::vector<SDL_FPoint> vertices, BodyColor color, float mass);
+
 	
 	bool DestroyBody(const int body_id);
 	std::vector<Body>::iterator FindBody(const int body_id);

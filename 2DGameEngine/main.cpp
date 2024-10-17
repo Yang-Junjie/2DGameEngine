@@ -91,24 +91,10 @@ int main(int argc, char* argv[])
     std::vector<Body>::iterator body = BodyManager1.FindBody(1);
     body->MoveTo(FlatVector(50,100));
   
-  
-    
-    
-   
+ 
     // 运行主循环直到用户关闭窗口
    
     //BodyManager1.CoutBodyList();
-   
-
-  
-
-    
-    Gravity_Gen.UpdateForce(body, 0.0f);
-
-    
-    
-
-
     bool quit = false;
     SDL_Event e;
     int x = 0;
@@ -132,13 +118,13 @@ int main(int argc, char* argv[])
       // BodyManager1.FindBody(1)->Rotation(1);
       
        
-        Gravity_Gen.ClearPreviousForce();
-        Gravity_Gen.UpdateForce(body, 0.0f);
-        
+       // Gravity_Gen.ClearPreviousForce();
        
+        
+        Gravity_Gen.UpdateForce(body, 0.0f);
        std::cout << body->acceleration_ << std::endl;
 
-
+       
 
 
         brush.show();
