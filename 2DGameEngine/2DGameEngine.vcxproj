@@ -140,19 +140,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="2DGEBody.cpp" />
-    <ClCompile Include="2DGEBoundVol.cpp" />
     <ClCompile Include="2DGEDraw.cpp" />
     <ClCompile Include="2DGEForceGen.cpp" />
     <ClCompile Include="2DGEWorld.cpp" />
+    <ClCompile Include="2DGECollision.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DGEBody.h" />
-    <ClInclude Include="2DGEBoundVol.h" />
     <ClInclude Include="2DGEDraw.h" />
     <ClInclude Include="2DGEForceGen.h" />
     <ClInclude Include="2DGEmath.h" />
     <ClInclude Include="2DGEWorld.h" />
+    <ClInclude Include="2DGECollision.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

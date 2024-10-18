@@ -5,7 +5,7 @@
 #include "2DGEBody.h"
 #include "2DGEWorld.h"
 #include "2DGEForceGen.h"
-#include "2DGEBoundVol.h"
+#include "2DGECollision.h"
 int main(int argc, char* argv[])
 {
     
@@ -41,33 +41,9 @@ int main(int argc, char* argv[])
 
 
 
-
- 
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     World world;
     BodyManager BodyManager1;
-    AABB aabb;
+    
     Gravity Gravity_Gen = FlatVector(0.0f, 9.8f);
     BodyColor color = { 255, 100, 100, 255 };
     // Çå³ýÆÁÄ»±³¾°É«
@@ -80,15 +56,36 @@ int main(int argc, char* argv[])
                                       {50.0f , 200.0f}};
     BodyManager1.CreateBody(points, color, 20.0f);
 
-
+    BodyManager1.CreateBody(points, color, 10.0f);
+    BodyManager1.CreateBody(points, color, 10.0f);
+   // BodyManager1.CreateBody(100.0f, color, 20.0f, FlatVector(400, 300));
     //BodyManager1.CreateBody(30.0f, color, 30.0f, FlatVector(100, 100));
-    std::vector<Body>::iterator body = BodyManager1.FindBody(1);
+    std::vector<Body>::iterator body1 = BodyManager1.FindBody(1);
+    std::vector<Body>::iterator body2 = BodyManager1.FindBody(2);
+    body2->MoveTo(FlatVector(500, 200));
     //body->MoveTo(FlatVector(50,100));
     
-    body->SetVelocity(FlatVector(1, 0));
+    
     
    
-    //BodyManager1.CoutBodyList();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    BodyManager1.CoutBodyList();
     bool quit = false;
     SDL_Event e;
     int x = 0;
@@ -104,13 +101,13 @@ int main(int argc, char* argv[])
             else if (e.type == SDL_MOUSEMOTION) {
                 x = e.motion.x;
                 y = e.motion.y;
-               // printf("Mouse Position: (%d, %d)\n", x, y);
-               // body->MoveTo(FlatVector(x, y));
+                //printf("Mouse Position: (%d, %d)\n", x, y);
+                body1->MoveTo(FlatVector(x, y));
             }
         } 
-        brush.DrawPoint(FlatVector(400.0f, 300.0f), color.r, color.g, color.b, color.a);;
+       // brush.DrawPoint(FlatVector(400.0f, 300.0f), color.r, color.g, color.b, color.a);;
       
-        body->Rotation(1);
+        body1->Rotation(1);
       
        
        // Gravity_Gen.ClearPreviousForce();
@@ -126,11 +123,12 @@ int main(int argc, char* argv[])
 
 
 
-        aabb.GetAABB(body);
-        aabb.RenderAABB(brush);
+        
         brush.show();
         brush.Clear(0, 0, 0, 0);
+        BodyManager1.RenderAABB(brush);
         BodyManager1.RenderBody(brush);
+        
         world.Interation(BodyManager1.body_lists_, time);
         float end = clock();
         time = (end - start);

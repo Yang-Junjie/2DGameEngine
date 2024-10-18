@@ -1,10 +1,6 @@
 #include "2DGEBody.h"
 
 
-Body::Body() {
-
-}
-
 Body::~Body() {
 
 }
@@ -99,10 +95,22 @@ void Body::Rotation(const float angle)
 
 void Body::AddForce(const FlatVector F)
 {
+	/*由于力在物体上不会直接体现，直接将力转为加速度*/
 	//直接将力转为加速度
 	this->acceleration_ = this->acceleration_ + (F / this->mass_);
 
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -115,6 +123,7 @@ BodyManager::BodyManager()
 BodyManager::~BodyManager()
 {
 }
+
 
 bool BodyManager::CreateBody(float radius, BodyColor color, float mass, FlatVector mass_center)
 {
@@ -153,6 +162,61 @@ void Body::ClearAcceleration()
 	this->acceleration_ = FlatVector(0, 0);
 }
 
+
+
+void Body::GetAABB()
+{
+	if (shape_ == 0) {
+		const float center_x = this->mass_center_.x;
+		const float center_y = this->mass_center_.y;
+		const float radius = radius_;
+		this->vertices_aabb[0] = { center_x - radius , center_y + radius };
+		this->vertices_aabb[1] = { center_x + radius , center_y + radius };
+		this->vertices_aabb[2] = { center_x + radius , center_y - radius };
+		this->vertices_aabb[3] = { center_x - radius , center_y - radius };
+		this->bounding_box_ = AABBBOX;
+	}
+	else if (shape_ == 1) {
+		const std::vector<SDL_FPoint> vertices = this->vertices_;
+		float max_x = -std::numeric_limits<float>::max();
+		float max_y = -std::numeric_limits<float>::max();
+		float min_x = std::numeric_limits<float>::max();
+		float min_y = std::numeric_limits<float>::max();
+		for (int i = 0; i < vertices.size(); ++i) {
+			if (vertices[i].x > max_x) {
+				max_x = vertices[i].x;
+			}
+			if (vertices[i].x < min_x) {
+				min_x = vertices[i].x;
+			}
+			if (vertices[i].y > max_y) {
+				max_y = vertices[i].y;
+			}
+			if (vertices[i].y < min_y) {
+				min_y = vertices[i].y;
+			}
+		}
+		this->vertices_aabb[0] = { min_x , max_y };
+		this->vertices_aabb[1] = { max_x , max_y };
+		this->vertices_aabb[2] = { max_x , min_y };
+		this->vertices_aabb[3] = { min_x , min_y };
+		this->bounding_box_ = AABBBOX;
+	}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 bool BodyManager::DestroyBody(const int body_id) {
 	//查找bodyid，找到删除返回true，没找到返回false
 	std::vector<Body>::iterator it = BodyManager::FindBody(body_id);
@@ -187,6 +251,17 @@ void BodyManager::RenderBody(Brush& brush)
 		else if(body.shape_ == 1){
 			
 			brush.DrawPolygon(body.vertices_, body.color_.r, body.color_.g, body.color_.b, body.color_.a);
+		}
+	}
+}
+
+void BodyManager::RenderAABB(Brush& brush)
+{
+	for (auto& body : this->body_lists_) {
+		if (body.bounding_box_ != AABBBOX) {}
+		else {
+			std::cout << body.body_id_ << ":" << body.color_box_.g << std::endl;
+			brush.DrawPolygon(body.vertices_aabb, body.color_box_.r, body.color_box_.g, body.color_box_.b, body.color_box_.a);
 		}
 	}
 }
@@ -293,3 +368,15 @@ FlatVector GetMassCenter(std::vector<SDL_FPoint> points)
 
 		return FlatVector(cx, cy);
 }
+
+
+
+
+
+
+
+
+
+
+
+

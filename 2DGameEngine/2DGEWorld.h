@@ -1,6 +1,7 @@
 #pragma once
 #include "2DGEmath.h"
 #include "2DGEBody.h"
+#include "2DGECollision.h"
 class World {
 public:
 	float pass_time_ = 0;
@@ -16,9 +17,10 @@ public:
 	void SetInteration(size_t interation);
 	void PauseTime();
 	void OpenTime();
-	void Interation(std::vector<Body>& body_lists , float time) const;
-
+	void Interation(std::vector<Body>& body_lists , float time) ;
+	
 private:
 	void Timepiece();
+	void BroadPhase(std::vector<Body>& body_lists);
 	
 };

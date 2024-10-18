@@ -30,7 +30,7 @@
     <ClCompile Include="2DGEForceGen.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="2DGEBoundVol.cpp">
+    <ClCompile Include="2DGECollision.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,7 +50,7 @@
     <ClInclude Include="2DGEForceGen.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="2DGEBoundVol.h">
+    <ClInclude Include="2DGECollision.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
