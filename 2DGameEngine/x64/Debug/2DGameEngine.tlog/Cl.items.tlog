@@ -3,4 +3,12 @@ D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp;D:\C++\2DGameEngine\2DGameEngine\x
 D:\C++\2DGameEngine\2DGameEngine\2DGEForceGen.cpp;D:\C++\2DGameEngine\2DGameEngine\x64\Debug\2DGEForceGen.obj
 D:\C++\2DGameEngine\2DGameEngine\2DGEWorld.cpp;D:\C++\2DGameEngine\2DGameEngine\x64\Debug\2DGEWorld.obj
 D:\C++\2DGameEngine\2DGameEngine\2DGECollision.cpp;D:\C++\2DGameEngine\2DGameEngine\x64\Debug\2DGECollision.obj
+D:\C++\2DGameEngine\2DGameEngine\imgui.cpp;D:\C++\2DGameEngine\2DGameEngine\x64\Debug\imgui.obj
+D:\C++\2DGameEngine\2DGameEngine\imgui_demo.cpp;D:\C++\2DGameEngine\2DGameEngine\x64\Debug\imgui_demo.obj
+D:\C++\2DGameEngine\2DGameEngine\imgui_draw.cpp;D:\C++\2DGameEngine\2DGameEngine\x64\Debug\imgui_draw.obj
+D:\C++\2DGameEngine\2DGameEngine\imgui_impl_opengl3.cpp;D:\C++\2DGameEngine\2DGameEngine\x64\Debug\imgui_impl_opengl3.obj
+D:\C++\2DGameEngine\2DGameEngine\imgui_impl_sdl2.cpp;D:\C++\2DGameEngine\2DGameEngine\x64\Debug\imgui_impl_sdl2.obj
+D:\C++\2DGameEngine\2DGameEngine\imgui_impl_win32.cpp;D:\C++\2DGameEngine\2DGameEngine\x64\Debug\imgui_impl_win32.obj
+D:\C++\2DGameEngine\2DGameEngine\imgui_tables.cpp;D:\C++\2DGameEngine\2DGameEngine\x64\Debug\imgui_tables.obj
+D:\C++\2DGameEngine\2DGameEngine\imgui_widgets.cpp;D:\C++\2DGameEngine\2DGameEngine\x64\Debug\imgui_widgets.obj
 D:\C++\2DGameEngine\2DGameEngine\main.cpp;D:\C++\2DGameEngine\2DGameEngine\x64\Debug\main.obj

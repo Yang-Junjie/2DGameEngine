@@ -30,80 +30,31 @@ void World::Timepiece()
 
 }
 void World::BroadPhase(std::vector<Body>& body_lists) {
-	for (size_t i = 0; i < body_lists.size(); ++i) {
-		Body& body_a = body_lists[i];
-		body_a.GetAABB();  // 确保AABB是最新的  
-		for (size_t j = i + 1; j < body_lists.size(); ++j) {
-			Body& body_b = body_lists[j];
-			body_b.GetAABB();  // 确保AABB是最新的  
-			bool intersect = IntersectAABB(body_a, body_b);
-
-			// 设置颜色  
-			if (intersect) {
-				// 白色  
-				body_a.color_box_ = { 255, 255, 255, 255 };
-				body_b.color_box_ = { 255, 255, 255, 255 };
-				
-				//std::cout << body_a.body_id_ << "," << body_b.body_id_ << " intersect" << std::endl;
+	for (auto& body_a:body_lists) {//拿出一个物体a
+		body_a.GetAABB();  //得到物体a的AABB包围盒
+		for (auto& body_b : body_lists) {//拿出一个物体b
+			if (body_a.body_id_ == body_b.body_id_) {//如果物体a和物体b是同一个物体则跳过
+				continue;
 			}
-			else {
-				//红色
-				body_a.color_box_ = { 255, 100, 100, 255 };
-				body_b.color_box_ = { 255, 100, 100, 255 };
+			body_b.GetAABB();  //得到物体b的AABB包围盒
+			if (!IntersectAABB(body_a, body_b)) {//如果两个物体AABB盒不相交则将物体a和物体b的包围盒颜色设为红色并跳过
+				body_a.color_box_ = { 255,100,100,255 };
+				body_b.color_box_ = { 255,100,100,255 };
+				continue;
 			}
+			std::cout << "intersect" << std::endl;//如果两个物体AABB盒相交则将物体a和物体b的包围盒颜色设为白色
+			body_a.color_box_ = { 255,255,255,255 };
+			body_b.color_box_ = { 255,255,255,255 };
+		
 		}
 	}
 }
+	
 
 
 
 
 
-//void World::BroadPhase(std::vector<Body>& body_lists)
-//{
-//
-//	for (auto& body_a : body_lists) {
-//		body_a.GetAABB();
-//		for (auto& body_b : body_lists) {
-//			if (body_a.body_id_ == body_b.body_id_) {
-//				continue;
-//			}
-//			body_b.GetAABB();
-//			bool intersect = IntersectAABB(body_a, body_b);
-//			//std::cout << intersect << std::endl;
-//			if (!intersect) {
-//				body_b.color_box_.a = 255;
-//				body_b.color_box_.r = 255;
-//				body_b.color_box_.g = 100;
-//				body_b.color_box_.b = 100;
-//
-//				body_a.color_box_.a = 255;
-//				body_a.color_box_.r = 255;
-//				body_a.color_box_.g = 100;
-//				body_a.color_box_.b = 100;
-//				continue;
-//
-//			}
-//			//std::cout << intersect << std::endl;
-//			if (intersect) {
-//				std::cout << body_a.body_id_ << "," << body_b.body_id_ << std::endl;
-//
-//				body_b.color_box_.a = 255;
-//				body_b.color_box_.r = 255;
-//				body_b.color_box_.g = 255;
-//				body_b.color_box_.b = 255;
-//
-//				body_a.color_box_.a = 255;
-//				body_a.color_box_.r = 255;
-//				body_a.color_box_.g = 255;
-//				body_a.color_box_.b = 255;
-//
-//
-//			}
-//		}
-//
-//	}
-//}
 
 void World::Interation(std::vector<Body>& body_lists,float time) 
 
@@ -121,7 +72,7 @@ void World::Interation(std::vector<Body>& body_lists,float time)
 			body.Move(displacement);
 		}
 		BroadPhase(body_lists);
-		//std::cout << 1 << std::endl;
+		
 	}
 	
 }

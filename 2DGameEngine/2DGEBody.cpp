@@ -260,7 +260,7 @@ void BodyManager::RenderAABB(Brush& brush)
 	for (auto& body : this->body_lists_) {
 		if (body.bounding_box_ != AABBBOX) {}
 		else {
-			std::cout << body.body_id_ << ":" << body.color_box_.g << std::endl;
+			//std::cout << body.body_id_ << ":" << body.color_box_.g << std::endl;
 			brush.DrawPolygon(body.vertices_aabb, body.color_box_.r, body.color_box_.g, body.color_box_.b, body.color_box_.a);
 		}
 	}

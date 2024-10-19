@@ -1,11 +1,13 @@
 #include <SDL.h>
 #include <ctime>
 #include <iostream>
+#include <SDL_opengl.h>
 #include "2DGEDraw.h"
 #include "2DGEBody.h"
 #include "2DGEWorld.h"
 #include "2DGEForceGen.h"
 #include "2DGECollision.h"
+
 int main(int argc, char* argv[])
 {
     
@@ -28,6 +30,7 @@ int main(int argc, char* argv[])
         return 1;
     }
 
+    
     // 创建渲染器
     SDL_Renderer* renderer = SDL_CreateRenderer(window,
         -1,
@@ -82,7 +85,8 @@ int main(int argc, char* argv[])
 
 
 
-
+    bool show_demo_window = true;
+    bool button_pressed = false;
 
 
     BodyManager1.CoutBodyList();
@@ -95,7 +99,9 @@ int main(int argc, char* argv[])
     while (!quit) {
         float start = clock();
         while (SDL_PollEvent(&e)) {
+             // ImGui_ImplSDL2_ProcessEvent(&e);
             if (e.type == SDL_QUIT) {
+              
                 quit = true;
             } 
             else if (e.type == SDL_MOUSEMOTION) {
@@ -119,10 +125,6 @@ int main(int argc, char* argv[])
 
 
 
-
-
-
-
         
         brush.show();
         brush.Clear(0, 0, 0, 0);
@@ -132,15 +134,16 @@ int main(int argc, char* argv[])
         world.Interation(BodyManager1.body_lists_, time);
         float end = clock();
         time = (end - start);
-       //std::cout << time<< std::endl;
-        //std::cout <<body->mass_center_<< std::endl;
+       
     }
 
-    // 清理
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-
+            // 清理
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
 
     return 0;
+
+   
 }
+
