@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
     // Çå³ýÆÁÄ»±³¾°É«
     Brush brush(renderer);
     brush.Clear(0, 0, 0, 0);
-    std::vector<SDL_FPoint> points = {{100.0f, 100.0f},
+    std::vector<FlatVector> points = {{100.0f, 100.0f},
                                       {200.0f, 100.0f},
                                       {250.0f, 200.0f},
                                       {150.0f, 285.0f},
@@ -128,7 +128,7 @@ int main(int argc, char* argv[])
         
         brush.show();
         brush.Clear(0, 0, 0, 0);
-        BodyManager1.RenderAABB(brush);
+       // BodyManager1.RenderAABB(brush);
         BodyManager1.RenderBody(brush);
         
         world.Interation(BodyManager1.body_list_, time);

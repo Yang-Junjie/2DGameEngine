@@ -4,6 +4,11 @@
 #include <SDL.h>
 #include <iostream>
 #include "2DGEDraw.h"
+typedef struct Point
+{
+	float x;
+	float y;
+} Point;
 
 enum Shape {
 	NONE = -1,
@@ -37,8 +42,8 @@ public:
 	Shape shape_ = NONE;
 	float radius_ = 0.0f;
 	BodyColor color_ = { 0,0,0,0 };
-	std::vector<SDL_FPoint> vertices_ = {};
-	std::vector<SDL_FPoint> vertices_aabb = { {0.0f, 0.0f},
+	std::vector<FlatVector> vertices_ = {};
+	std::vector<FlatVector> vertices_aabb = { {0.0f, 0.0f},
 										 {0.0f, 0.0f},
 										 {0.0f, 0.0f},
 										 {0.0f, 0.0f} };
@@ -58,7 +63,7 @@ public:
 
 	~Body();
 	Body(Shape shape, float radius, BodyColor color, float mass, FlatVector mass_center, int body_id);
-	Body(Shape shape, std::vector<SDL_FPoint> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id);
+	Body(Shape shape, std::vector<FlatVector> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id);
 	void SetVelocity(const FlatVector v1);
 	void SetAcceleration(const FlatVector v1);
 	void Move(const FlatVector v1);
@@ -74,16 +79,6 @@ public:
 
 
 
-typedef struct OBB {
-	//先不实现
-	std::vector<SDL_FPoint> vertices_ = { {0.0f, 0.0f},
-										 {0.0f, 0.0f},
-										 {0.0f, 0.0f},
-										 {0.0f, 0.0f} };
-
-	void GetOBB(const Body body);
-	void RenderOBB(Brush& brush);
-};
 
 
 class BodyManager {
@@ -94,7 +89,7 @@ public:
 	std::vector<Body> body_list_;
 	int id_count = 0;
 	bool CreateBody(float radius                   , BodyColor color, float mass, FlatVector mass_center);
-	bool CreateBody(std::vector<SDL_FPoint> vertices, BodyColor color, float mass);
+	bool CreateBody(std::vector<FlatVector> vertices, BodyColor color, float mass);
 
 	std::vector<Body>::iterator FindBody(const int body_id);
 	bool DestroyBody(const int body_id);
@@ -106,4 +101,4 @@ public:
 
 
 FlatVector GetMassCenter(Body& body);
-FlatVector GetMassCenter(std::vector<SDL_FPoint> points);
+FlatVector GetMassCenter(std::vector<FlatVector> points);

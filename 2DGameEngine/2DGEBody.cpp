@@ -10,7 +10,7 @@ Body::Body(Shape shape, float radius, BodyColor color, float mass, FlatVector ma
 		this->inverse_mass_ = 1/this->mass_;//有质量才有质量的倒数，inverseMass采用赋值
 }
 
-Body::Body(Shape shape, std::vector<SDL_FPoint> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id):
+Body::Body(Shape shape, std::vector<FlatVector> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id):
 	body_id_(body_id), shape_(shape),color_(color), vertices_(vertices), mass_(mass), mass_center_(mass_center){
 		this->inverse_mass_ = 1 / this->mass_;
 }
@@ -141,7 +141,7 @@ bool BodyManager::CreateBody(float radius, BodyColor color, float mass, FlatVect
 	
 }
 
-bool BodyManager::CreateBody(std::vector<SDL_FPoint> vertices, BodyColor color,float mass) {
+bool BodyManager::CreateBody(std::vector<FlatVector> vertices, BodyColor color,float mass) {
 	//创造多边形并添加至body_list_
 	if (mass > 0) {
 		this->id_count++;
@@ -175,7 +175,7 @@ void Body::GetAABB()
 		this->bounding_box_ = AABBBOX;
 	}
 	else if (shape_ == 1) {
-		const std::vector<SDL_FPoint> vertices = this->vertices_;
+		const std::vector<FlatVector> vertices = this->vertices_;
 		float max_x = -std::numeric_limits<float>::max();
 		float max_y = -std::numeric_limits<float>::max();
 		float min_x = std::numeric_limits<float>::max();
@@ -308,9 +308,9 @@ FlatVector GetMassCenter(Body& body)
 		float cx = 0.0f, cy = 0.0f;
 
 		for (const auto& indices : triangular_index) {
-			SDL_FPoint v0 = body.vertices_[indices[0]];
-			SDL_FPoint v1 = body.vertices_[indices[1]];
-			SDL_FPoint v2 = body.vertices_[indices[2]];
+			FlatVector v0 = body.vertices_[indices[0]];
+			FlatVector v1 = body.vertices_[indices[1]];
+			FlatVector v2 = body.vertices_[indices[2]];
 
 			float A = 0.5f * (v0.x * (v1.y - v2.y) + v1.x * (v2.y - v0.y) + v2.x * (v0.y - v1.y)); // 三角形面积  
 			total_area += A;
@@ -327,7 +327,7 @@ FlatVector GetMassCenter(Body& body)
 	return FlatVector(0, 0);
 }
 
-FlatVector GetMassCenter(std::vector<SDL_FPoint> points)
+FlatVector GetMassCenter(std::vector<FlatVector> points)
 {
 	
 	
@@ -350,9 +350,9 @@ FlatVector GetMassCenter(std::vector<SDL_FPoint> points)
 		float cx = 0.0f, cy = 0.0f;
 
 		for (const auto& indices : triangular_index) {
-			SDL_FPoint v0 = points[indices[0]];
-			SDL_FPoint v1 = points[indices[1]];
-			SDL_FPoint v2 = points[indices[2]];
+			FlatVector v0 = points[indices[0]];
+			FlatVector v1 = points[indices[1]];
+			FlatVector v2 = points[indices[2]];
 
 			float A = 0.5f * (v0.x * (v1.y - v2.y) + v1.x * (v2.y - v0.y) + v2.x * (v0.y - v1.y)); // 三角形面积  
 			total_area += A;
