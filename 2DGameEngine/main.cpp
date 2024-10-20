@@ -131,7 +131,7 @@ int main(int argc, char* argv[])
         BodyManager1.RenderAABB(brush);
         BodyManager1.RenderBody(brush);
         
-        world.Interation(BodyManager1.body_lists_, time);
+        world.Interation(BodyManager1.body_list_, time);
         float end = clock();
         time = (end - start);
        

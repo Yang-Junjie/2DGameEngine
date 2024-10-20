@@ -91,7 +91,7 @@ public:
 	
 	BodyManager();
 	~BodyManager();
-	std::vector<Body> body_lists_;
+	std::vector<Body> body_list_;
 	int id_count = 0;
 	bool CreateBody(float radius                   , BodyColor color, float mass, FlatVector mass_center);
 	bool CreateBody(std::vector<SDL_FPoint> vertices, BodyColor color, float mass);

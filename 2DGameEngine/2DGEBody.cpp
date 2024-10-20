@@ -7,12 +7,12 @@ Body::~Body() {
 
 Body::Body(Shape shape, float radius, BodyColor color, float mass, FlatVector mass_center, int body_id) :
 	body_id_(body_id), shape_(shape), radius_(radius),    color_(color), mass_(mass), mass_center_(mass_center) {
-		this->inverse_mass_ == 1/this->mass_;//有质量才有质量的倒数，inverseMass采用赋值
+		this->inverse_mass_ = 1/this->mass_;//有质量才有质量的倒数，inverseMass采用赋值
 }
 
 Body::Body(Shape shape, std::vector<SDL_FPoint> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id):
 	body_id_(body_id), shape_(shape),color_(color), vertices_(vertices), mass_(mass), mass_center_(mass_center){
-		this->inverse_mass_ == 1 / this->mass_;
+		this->inverse_mass_ = 1 / this->mass_;
 }
 
 void Body::SetVelocity(const FlatVector v1)
@@ -131,9 +131,8 @@ bool BodyManager::CreateBody(float radius, BodyColor color, float mass, FlatVect
 	if (mass > 0) {
 		this->id_count++;
 		Body b1(CIRCLE, radius, color, mass, mass_center, id_count);
-		this->body_lists_.push_back(b1);
-		return false;
-		b1.~Body();
+		this->body_list_.push_back(b1);
+		return true;
 	}
 	else {
 		std::cout << "物体的质量不能为0" << std::endl;
@@ -147,8 +146,7 @@ bool BodyManager::CreateBody(std::vector<SDL_FPoint> vertices, BodyColor color,f
 	if (mass > 0) {
 		this->id_count++;
 		Body b1(POLTGON, vertices, color, mass, GetMassCenter(vertices), id_count);
-		this->body_lists_.push_back(b1);
-		b1.~Body();
+		this->body_list_.push_back(b1);
 		return true;
 	}
 	else {
@@ -220,9 +218,9 @@ void Body::GetAABB()
 bool BodyManager::DestroyBody(const int body_id) {
 	//查找bodyid，找到删除返回true，没找到返回false
 	std::vector<Body>::iterator it = BodyManager::FindBody(body_id);
-	int befor_body_list_size = this->body_lists_.size();
-	if (it != this->body_lists_.end()) {
-		this->body_lists_.erase(it);
+	int befor_body_list_size = this->body_list_.size();
+	if (it != this->body_list_.end()) {
+		this->body_list_.erase(it);
 		this->id_count--;
 		return true;
 	}
@@ -233,18 +231,18 @@ bool BodyManager::DestroyBody(const int body_id) {
 
 std::vector<Body>::iterator BodyManager::FindBody(const int body_id) {
 	//迭代器便利查找Bodyid，找到返回此元素对应迭代器，没找到返回begin（第一个对象）迭代器
-	for (std::vector<Body>::iterator it = (this->body_lists_).begin(); it != this->body_lists_.end();++it) {
+	for (std::vector<Body>::iterator it = (this->body_list_).begin(); it != this->body_list_.end();++it) {
 		if (it->body_id_ == body_id) {
 			return it;
 		}
 	}
-	return this->body_lists_.begin();
+	return this->body_list_.begin();
 }
 
 void BodyManager::RenderBody(Brush& brush)
 {
 	//渲染物体
-	for (Body& body:this->body_lists_) { 
+	for (Body& body:this->body_list_) { 
 		if (body.shape_ == 0) {
 			brush.DrawCircle(body.mass_center_.x, body.mass_center_.y,body.radius_,body.color_.r,body.color_.g, body.color_.b, body.color_.a);
 		}
@@ -257,7 +255,7 @@ void BodyManager::RenderBody(Brush& brush)
 
 void BodyManager::RenderAABB(Brush& brush)
 {
-	for (auto& body : this->body_lists_) {
+	for (auto& body : this->body_list_) {
 		if (body.bounding_box_ != AABBBOX) {}
 		else {
 			//std::cout << body.body_id_ << ":" << body.color_box_.g << std::endl;
@@ -268,8 +266,8 @@ void BodyManager::RenderAABB(Brush& brush)
 
 void BodyManager::CoutBodyList() {
 	//打印bodylist
-	std::cout << "Shape=====id=====<<<<<<<<<<<<<eigenvalue>>>>>>>>>>>>>==========mass_center==========总数："<<this->body_lists_.size() << std::endl;
-	for (std::vector<Body>::iterator it = (this->body_lists_).begin(); it != this->body_lists_.end(); ++it) {
+	std::cout << "Shape=====id=====<<<<<<<<<<<<<eigenvalue>>>>>>>>>>>>>==========mass_center==========总数："<<this->body_list_.size() << std::endl;
+	for (std::vector<Body>::iterator it = (this->body_list_).begin(); it != this->body_list_.end(); ++it) {
 		//std::cout <<it->shape_<<"         " << it->body_id_ << "     " <<std::endl;
 		if (it->shape_ == 0) {
 			std::cout <<it->shape_<<"         " << it->body_id_ << "           " <<it->radius_<<"                                       " << it->mass_center_ << std::endl;
