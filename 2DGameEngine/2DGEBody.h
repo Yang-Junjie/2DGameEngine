@@ -4,11 +4,7 @@
 #include <SDL.h>
 #include <iostream>
 #include "2DGEDraw.h"
-typedef struct Point
-{
-	float x;
-	float y;
-} Point;
+
 
 enum Shape {
 	NONE = -1,
@@ -43,7 +39,7 @@ public:
 	float radius_ = 0.0f;
 	BodyColor color_ = { 0,0,0,0 };
 	std::vector<FlatVector> vertices_ = {};
-	std::vector<FlatVector> vertices_aabb = { {0.0f, 0.0f},
+	std::vector<FlatVector> vertices_aabb_ = { {0.0f, 0.0f},
 										 {0.0f, 0.0f},
 										 {0.0f, 0.0f},
 										 {0.0f, 0.0f} };

@@ -168,10 +168,10 @@ void Body::GetAABB()
 		const float center_x = this->mass_center_.x;
 		const float center_y = this->mass_center_.y;
 		const float radius = radius_;
-		this->vertices_aabb[0] = { center_x - radius , center_y + radius };
-		this->vertices_aabb[1] = { center_x + radius , center_y + radius };
-		this->vertices_aabb[2] = { center_x + radius , center_y - radius };
-		this->vertices_aabb[3] = { center_x - radius , center_y - radius };
+		this->vertices_aabb_[0] = { center_x - radius , center_y + radius };
+		this->vertices_aabb_[1] = { center_x + radius , center_y + radius };
+		this->vertices_aabb_[2] = { center_x + radius , center_y - radius };
+		this->vertices_aabb_[3] = { center_x - radius , center_y - radius };
 		this->bounding_box_ = AABBBOX;
 	}
 	else if (shape_ == 1) {
@@ -194,10 +194,10 @@ void Body::GetAABB()
 				min_y = vertices[i].y;
 			}
 		}
-		this->vertices_aabb[0] = { min_x , max_y };
-		this->vertices_aabb[1] = { max_x , max_y };
-		this->vertices_aabb[2] = { max_x , min_y };
-		this->vertices_aabb[3] = { min_x , min_y };
+		this->vertices_aabb_[0] = { min_x , max_y };
+		this->vertices_aabb_[1] = { max_x , max_y };
+		this->vertices_aabb_[2] = { max_x , min_y };
+		this->vertices_aabb_[3] = { min_x , min_y };
 		this->bounding_box_ = AABBBOX;
 	}
 
@@ -259,7 +259,7 @@ void BodyManager::RenderAABB(Brush& brush)
 		if (body.bounding_box_ != AABBBOX) {}
 		else {
 			//std::cout << body.body_id_ << ":" << body.color_box_.g << std::endl;
-			brush.DrawPolygon(body.vertices_aabb, body.color_box_.r, body.color_box_.g, body.color_box_.b, body.color_box_.a);
+			brush.DrawPolygon(body.vertices_aabb_, body.color_box_.r, body.color_box_.g, body.color_box_.b, body.color_box_.a);
 		}
 	}
 }

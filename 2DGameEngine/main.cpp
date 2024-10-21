@@ -48,6 +48,7 @@ int main(int argc, char* argv[])
     BodyManager BodyManager1;
     
     Gravity Gravity_Gen = FlatVector(0.0f, 9.8f);
+    
     BodyColor color = { 255, 100, 100, 255 };
     // Çå³ýÆÁÄ»±³¾°É«
     Brush brush(renderer);

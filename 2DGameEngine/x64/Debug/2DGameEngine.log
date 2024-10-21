@@ -1,70 +1,4 @@
-﻿  2DGEBody.cpp
-D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(17,16): warning C4091: “typedef ”: 没有声明变量时忽略“FlatVector”的左侧
-  (编译源文件“2DGEBody.cpp”)
-  
-D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(67,25): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-  (编译源文件“2DGEBody.cpp”)
-  
-D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(68,25): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-  (编译源文件“2DGEBody.cpp”)
-  
-D:\C++\2DGameEngine\2DGameEngine\2DGEBody.cpp(36,20): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEBody.cpp(52,20): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEBody.cpp(73,20): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEBody.cpp(221,27): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEBody.cpp(276,21): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEBody.cpp(292,20): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEBody.cpp(334,20): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-  2DGECollision.cpp
-D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(17,16): warning C4091: “typedef ”: 没有声明变量时忽略“FlatVector”的左侧
-  (编译源文件“2DGECollision.cpp”)
-  
-D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(67,25): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-  (编译源文件“2DGECollision.cpp”)
-  
-D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(68,25): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-  (编译源文件“2DGECollision.cpp”)
-  
-  2DGEDraw.cpp
-D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(17,16): warning C4091: “typedef ”: 没有声明变量时忽略“FlatVector”的左侧
-  (编译源文件“2DGEDraw.cpp”)
-  
-D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(67,25): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-  (编译源文件“2DGEDraw.cpp”)
-  
-D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(68,25): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-  (编译源文件“2DGEDraw.cpp”)
-  
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(21,42): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(21,39): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(27,50): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(27,46): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(27,42): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(27,38): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(38,38): warning C4244: “初始化”: 从“float”转换到“int32_t”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(38,28): warning C4244: “初始化”: 从“float”转换到“const int32_t”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(40,15): warning C4244: “初始化”: 从“float”转换到“int32_t”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(49,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(49,54): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(50,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(50,54): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(51,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(51,54): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(52,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(52,54): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(53,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(53,54): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(54,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(54,54): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(55,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(55,54): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(56,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(56,54): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(77,133): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(77,98): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(77,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\2DGEDraw.cpp(77,54): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-  2DGEForceGen.cpp
+﻿  2DGEForceGen.cpp
 D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(17,16): warning C4091: “typedef ”: 没有声明变量时忽略“FlatVector”的左侧
   (编译源文件“2DGEForceGen.cpp”)
   
@@ -87,6 +21,16 @@ D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(68,25): warning C4244: “初始化�
 D:\C++\2DGameEngine\2DGameEngine\2DGEWorld.h(12,44): warning C4305: “参数”: 从“double”到“float”截断
   (编译源文件“2DGEWorld.cpp”)
   
+  2DGECollision.cpp
+D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(17,16): warning C4091: “typedef ”: 没有声明变量时忽略“FlatVector”的左侧
+  (编译源文件“2DGECollision.cpp”)
+  
+D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(67,25): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+  (编译源文件“2DGECollision.cpp”)
+  
+D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(68,25): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+  (编译源文件“2DGECollision.cpp”)
+  
   main.cpp
 D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(17,16): warning C4091: “typedef ”: 没有声明变量时忽略“FlatVector”的左侧
   (编译源文件“main.cpp”)
@@ -100,9 +44,9 @@ D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(68,25): warning C4244: “初始化�
 D:\C++\2DGameEngine\2DGameEngine\2DGEWorld.h(12,44): warning C4305: “参数”: 从“double”到“float”截断
   (编译源文件“main.cpp”)
   
-D:\C++\2DGameEngine\2DGameEngine\main.cpp(100,21): warning C4244: “初始化”: 从“clock_t”转换到“float”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\main.cpp(111,45): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\main.cpp(111,42): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\main.cpp(135,19): warning C4244: “初始化”: 从“clock_t”转换到“float”，可能丢失数据
+D:\C++\2DGameEngine\2DGameEngine\main.cpp(101,21): warning C4244: “初始化”: 从“clock_t”转换到“float”，可能丢失数据
+D:\C++\2DGameEngine\2DGameEngine\main.cpp(112,45): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+D:\C++\2DGameEngine\2DGameEngine\main.cpp(112,42): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+D:\C++\2DGameEngine\2DGameEngine\main.cpp(136,19): warning C4244: “初始化”: 从“clock_t”转换到“float”，可能丢失数据
   正在生成代码...
   2DGameEngine.vcxproj -> D:\C++\2DGameEngine\x64\Debug\2DGameEngine.exe
