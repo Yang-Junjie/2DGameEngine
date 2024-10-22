@@ -58,16 +58,18 @@ int main(int argc, char* argv[])
                                       {250.0f, 200.0f},
                                       {150.0f, 285.0f},
                                       {50.0f , 200.0f}};
-    BodyManager1.CreateBody(points, color, 20.0f);
+    //BodyManager1.CreateBody(points, color, 20.0f);
 
-    BodyManager1.CreateBody(points, color, 10.0f);
-    BodyManager1.CreateBody(points, color, 10.0f);
-   // BodyManager1.CreateBody(100.0f, color, 20.0f, FlatVector(400, 300));
-    //BodyManager1.CreateBody(30.0f, color, 30.0f, FlatVector(100, 100));
+    //BodyManager1.CreateBody(points, color, 10.0f);
+   // BodyManager1.CreateBody(points, color, 10.0f);
+    BodyManager1.CreateBody(100.0f, color, 20.0f, FlatVector(400, 300));
+    ////BodyManager1.CreateBody(30.0f, color, 30.0f, FlatVector(100, 100));
+    BodyManager1.CreateBody(100.0f, color, 20.0f, FlatVector(400, 300));
+    BodyManager1.CreateBody(50.0f, color, 20.0f, FlatVector(200, 150));
     std::vector<Body>::iterator body1 = BodyManager1.FindBody(1);
     std::vector<Body>::iterator body2 = BodyManager1.FindBody(2);
-    body2->MoveTo(FlatVector(500, 200));
-    //body->MoveTo(FlatVector(50,100));
+   body2->MoveTo(FlatVector(500, 200));
+    //body3->MoveTo(FlatVector(50,100));
     
     
     
@@ -93,12 +95,12 @@ int main(int argc, char* argv[])
     BodyManager1.CoutBodyList();
     bool quit = false;
     SDL_Event e;
-    int x = 0;
-    int y = 0;
+    float x = 0.0f;
+    float y = 0.0f;
     float  time = 1.0f;
     // 运行主循环直到用户关闭窗口
     while (!quit) {
-        float start = clock();
+        float start = static_cast<float>(clock());
         while (SDL_PollEvent(&e)) {
              // ImGui_ImplSDL2_ProcessEvent(&e);
             if (e.type == SDL_QUIT) {
@@ -106,13 +108,13 @@ int main(int argc, char* argv[])
                 quit = true;
             } 
             else if (e.type == SDL_MOUSEMOTION) {
-                x = e.motion.x;
-                y = e.motion.y;
+                x = static_cast<float>(e.motion.x);
+                y = static_cast<float>(e.motion.y);
                 //printf("Mouse Position: (%d, %d)\n", x, y);
                 body1->MoveTo(FlatVector(x, y));
             }
         } 
-       // brush.DrawPoint(FlatVector(400.0f, 300.0f), color.r, color.g, color.b, color.a);;
+       // brush.DrawPiex(FlatVector(400.0f, 300.0f), color.r, color.g, color.b, color.a);;
       
         body1->Rotation(1);
       
@@ -129,11 +131,11 @@ int main(int argc, char* argv[])
         
         brush.show();
         brush.Clear(0, 0, 0, 0);
-       // BodyManager1.RenderAABB(brush);
+        BodyManager1.RenderAABB(brush);
         BodyManager1.RenderBody(brush);
         
         world.Interation(BodyManager1.body_list_, time);
-        float end = clock();
+        float end = static_cast<float>(clock());
         time = (end - start);
        
     }

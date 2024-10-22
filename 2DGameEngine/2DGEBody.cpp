@@ -33,7 +33,7 @@ void Body::Move(const FlatVector v1) {
 		this->mass_center_.x += v1.x;
 	}
 	else if (this->shape_ == 1) {
-		int vertices_num = this->vertices_.size();
+		int vertices_num = static_cast<int>(this->vertices_.size());
 		for (int i = 0; i < vertices_num; ++i) {
 			this->vertices_[i].x += v1.x;
 			this->vertices_[i].y += v1.y;
@@ -49,7 +49,7 @@ void Body::MoveTo(const FlatVector v1) {
 	else if(this->shape_ == 1){
 		//先将多边形的质心平移至原点，在将物体平移值目标位置
 
-		int vertices_num = this->vertices_.size();
+		int vertices_num = static_cast<int>(this->vertices_.size());
 		FlatVector origin = this->mass_center_;
 		for (auto& vertex : vertices_) {
 			vertex.x -= origin.x;
@@ -70,7 +70,7 @@ void Body::Rotation(const float angle)
 	if (this->shape_ == 0) {
 	}
 	else if (this->shape_ == 1) {
-		int num_vertices = this->vertices_.size();
+		int num_vertices = static_cast<int>(this->vertices_.size());
 		// 平移所有顶点到原点  
 		FlatVector origin = this->mass_center_;
 		for (auto& vertex : vertices_) {
@@ -218,7 +218,7 @@ void Body::GetAABB()
 bool BodyManager::DestroyBody(const int body_id) {
 	//查找bodyid，找到删除返回true，没找到返回false
 	std::vector<Body>::iterator it = BodyManager::FindBody(body_id);
-	int befor_body_list_size = this->body_list_.size();
+	int befor_body_list_size = static_cast<int>(this->body_list_.size());
 	if (it != this->body_list_.end()) {
 		this->body_list_.erase(it);
 		this->id_count--;
@@ -273,7 +273,7 @@ void BodyManager::CoutBodyList() {
 			std::cout <<it->shape_<<"         " << it->body_id_ << "           " <<it->radius_<<"                                       " << it->mass_center_ << std::endl;
 		}
 		else if (it->shape_ == 1) {
-			int num_vertices = it->vertices_.size();
+			int num_vertices = static_cast<int>(it->vertices_.size());
 			std::cout << it->shape_ << "         " << it->body_id_ << "     ";
 			for (int i = 0; i < num_vertices; ++i) {
 				std::cout << "(" << it->vertices_[i].x << "," << it->vertices_[i].y << ")";
@@ -289,7 +289,7 @@ FlatVector GetMassCenter(Body& body)
 		return body.mass_center_;
 	}
 	else if (body.shape_ == 1) {
-		int num_vertices = body.vertices_.size();
+		int num_vertices = static_cast<int>(body.vertices_.size());
 		if (num_vertices < 3) {
 			// 至少需要3个顶点来形成一个三角形  
 			return FlatVector(0, 0);
@@ -331,7 +331,7 @@ FlatVector GetMassCenter(std::vector<FlatVector> points)
 {
 	
 	
-		int num_vertices = points.size();
+		int num_vertices = static_cast<int>(points.size());
 		if (num_vertices < 3) {
 			// 至少需要3个顶点来形成一个三角形  
 			return FlatVector(0, 0);

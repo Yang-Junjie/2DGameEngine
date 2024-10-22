@@ -40,10 +40,17 @@ void World::BroadPhase(std::vector<Body>& body_lists) {
 				continue;
 			}
 			body_b.GetAABB(); 
-			if (IntersectAABB(body_a, body_b)) {
+			bool intersect = Intersect::IntersectAABB(body_a, body_b);
+			if (!intersect) {
+				continue;
+			}
+			else {
 				colored[body_a.body_id_] = true;
 				colored[body_b.body_id_] = true;
 			}
+			std::pair<Body, Body> pair_body(body_a, body_b);
+			this->contact_body_.push_back(pair_body);
+			//std::cout << contact_body_[0].first.body_id_<<"£¬" << contact_body_[0].second.body_id_ << std::endl;
 		}
 	}
 
@@ -57,6 +64,18 @@ void World::BroadPhase(std::vector<Body>& body_lists) {
 	}
 }
 
+void World::NarrowPhase() 
+{
+	for (int i = 0; i < this->contact_body_.size(); i++) {
+		std::pair<Body, Body> pair = this->contact_body_[i];
+		IntersectData intersect_data = Collide(pair.first, pair.second);
+		
+		if (intersect_data.Collision) {
+			FindContactPoints(pair.first, pair.second);
+		}
+	}
+}
+
 
 
 void World::Interation(std::vector<Body>& body_lists,float time) 
@@ -64,6 +83,7 @@ void World::Interation(std::vector<Body>& body_lists,float time)
 {
 	
 	for (int i = 0; i < this->interation_; ++i) {
+		this->contact_body_.clear();
 		for (auto& body : body_lists) {
 			if (interation_ != 0) {
 				
@@ -75,7 +95,7 @@ void World::Interation(std::vector<Body>& body_lists,float time)
 			body.Move(displacement);
 		}
 		BroadPhase(body_lists);
-		
+		NarrowPhase();
 	}
 	
 }
