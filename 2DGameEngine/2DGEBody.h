@@ -47,10 +47,11 @@ public:
 	BodyColor color_box_ = { 255, 100, 100, 255 };
 
 	//物理属性值
-	float restitusion = 0.0f;
+	bool stationary_ = false;
+	float restitusion_ = 0.0f;
 	float angle = 0.0f;
 	float angular_velocity = 0.0f;//对于二维情况下角速度的方向是垂直于屏幕的所以使用float
-	float density = 0.0f;
+	float density_ = 0.0f;
 	float mass_ = 0.0f;
 	float inverse_mass_ = mass_>0 ? 1/mass_: 0 ;
 	FlatVector mass_center_ = { 0.0f,0.0f };	//position

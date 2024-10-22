@@ -1,4 +1,7 @@
 #include "2DGEDraw.h"
+Brush::Brush()
+{
+}
 Brush::Brush(SDL_Renderer* renderer):renderer_(renderer) {
 
 }
@@ -149,7 +152,7 @@ void Brush::DrawPolygon(std::vector<FlatVector> &points, int r, int g, int b, in
 
 void Brush::DrawPoint(float cx, float cy, int r, int g, int b, int a)
 {
-    float radius = 10.0f;
+    float radius = 3.0f;
     SDL_SetRenderDrawColor(this->renderer_, r, g,b,a);
     for (int y = -radius; y <= radius; y++)
     {
@@ -167,7 +170,7 @@ void Brush::DrawPoint(float cx, float cy, int r, int g, int b, int a)
 
 void Brush::DrawPoint(const FlatVector v, int r, int g, int b, int a)
 {
-    float radius = 10.0f;
+    float radius = 3.0f;
     SDL_SetRenderDrawColor(this->renderer_, r, g, b, a);
     for (int y = -radius; y <= radius; y++)
     {

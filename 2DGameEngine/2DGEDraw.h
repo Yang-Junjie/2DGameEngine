@@ -9,6 +9,7 @@ class Brush {
 private:
 	SDL_Renderer* renderer_ = nullptr;
 public:
+	Brush();
 	Brush(SDL_Renderer* renderer);
 	~Brush();
 

@@ -28,7 +28,6 @@ void Body::SetAcceleration(const FlatVector v1)
 void Body::Move(const FlatVector v1) {
 	//在原来位置基础上位移v1
 	if (this->shape_ == 0) {
-
 		this->mass_center_.y += v1.y;
 		this->mass_center_.x += v1.x;
 	}

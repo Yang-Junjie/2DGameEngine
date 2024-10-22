@@ -183,7 +183,7 @@ static std::vector<FlatVector> FindContactPoints(Body& body_a,Body& body_b) {
     else if (shape_type_a == CIRCLE) {
         if (shape_type_b == CIRCLE) {
             contact_points.push_back(FindContactPoint::FindCirclesContactPoint(body_a.mass_center_, body_a.radius_, body_b.mass_center_));
-            std::cout << contact_points[0] << std::endl;
+          //  std::cout << contact_points[0] << std::endl;
             return contact_points;
         }
         else if (shape_type_b == POLTGON) {

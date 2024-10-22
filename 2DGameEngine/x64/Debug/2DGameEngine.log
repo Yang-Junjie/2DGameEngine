@@ -1,6 +1,3 @@
-﻿  2DGECollision.cpp
-  2DGEWorld.cpp
-  main.cpp
-  正在生成代码...
+﻿  2DGEWorld.cpp
 D:\C++\2DGameEngine\2DGameEngine\2DGECollision.h(193,1): warning C4715: “FindContactPoints”: 不是所有的控件路径都返回值
   2DGameEngine.vcxproj -> D:\C++\2DGameEngine\x64\Debug\2DGameEngine.exe

@@ -64,17 +64,40 @@ void World::BroadPhase(std::vector<Body>& body_lists) {
 	}
 }
 
+void World::SepareteBodies(Body& body_a, Body& body_b, FlatVector separation_vector)
+{
+	if (body_a.stationary_) {
+		body_b.Move(separation_vector / 2);
+	}
+	else if (body_b.stationary_) {
+		body_a.Move(-separation_vector / 2);
+	}
+	else {
+		body_a.Move(-separation_vector / 2);
+		body_b.Move(separation_vector / 2);
+		std::cout << separation_vector << std::endl;
+	}
+}
+
 void World::NarrowPhase() 
 {
 	for (int i = 0; i < this->contact_body_.size(); i++) {
 		std::pair<Body, Body> pair = this->contact_body_[i];
 		IntersectData intersect_data = Collide(pair.first, pair.second);
-		
 		if (intersect_data.Collision) {
-			FindContactPoints(pair.first, pair.second);
+			FlatVector separation_vector = intersect_data.normal * intersect_data.depth;
+			//std::cout << separation_vector << std::endl;
+			SepareteBodies(pair.first, pair.second, separation_vector);
+			
+			FlatVector contact_point;
+			contact_point  = FindContactPoints(pair.first, pair.second)[0];
+			brush.DrawPoint(contact_point, 255, 255, 255, 25);
 		}
+		
 	}
+	
 }
+
 
 
 

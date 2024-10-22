@@ -47,11 +47,13 @@ int main(int argc, char* argv[])
     World world;
     BodyManager BodyManager1;
     
+   
     Gravity Gravity_Gen = FlatVector(0.0f, 9.8f);
     
     BodyColor color = { 255, 100, 100, 255 };
     // Çå³ýÆÁÄ»±³¾°É«
     Brush brush(renderer);
+    world.brush = brush;
     brush.Clear(0, 0, 0, 0);
     std::vector<FlatVector> points = {{100.0f, 100.0f},
                                       {200.0f, 100.0f},
@@ -65,10 +67,11 @@ int main(int argc, char* argv[])
     BodyManager1.CreateBody(100.0f, color, 20.0f, FlatVector(400, 300));
     ////BodyManager1.CreateBody(30.0f, color, 30.0f, FlatVector(100, 100));
     BodyManager1.CreateBody(100.0f, color, 20.0f, FlatVector(400, 300));
+    //BodyManager1.CreateBody(100.0f, color, 20.0f, FlatVector(400, 300));
     BodyManager1.CreateBody(50.0f, color, 20.0f, FlatVector(200, 150));
     std::vector<Body>::iterator body1 = BodyManager1.FindBody(1);
     std::vector<Body>::iterator body2 = BodyManager1.FindBody(2);
-   body2->MoveTo(FlatVector(500, 200));
+    body2->Move(FlatVector(-1, -1));
     //body3->MoveTo(FlatVector(50,100));
     
     
@@ -111,17 +114,17 @@ int main(int argc, char* argv[])
                 x = static_cast<float>(e.motion.x);
                 y = static_cast<float>(e.motion.y);
                 //printf("Mouse Position: (%d, %d)\n", x, y);
-                body1->MoveTo(FlatVector(x, y));
+                body2->MoveTo(FlatVector(x, y));
             }
         } 
        // brush.DrawPiex(FlatVector(400.0f, 300.0f), color.r, color.g, color.b, color.a);;
       
-        body1->Rotation(1);
+        //body1->Rotation(1);
       
        
        // Gravity_Gen.ClearPreviousForce();
-       
-        
+        //world.SepareteBodies(*body1,*body2, FlatVector(-1, -1));
+        //body2->Move(FlatVector(-1, -1));
         //Gravity_Gen.UpdateForce(body, 0.0f);
       // std::cout << body->acceleration_ << std::endl;
 
