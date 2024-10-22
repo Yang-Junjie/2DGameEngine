@@ -64,11 +64,11 @@ int main(int argc, char* argv[])
 
     //BodyManager1.CreateBody(points, color, 10.0f);
    // BodyManager1.CreateBody(points, color, 10.0f);
-    BodyManager1.CreateBody(100.0f, color, 20.0f, FlatVector(400, 300));
+    BodyManager1.CreateBody(50.0f, color, 20.0f, FlatVector(400, 300));
     ////BodyManager1.CreateBody(30.0f, color, 30.0f, FlatVector(100, 100));
     BodyManager1.CreateBody(100.0f, color, 20.0f, FlatVector(400, 300));
     //BodyManager1.CreateBody(100.0f, color, 20.0f, FlatVector(400, 300));
-    BodyManager1.CreateBody(50.0f, color, 20.0f, FlatVector(200, 150));
+  //  BodyManager1.CreateBody(50.0f, color, 20.0f, FlatVector(200, 150));
     std::vector<Body>::iterator body1 = BodyManager1.FindBody(1);
     std::vector<Body>::iterator body2 = BodyManager1.FindBody(2);
     body2->Move(FlatVector(-1, -1));
@@ -114,7 +114,7 @@ int main(int argc, char* argv[])
                 x = static_cast<float>(e.motion.x);
                 y = static_cast<float>(e.motion.y);
                 //printf("Mouse Position: (%d, %d)\n", x, y);
-                body2->MoveTo(FlatVector(x, y));
+                body1->MoveTo(FlatVector(x, y));
             }
         } 
        // brush.DrawPiex(FlatVector(400.0f, 300.0f), color.r, color.g, color.b, color.a);;
@@ -135,9 +135,9 @@ int main(int argc, char* argv[])
         brush.show();
         brush.Clear(0, 0, 0, 0);
         BodyManager1.RenderAABB(brush);
+        world.Interation(BodyManager1.body_list_, time);
         BodyManager1.RenderBody(brush);
         
-        world.Interation(BodyManager1.body_list_, time);
         float end = static_cast<float>(clock());
         time = (end - start);
        

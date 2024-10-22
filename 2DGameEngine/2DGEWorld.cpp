@@ -48,7 +48,7 @@ void World::BroadPhase(std::vector<Body>& body_lists) {
 				colored[body_a.body_id_] = true;
 				colored[body_b.body_id_] = true;
 			}
-			std::pair<Body, Body> pair_body(body_a, body_b);
+			std::pair<Body&, Body&> pair_body(body_a, body_b);
 			this->contact_body_.push_back(pair_body);
 			//std::cout << contact_body_[0].first.body_id_<<"£¬" << contact_body_[0].second.body_id_ << std::endl;
 		}
@@ -64,7 +64,7 @@ void World::BroadPhase(std::vector<Body>& body_lists) {
 	}
 }
 
-void World::SepareteBodies(Body& body_a, Body& body_b, FlatVector separation_vector)
+void World::SepareteBodies(Body& body_a, Body& body_b, FlatVector& separation_vector)
 {
 	if (body_a.stationary_) {
 		body_b.Move(separation_vector / 2);
@@ -75,27 +75,40 @@ void World::SepareteBodies(Body& body_a, Body& body_b, FlatVector separation_vec
 	else {
 		body_a.Move(-separation_vector / 2);
 		body_b.Move(separation_vector / 2);
-		std::cout << separation_vector << std::endl;
+		//std::cout << separation_vector << std::endl;
 	}
 }
 
 void World::NarrowPhase() 
 {
-	for (int i = 0; i < this->contact_body_.size(); i++) {
+	//SepareteBodies(this->contact_body_[0].first, this->contact_body_[0].second, FlatVector(1, 0));
+	/*for (int i = 0; i < this->contact_body_.size(); i++) {
+		std::cout << this->contact_body_.size() << std::endl;
 		std::pair<Body, Body> pair = this->contact_body_[i];
 		IntersectData intersect_data = Collide(pair.first, pair.second);
 		if (intersect_data.Collision) {
 			FlatVector separation_vector = intersect_data.normal * intersect_data.depth;
-			//std::cout << separation_vector << std::endl;
 			SepareteBodies(pair.first, pair.second, separation_vector);
-			
 			FlatVector contact_point;
 			contact_point  = FindContactPoints(pair.first, pair.second)[0];
+			
 			brush.DrawPoint(contact_point, 255, 255, 255, 25);
 		}
 		
 	}
-	
+	*/
+	for (auto& pair: this->contact_body_) {
+		IntersectData intersect_data = Collide(pair.first, pair.second);
+		if (intersect_data.Collision) {
+			FlatVector separation_vector = intersect_data.normal * intersect_data.depth;
+			SepareteBodies(pair.first, pair.second, separation_vector);
+			FlatVector contact_point;
+			contact_point = FindContactPoints(pair.first, pair.second)[0];
+
+			brush.DrawPoint(contact_point, 255, 255, 255, 25);
+		}
+
+	}
 }
 
 

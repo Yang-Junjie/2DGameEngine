@@ -25,11 +25,13 @@ void Body::SetAcceleration(const FlatVector v1)
 	this->acceleration_ = v1;
 }
 
-void Body::Move(const FlatVector v1) {
+void Body::Move(const FlatVector& v1) {
 	//在原来位置基础上位移v1
+	
 	if (this->shape_ == 0) {
 		this->mass_center_.y += v1.y;
 		this->mass_center_.x += v1.x;
+		
 	}
 	else if (this->shape_ == 1) {
 		int vertices_num = static_cast<int>(this->vertices_.size());
@@ -243,6 +245,7 @@ void BodyManager::RenderBody(Brush& brush)
 	//渲染物体
 	for (Body& body:this->body_list_) { 
 		if (body.shape_ == 0) {
+			
 			brush.DrawCircle(body.mass_center_.x, body.mass_center_.y,body.radius_,body.color_.r,body.color_.g, body.color_.b, body.color_.a);
 		}
 		else if(body.shape_ == 1){

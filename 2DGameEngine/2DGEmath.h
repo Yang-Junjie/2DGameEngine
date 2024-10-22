@@ -100,15 +100,21 @@ struct FlatVector
 
     //向量归一化
     void normalize() {
-        float length = this->len();
+        float length = sqrt(this->x * this->x + this->y * this->y);
         this->x = this->x / length;
         this->y = this->y / length;
     }
 
     static void normalize(FlatVector& v) {
         float length = FlatVector::len(v);
-        v.x = v.x / length;
-        v.y = v.y / length;
+        if (length != 0.0f) {
+            v.x = v.x / length;
+            v.y = v.y / length;
+        }
+        else {
+            return;
+        }
+        
     }
     
     //向量的点积

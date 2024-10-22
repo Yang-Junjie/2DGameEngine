@@ -63,7 +63,7 @@ public:
 	Body(Shape shape, std::vector<FlatVector> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id);
 	void SetVelocity(const FlatVector v1);
 	void SetAcceleration(const FlatVector v1);
-	void Move(const FlatVector v1);
+	void Move(const FlatVector& v1);
 	void MoveTo(const FlatVector v1);
 	void Rotation(const float angle);
 	void AddForce(const FlatVector v1);

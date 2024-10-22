@@ -9,7 +9,7 @@ public:
 	size_t interation_ = 10;
 	size_t copy_interation_ = 10;
 	size_t max_number_body_ = 100;
-	std::vector<std::pair<Body, Body>> contact_body_;
+	std::vector<std::pair<Body&, Body&>> contact_body_;
 	Brush brush;
 	FlatVector gravity_acceleration_ = { 0.0f,9.8f };
 
@@ -20,7 +20,7 @@ public:
 	void PauseTime();
 	void OpenTime();
 	void Interation(std::vector<Body>& body_lists , float time);
-	void SepareteBodies(Body& body_a, Body& body_b, FlatVector separation_vector);
+	void SepareteBodies(Body& body_a, Body& body_b, FlatVector& separation_vector);
 	
 private:
 	void Timepiece();
