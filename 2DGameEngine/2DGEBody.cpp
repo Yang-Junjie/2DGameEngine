@@ -7,12 +7,16 @@ Body::~Body() {
 
 Body::Body(Shape shape, float radius, BodyColor color, float mass, FlatVector mass_center, int body_id) :
 	body_id_(body_id), shape_(shape), radius_(radius),    color_(color), mass_(mass), mass_center_(mass_center) {
-		this->inverse_mass_ = 1/this->mass_;//有质量才有质量的倒数，inverseMass采用赋值
+	if (this->mass_ > 0) {
+		this->inverse_mass_ = 1 / this->mass_;//有质量才有质量的倒数，inverseMass采用赋值
+	}
 }
 
 Body::Body(Shape shape, std::vector<FlatVector> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id):
 	body_id_(body_id), shape_(shape),color_(color), vertices_(vertices), mass_(mass), mass_center_(mass_center){
-		this->inverse_mass_ = 1 / this->mass_;
+	if (this->mass_ > 0) {
+		this->inverse_mass_ = 1 / this->mass_;//有质量才有质量的倒数，inverseMass采用赋值
+	}
 }
 
 void Body::SetVelocity(const FlatVector v1)

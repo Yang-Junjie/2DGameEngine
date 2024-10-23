@@ -16,8 +16,65 @@ struct IntersectData {
     FlatVector normal;
 };
 
-/*此函数将会给出点到AABB的距离的平方*/
-static float DistSqrtPointAABB(FlatVector& p, std::vector<FlatVector>& vertices_aabb) {
+//计算多边形在某个轴上的投影
+static FlatVector ProjectVertices(const FlatVector axis,const std::vector<FlatVector> vertices) {
+    FlatVector interval;//用向量表示区间其中x表示区间的下确界，y表示区间的上确界
+    interval.x = std::numeric_limits<float>::max();
+    interval.y = std::numeric_limits<float>::min();
+    for (FlatVector vertiex : vertices) {
+        float project = FlatVector::dot(vertiex, axis);//计算点向量在轴上的投影
+        if (project < interval.x) {//调整投影区间的范围为投影范围
+            interval.x = project;
+        }
+        if (project > interval.y) {
+            interval.y = project;
+        }
+    }
+    return interval;
+}
+
+//计算圆在某个轴上的投影
+static FlatVector ProjectCircle(const FlatVector center,const float radius,const FlatVector axis) {
+    FlatVector interval;
+    
+    FlatVector direction_vector = FlatVector::normalize(axis);
+    FlatVector direction_and_radius = direction_vector * radius;
+
+    FlatVector p1 = center + direction_and_radius;
+    FlatVector p2 = center - direction_and_radius;
+
+    interval.x = FlatVector::dot(p1, axis);
+    interval.y = FlatVector::dot(p2, axis);
+
+    if (interval.x > interval.y) {
+        float temp;
+        temp = interval.x;
+        interval.x = interval.y;
+        interval.y = temp;
+    }
+    return interval;
+}
+
+//找到多边形距离点最近的顶点
+static size_t FindVertexClosestPoint(const FlatVector point, const std::vector<FlatVector> vertices) {
+    size_t result = 0;
+    float min_distance = std::numeric_limits<float>::max();
+    for (size_t i = 0; i < vertices.size(); ++i) {
+        float distance = FlatVector::Distance(vertices[i], point);
+        if (distance <= min_distance) {
+            min_distance = distance;
+            result = i;
+        }
+    }
+    return result;
+}
+
+
+
+
+//如果点在AABB外将会给出点到AABB的距离的平方
+//如果点在AABB上或者在AABB内将会给出0
+static float DistSqdPointAABB(FlatVector& p, std::vector<FlatVector>& vertices_aabb) {
     float sqDist = 0.0f;
     for (int i = 0; i < 2; i++) {
         float v, min, max;
@@ -41,7 +98,7 @@ static float DistSqrtPointAABB(FlatVector& p, std::vector<FlatVector>& vertices_
             min 设置为边界框左上角点的 y 坐标（vertices_aabb[3].y）。
             max 设置为边界框右下角点的 y 坐标（vertices_aabb[1].y）。y*/
         }
-        if (v >= min && v <= max) return 0.0f;//如果在AABB上直接返回0；
+        if (v >= min && v <= max) return 0.0f;//如果在AABB上内直接返回0；
         if (v < min) sqDist += (min - v) * (min - v);
         if (v > max) sqDist += (v - max) * (v - max);
     }
@@ -49,8 +106,9 @@ static float DistSqrtPointAABB(FlatVector& p, std::vector<FlatVector>& vertices_
 }
 
 
-//计算接触点
-static FlatVector GetSegmentPoint(FlatVector& point, FlatVector& segment_start, FlatVector& segment_end) {
+//计算点与直线的接触点
+//其原理是计算点距离线段哪个端点近那么那个端点极有可能是接触点
+static FlatVector GetSegmentContactPoint(FlatVector& point, FlatVector& segment_start, FlatVector& segment_end) {
     FlatVector segment_vector = segment_end - segment_start;//计算线段向量
     FlatVector point_to_segment_start_vector = point - segment_start;//计算从线段起点指向点的向量
 
@@ -69,6 +127,7 @@ static FlatVector GetSegmentPoint(FlatVector& point, FlatVector& segment_start, 
     }
 }
 
+//计算点与直线的接触点返回接触点
 inline FlatVector SegmentNearestEndpoint(const float projection_parameter, const FlatVector& segment_start, const FlatVector& segment_end) {
     if (projection_parameter <= 0) {
         return segment_start;
@@ -81,7 +140,7 @@ inline FlatVector SegmentNearestEndpoint(const float projection_parameter, const
     }
 }
 
-// The distance from a point to the nearest end of a line segment
+//计算点距离线段最近的端点的距离的平方
 static float DisSqdPointSegmentNearestEndpoint(FlatVector& point, FlatVector& segment_start, FlatVector& segment_end) {
     FlatVector segment_vector = segment_end - segment_start;//计算线段向量
     FlatVector point_to_segment_start_vector = point - segment_start;//计算从线段起点指向点的向量
@@ -96,18 +155,20 @@ static float DisSqdPointSegmentNearestEndpoint(FlatVector& point, FlatVector& se
     return distance_squared;
 }
 
+
+//此命名空间包含了寻找物体与物体的接触点的函数
+//构建此命名空间是为了代码模块化，使代码结构更清晰
 namespace FindContactPoint {
 
     /*找到圆与圆碰撞时的接触点*/
     static FlatVector FindCirclesContactPoint(FlatVector& center_a, float radius_a, FlatVector& center_b) {
         FlatVector v_ab = center_b - center_a;
-       
         v_ab.normalize();
-
         FlatVector contact_point = center_a + v_ab * radius_a;
-       
         return contact_point;
     }
+
+
     /*找到圆与多边形碰撞时的接触点*/
     static FlatVector FindCirclePolygonContactPoint(FlatVector& circle_center, std::vector<FlatVector>& polygon_vertices) {
         float min_distance_Sq = std::numeric_limits<float>::max();
@@ -118,16 +179,18 @@ namespace FindContactPoint {
             float distance_sq = DisSqdPointSegmentNearestEndpoint(circle_center,v_a,v_b);
             if (distance_sq < min_distance_Sq) {
                 min_distance_Sq = distance_sq;
-                contact_point = GetSegmentPoint(circle_center, v_a, v_b);
+                contact_point = GetSegmentContactPoint(circle_center, v_a, v_b);
             }
         }
         return contact_point;
     }
+
+
 };
 
 
-
-//包含检测碰撞的函数
+//此命名空间包含了检测物体与物体的是否相交的函数
+//构建此命名空间是为了代码模块化，使代码结构更清晰
 namespace Intersect {
 
     /*此函数将会判断2个物体的AABB是否相交*/
@@ -150,19 +213,18 @@ namespace Intersect {
         float sum_of_radii = radius_a + radius_b;
 
         if (both_distance >= sum_of_radii) {
-          //  std::cout << 1;
             return data;
         }
 
         FlatVector unit_direction_vector_ab = center_b - center_a;
         unit_direction_vector_ab.normalize();
-
         data.Collision = true;
         data.normal = unit_direction_vector_ab;
         data.depth = sum_of_radii - both_distance;
 
         return data;
     }
+
 };
 
 
@@ -177,19 +239,22 @@ static std::vector<FlatVector> FindContactPoints(Body& body_a,Body& body_b) {
             return contact_points;
         }
         else if (shape_type_b == CIRCLE) {
+            //FindCirclePolygonContactPoint
             return contact_points;
         }
     }
     else if (shape_type_a == CIRCLE) {
         if (shape_type_b == CIRCLE) {
             contact_points.push_back(FindContactPoint::FindCirclesContactPoint(body_a.mass_center_, body_a.radius_, body_b.mass_center_));
-          //  std::cout << contact_points[0] << std::endl;
             return contact_points;
         }
         else if (shape_type_b == POLTGON) {
+            contact_points.push_back(FindContactPoint::FindCirclePolygonContactPoint(body_a.mass_center_,body_b.vertices_));
             return contact_points;
         }
+        
     }
+    return contact_points;
 }
 
 

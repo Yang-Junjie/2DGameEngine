@@ -33,9 +33,6 @@
     <ClCompile Include="2DGEForceGen.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="2DGECollision.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="imgui_demo.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>

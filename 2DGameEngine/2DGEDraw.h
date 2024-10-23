@@ -3,8 +3,9 @@
 #include <SDL.h>
 #include "2DGEmath.h"
 
-
-
+/// <summary>
+/// 封装了绘图函数，函数功能如函数名所示
+/// </summary>
 class Brush {
 private:
 	SDL_Renderer* renderer_ = nullptr;

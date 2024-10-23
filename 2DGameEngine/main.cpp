@@ -122,11 +122,11 @@ int main(int argc, char* argv[])
         //body1->Rotation(1);
       
        
-       // Gravity_Gen.ClearPreviousForce();
+        // Gravity_Gen.ClearPreviousForce();
         //world.SepareteBodies(*body1,*body2, FlatVector(-1, -1));
         //body2->Move(FlatVector(-1, -1));
         //Gravity_Gen.UpdateForce(body, 0.0f);
-      // std::cout << body->acceleration_ << std::endl;
+        // std::cout << body->acceleration_ << std::endl;
 
 
 
@@ -134,8 +134,8 @@ int main(int argc, char* argv[])
         
         brush.show();
         brush.Clear(0, 0, 0, 0);
-        BodyManager1.RenderAABB(brush);
         world.Interation(BodyManager1.body_list_, time);
+        BodyManager1.RenderAABB(brush);
         BodyManager1.RenderBody(brush);
         
         float end = static_cast<float>(clock());

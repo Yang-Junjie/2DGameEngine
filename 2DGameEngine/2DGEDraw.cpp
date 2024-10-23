@@ -15,6 +15,7 @@ void Brush::Clear(int r, int g, int b, int a){
 	SDL_SetRenderDrawColor(this->renderer_, r, g, b, a);
 	SDL_RenderClear(this->renderer_);
 }
+
 void Brush::show() {
 	SDL_RenderPresent(this->renderer_);
 }

@@ -3,34 +3,24 @@
 
 
 
-
+//重力的构造函数
 Gravity::Gravity(const FlatVector gravity_acceleration):gravity_acceleration_(gravity_acceleration)
 {
 }
 
-Gravity::~Gravity()
-{
-	std::cout << "析构重力" << std::endl;
-}
-
+//更新重力
 void Gravity::UpdateForce(std::vector<Body>::iterator body, float duration)
 {
 	body->AddForce(this->gravity_acceleration_ * body->mass_);
 }
 
-
-
-
-
-
-
-
-
+//固定点的弹簧产生的力
 FixedPointElasticity::FixedPointElasticity(FlatVector* anchor, float spring_constant, float rest_length):
 	anchor_(anchor),spring_constant_(spring_constant),rest_length_(rest_length)
 {
 }
 
+//更新弹力
 void FixedPointElasticity::UpdateForce(std::vector<Body>::iterator body, float duration)
 {
 	FlatVector force = body->mass_center_;
@@ -46,13 +36,13 @@ void FixedPointElasticity::UpdateForce(std::vector<Body>::iterator body, float d
 }
 
 
-
-
+//阻力
 Resistance::Resistance(float k1, float k2):k1_(k1),k2_(k2)
 {
 
 }
 
+//更新阻力
 void Resistance::UpdateForce(std::vector<Body>::iterator body, float duration)
 {
 
@@ -65,11 +55,13 @@ void Resistance::UpdateForce(std::vector<Body>::iterator body, float duration)
 	
 }
 
+//有质弹簧
 FakeSpring::FakeSpring(FlatVector* anchor, float spring_constant, float damping):
 	anchor_(anchor),spring_constant_(spring_constant),damping_(damping)
 {
 }
 
+//更新有质弹簧
 void FakeSpring::UpdateForce(std::vector<Body>::iterator body, float duration)
 {
 	FlatVector position = body->mass_center_;

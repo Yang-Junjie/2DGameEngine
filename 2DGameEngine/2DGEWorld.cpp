@@ -75,28 +75,11 @@ void World::SepareteBodies(Body& body_a, Body& body_b, FlatVector& separation_ve
 	else {
 		body_a.Move(-separation_vector / 2);
 		body_b.Move(separation_vector / 2);
-		//std::cout << separation_vector << std::endl;
 	}
 }
 
 void World::NarrowPhase() 
 {
-	//SepareteBodies(this->contact_body_[0].first, this->contact_body_[0].second, FlatVector(1, 0));
-	/*for (int i = 0; i < this->contact_body_.size(); i++) {
-		std::cout << this->contact_body_.size() << std::endl;
-		std::pair<Body, Body> pair = this->contact_body_[i];
-		IntersectData intersect_data = Collide(pair.first, pair.second);
-		if (intersect_data.Collision) {
-			FlatVector separation_vector = intersect_data.normal * intersect_data.depth;
-			SepareteBodies(pair.first, pair.second, separation_vector);
-			FlatVector contact_point;
-			contact_point  = FindContactPoints(pair.first, pair.second)[0];
-			
-			brush.DrawPoint(contact_point, 255, 255, 255, 25);
-		}
-		
-	}
-	*/
 	for (auto& pair: this->contact_body_) {
 		IntersectData intersect_data = Collide(pair.first, pair.second);
 		if (intersect_data.Collision) {

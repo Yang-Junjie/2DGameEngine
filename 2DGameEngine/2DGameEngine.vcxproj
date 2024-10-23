@@ -143,7 +143,6 @@
     <ClCompile Include="2DGEDraw.cpp" />
     <ClCompile Include="2DGEForceGen.cpp" />
     <ClCompile Include="2DGEWorld.cpp" />
-    <ClCompile Include="2DGECollision.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
