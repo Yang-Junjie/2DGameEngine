@@ -115,7 +115,7 @@ struct FlatVector
             return v;
         }
         else {
-            return;
+            return FlatVector(0,0);
         }
     }
     

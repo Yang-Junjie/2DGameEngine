@@ -127,7 +127,7 @@ static FlatVector GetSegmentContactPoint(FlatVector& point, FlatVector& segment_
     }
 }
 
-//计算点与直线的接触点返回接触点
+//计算点与直线的最近点（可能的接触点）返回最近点(可能的接触点)
 inline FlatVector SegmentNearestEndpoint(const float projection_parameter, const FlatVector& segment_start, const FlatVector& segment_end) {
     if (projection_parameter <= 0) {
         return segment_start;
@@ -207,7 +207,7 @@ namespace Intersect {
 
 
     /*圆与圆碰撞检测*/
-    static IntersectData IntersectCircles(FlatVector& center_a, float radius_a, FlatVector& center_b, float radius_b) {
+    static IntersectData IntersectCircles(const FlatVector center_a, const float radius_a, const FlatVector center_b, const float radius_b) {
         IntersectData data;
         float both_distance = FlatVector::Distance(center_a,center_b);
         float sum_of_radii = radius_a + radius_b;
@@ -221,6 +221,84 @@ namespace Intersect {
         data.Collision = true;
         data.normal = unit_direction_vector_ab;
         data.depth = sum_of_radii - both_distance;
+
+        return data;
+    }
+
+    //圆与多边形的碰撞检测，分离轴算法
+    static IntersectData IntersectCirclePolygon(const FlatVector circle_center,
+                                                const float circle_radius,
+                                                const FlatVector polygon_mass_center,
+                                                const std::vector<FlatVector>& polygon_vertices) {
+        IntersectData data;
+        data.depth = std::numeric_limits<float>::max();
+
+        //遍历多边形的每条边
+        for (int i = 0; i < polygon_vertices.size(); i++) {
+            FlatVector v_a = polygon_vertices[i];
+            FlatVector v_b = polygon_vertices[int((i + 1) % polygon_vertices.size())];
+
+            //计算边的法向量
+            FlatVector edge_vector = v_b - v_a;
+            FlatVector axis = FlatVector(-(edge_vector.y), (edge_vector.x));
+            axis.normalize();
+
+            //计算多边形和圆在该轴上的投影
+            FlatVector project_polygon = ProjectVertices(axis, polygon_vertices);
+            FlatVector project_circlr = ProjectCircle(circle_center,circle_radius,axis);
+
+            //判断投影是否重叠，如果不重叠说明没发生碰撞返回False
+            if (project_polygon.x >= project_circlr.y || project_circlr.x >= project_polygon.y) {
+                return data;
+            }
+
+            //如果碰撞处理碰撞
+            //计算投影的重叠深度
+            float axis_depth = std::min(project_circlr.y - project_polygon.x, project_polygon.y - project_circlr.x);
+
+            //如果深度小于当前最小深度，则更新法向量和深度
+            if (axis_depth < data.depth) {
+                data.depth = axis_depth;
+                data.normal = axis;
+            }
+        }
+        //先到多边形距离圆心最近的点
+        size_t closest_point_on_polygon_index = FindVertexClosestPoint(circle_center, polygon_vertices);
+        FlatVector closest_point_on_polygon = polygon_vertices[closest_point_on_polygon_index];
+
+        //计算该点到圆心的方向向量
+        FlatVector axis = closest_point_on_polygon - circle_center;
+        axis.normalize();
+
+        //计算多边形和圆在该轴上的投影
+        FlatVector project_polygon = ProjectVertices(axis, polygon_vertices);
+        FlatVector project_circlr = ProjectCircle(circle_center, circle_radius, axis);
+
+        //判断投影是否重叠，如果不重叠说明没发生碰撞返回False
+        if (project_polygon.x >= project_circlr.y || project_circlr.x >= project_polygon.y) {
+            return data;
+        }
+
+        //如果碰撞处理碰撞
+        //计算投影的重叠深度
+        float axis_depth = std::min(project_circlr.y - project_polygon.x, project_polygon.y - project_circlr.x);
+
+        //如果深度小于当前最小深度，则更新法向量和深度
+        if (axis_depth < data.depth) {
+            data.depth = axis_depth;
+            data.normal = axis;
+        }
+
+        //计算重心到圆心的方向向量
+        FlatVector direction_vector = polygon_mass_center - circle_center;
+        
+        //如果方向向量与法向量的点积为负，则取法向量的反方向
+        if (FlatVector::dot(direction_vector, data.normal) < 0) {
+            data.normal = -data.normal;
+        }
+
+        //更新碰撞结果
+        data.Collision = true;
 
         return data;
     }
@@ -239,7 +317,7 @@ static std::vector<FlatVector> FindContactPoints(Body& body_a,Body& body_b) {
             return contact_points;
         }
         else if (shape_type_b == CIRCLE) {
-            //FindCirclePolygonContactPoint
+            contact_points.push_back(FindContactPoint::FindCirclePolygonContactPoint(body_b.mass_center_, body_a.vertices_));
             return contact_points;
         }
     }
@@ -269,17 +347,18 @@ static IntersectData  Collide(Body& body_a, Body& body_b) {
         
         }
         else if (shape_type_b == CIRCLE) {
-        
+            intersect_data = Intersect::IntersectCirclePolygon(body_b.mass_center_,body_b.radius_,body_a.mass_center_,body_a.vertices_);
+            return intersect_data;
         }
     }
     else if (shape_type_a == CIRCLE) {
         if (shape_type_b == CIRCLE) {
             intersect_data = Intersect::IntersectCircles(body_a.mass_center_, body_a.radius_, body_b.mass_center_, body_b.radius_);
-           
             return intersect_data;
         }
         else if (shape_type_b == POLTGON) {
-        
+            intersect_data = Intersect::IntersectCirclePolygon(body_a.mass_center_, body_a.radius_, body_b.mass_center_, body_b.vertices_);
+            return intersect_data;
         }
     }
 
