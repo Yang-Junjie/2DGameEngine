@@ -4,7 +4,7 @@
 #include <iostream>
 #include <SDL_stdinc.h>
 
-
+const float VerySmallAmount = 0.0005f;
 
 struct FlatTransform
 {
@@ -145,13 +145,26 @@ struct FlatVector
     }
 
     //两个向量端点平移到一起后终点组成的向量的模长
-    static float Distance(const FlatVector& v1, const FlatVector& v2){
+    static float Distance(const FlatVector v1, const FlatVector v2){
         float dx = v1.x - v2.x;
         float dy = v1.y - v2.y;
         return sqrt(dx*dx + dy*dy);
     }
     //两个向量端点平移到一起后终点组成的向量的模长的平方
-    static float DistanceSquared(const FlatVector& v1, const FlatVector& v2) {
+    static float DistanceSquared(const FlatVector v1, const FlatVector v2) {
         return (v1.x - v2.x) * (v1.x - v2.x) + (v1.y - v2.y) * (v1.y - v2.y);
+    }
+    /* def NearlyEqualFv(a,b):
+        return SimplyVector.DistanceSquared(a,b)<VerySmallAmount*VerySmallAmount
+    
+    def NearlyEqual(a,b):
+        return abs(a - b) < VerySmallAmount*/
+
+    static bool NearlyEqualFv(const FlatVector a, const FlatVector b) {
+        return FlatVector::DistanceSquared(a, b) < VerySmallAmount * VerySmallAmount;
+    }
+
+    static bool NearlyEqual(const float a, const float b) {
+        return std::abs(a-b) < VerySmallAmount * VerySmallAmount;
     }
 };

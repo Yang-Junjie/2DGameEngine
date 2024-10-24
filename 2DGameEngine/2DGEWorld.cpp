@@ -85,10 +85,12 @@ void World::NarrowPhase()
 		if (intersect_data.Collision) {
 			FlatVector separation_vector = intersect_data.normal * intersect_data.depth;
 			SepareteBodies(pair.first, pair.second, separation_vector);
-			FlatVector contact_point;
-			contact_point = FindContactPoints(pair.first, pair.second)[0];
 
-			brush.DrawPoint(contact_point, 255, 255, 255, 25);
+			std::vector<FlatVector> contact_points = FindContactPoints(pair.first, pair.second);
+			std::cout << contact_points.size() << std::endl;
+			for (auto& contact_point : contact_points) {
+				brush.DrawPoint(contact_point, 255, 255, 255, 25);
+			}
 		}
 
 	}

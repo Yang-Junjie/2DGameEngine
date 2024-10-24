@@ -60,17 +60,22 @@ int main(int argc, char* argv[])
                                       {250.0f, 200.0f},
                                       {150.0f, 285.0f},
                                       {50.0f , 200.0f}};
-    BodyManager1.CreateBody(points, color, 20.0f);
 
-    //BodyManager1.CreateBody(points, color, 10.0f);
+    std::vector<FlatVector> points1 = { {0.0f,0.0f},
+        { 100.0f,0.0f },{ 100.0f,100.0f },{ 0.0f,100.0f },
+};
+    BodyManager1.CreateBody(points1, color, 20.0f);
+
+    BodyManager1.CreateBody(points, color, 10.0f);
    // BodyManager1.CreateBody(points, color, 10.0f);
-    BodyManager1.CreateBody(50.0f, color, 20.0f, FlatVector(400, 300));
+    //BodyManager1.CreateBody(50.0f, color, 20.0f, FlatVector(400, 300));
     ////BodyManager1.CreateBody(30.0f, color, 30.0f, FlatVector(100, 100));
     //BodyManager1.CreateBody(100.0f, color, 20.0f, FlatVector(400, 300));
     //BodyManager1.CreateBody(100.0f, color, 20.0f, FlatVector(400, 300));
   //  BodyManager1.CreateBody(50.0f, color, 20.0f, FlatVector(200, 150));
     std::vector<Body>::iterator body1 = BodyManager1.FindBody(1);
     std::vector<Body>::iterator body2 = BodyManager1.FindBody(2);
+    body2->MoveTo(FlatVector(400, 200));
    // body2->Move(FlatVector(-1, -1));
     //body3->MoveTo(FlatVector(50,100));
     
@@ -119,7 +124,7 @@ int main(int argc, char* argv[])
         } 
        // brush.DrawPiex(FlatVector(400.0f, 300.0f), color.r, color.g, color.b, color.a);;
       
-        body1->Rotation(1);
+       // body1->Rotation(1);
       
        
         // Gravity_Gen.ClearPreviousForce();

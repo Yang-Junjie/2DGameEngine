@@ -108,7 +108,7 @@ static float DistSqdPointAABB(FlatVector& p, std::vector<FlatVector>& vertices_a
 
 //计算点与直线的接触点
 //其原理是计算点距离线段哪个端点近那么那个端点极有可能是接触点
-static FlatVector GetSegmentContactPoint(FlatVector& point, FlatVector& segment_start, FlatVector& segment_end) {
+static FlatVector GetSegmentContactPoint(const FlatVector point, const FlatVector segment_start, const FlatVector segment_end) {
     FlatVector segment_vector = segment_end - segment_start;//计算线段向量
     FlatVector point_to_segment_start_vector = point - segment_start;//计算从线段起点指向点的向量
 
@@ -128,7 +128,7 @@ static FlatVector GetSegmentContactPoint(FlatVector& point, FlatVector& segment_
 }
 
 //计算点与直线的最近点（可能的接触点）返回最近点(可能的接触点)
-inline FlatVector SegmentNearestEndpoint(const float projection_parameter, const FlatVector& segment_start, const FlatVector& segment_end) {
+inline FlatVector SegmentNearestEndpoint(const float projection_parameter, const FlatVector segment_start, const FlatVector segment_end) {
     if (projection_parameter <= 0) {
         return segment_start;
     }
@@ -141,7 +141,7 @@ inline FlatVector SegmentNearestEndpoint(const float projection_parameter, const
 }
 
 //计算点距离线段最近的端点的距离的平方
-static float DisSqdPointSegmentNearestEndpoint(FlatVector& point, FlatVector& segment_start, FlatVector& segment_end) {
+static float DisSqdPointSegmentNearestEndpoint(const FlatVector point, const FlatVector segment_start, const FlatVector segment_end) {
     FlatVector segment_vector = segment_end - segment_start;//计算线段向量
     FlatVector point_to_segment_start_vector = point - segment_start;//计算从线段起点指向点的向量
 
@@ -161,7 +161,7 @@ static float DisSqdPointSegmentNearestEndpoint(FlatVector& point, FlatVector& se
 namespace FindContactPoint {
 
     /*找到圆与圆碰撞时的接触点*/
-    static FlatVector FindCirclesContactPoint(FlatVector& center_a, float radius_a, FlatVector& center_b) {
+    static FlatVector FindCirclesContactPoint(const FlatVector center_a, const float radius_a, const FlatVector center_b) {
         FlatVector v_ab = center_b - center_a;
         v_ab.normalize();
         FlatVector contact_point = center_a + v_ab * radius_a;
@@ -170,7 +170,7 @@ namespace FindContactPoint {
 
 
     /*找到圆与多边形碰撞时的接触点*/
-    static FlatVector FindCirclePolygonContactPoint(FlatVector& circle_center, std::vector<FlatVector>& polygon_vertices) {
+    static FlatVector FindCirclePolygonContactPoint(const FlatVector circle_center, const std::vector<FlatVector>& polygon_vertices) {
         float min_distance_Sq = std::numeric_limits<float>::max();
         FlatVector contact_point;
         for (int i = 0; i < static_cast<int>(polygon_vertices.size()); i++) {
@@ -183,6 +183,76 @@ namespace FindContactPoint {
             }
         }
         return contact_point;
+    }
+
+    //找到多边形与多边形的接触点
+    static std::vector<FlatVector> FindPolygonsContactPoints(const std::vector<FlatVector> vertices_a, const std::vector<FlatVector> vertices_b) {
+        //初始化接触点
+        std::vector<FlatVector> contact_points;
+        FlatVector contact1;//第一个接触点
+        FlatVector contact2;//第二个接触点，如果没有第二个接触点，则保持为原点 
+        size_t contact_count = 0;
+        
+        //初始化最小距离的平方为无穷大，用于后续比较
+        float min_distancesq = std::numeric_limits<float>::max();
+
+        //遍历第一个多边形的每个顶点，并检查它与第二个多边形每条边的距离  
+        for (FlatVector point:vertices_a) {
+        
+            for (size_t j = 0; j < vertices_b.size(); j++){
+                FlatVector v_a = vertices_b[j];//第二个多边形的当前边的起点
+                FlatVector v_b = vertices_b[(j + 1) % vertices_b.size()];//第二个多边形的当前边的终点，使用模运算处理闭合多边形  
+                float distancesq = DisSqdPointSegmentNearestEndpoint(point,v_a,v_b);
+                FlatVector cloesest_point = GetSegmentContactPoint(point, v_a, v_b);
+
+                //如果当前距离的平方几乎等于最小距离的平方，并且新接触点不等于第一个接触点  
+                if (FlatVector::NearlyEqual(distancesq, min_distancesq)) {
+                    if (!FlatVector::NearlyEqualFv(cloesest_point, contact1)) {
+                        contact2 = cloesest_point;
+                        contact_count = 2;
+                    }
+                }
+                else if (distancesq < min_distancesq) {
+                    min_distancesq = distancesq;
+                    contact_count = 1;
+                    contact1 = cloesest_point; 
+                }
+            }
+        }
+        // 对第二个多边形重复上述过程，以处理可能由于多边形复杂形状而遗漏的接触点
+        for (FlatVector point : vertices_b) {
+
+            for (size_t j = 0; j < vertices_a.size(); j++) {
+                FlatVector v_a = vertices_a[j];//第二个多边形的当前边的起点
+                FlatVector v_b = vertices_a[(j + 1) % vertices_a.size()];//第二个多边形的当前边的终点，使用模运算处理闭合多边形  
+                float distancesq = DisSqdPointSegmentNearestEndpoint(point, v_a, v_b);
+                FlatVector cloesest_point = GetSegmentContactPoint(point, v_a, v_b);
+
+
+                //如果当前距离的平方几乎等于最小距离的平方，并且新接触点不等于第一个接触点
+                if (FlatVector::NearlyEqual(distancesq, min_distancesq)) {
+                    if (!FlatVector::NearlyEqualFv(cloesest_point, contact1)) {
+                        contact2 = cloesest_point;
+                        contact_count = 2;
+                    }
+                }
+                else if (distancesq < min_distancesq) {
+                    min_distancesq = distancesq;
+                    contact_count = 1;
+                    contact1 = cloesest_point;
+                    
+                }
+            }
+        }
+        if (contact_count == 1) {
+            contact_points.push_back(contact1);
+        }
+        else {
+            contact_points.push_back(contact2);
+        }
+        
+        
+        return contact_points;
     }
 
 
@@ -303,6 +373,85 @@ namespace Intersect {
         return data;
     }
 
+    //两个多边形是否相交，并返回法向量和深度
+    static IntersectData IntersectPoltgons(const FlatVector mass_center_a, const std::vector<FlatVector> vertices_a,
+                                            const FlatVector mass_center_b, const std::vector<FlatVector> vertices_b) {
+        IntersectData data;
+        data.depth = std::numeric_limits<float>::max();
+        //遍历多边形的每条边
+        for (int i = 0; i < vertices_a.size(); i++) {
+            FlatVector v_a = vertices_a[i];
+            FlatVector v_b = vertices_a[int((i + 1) % vertices_a.size())];
+
+            //计算边的法向量
+            FlatVector edge_vector = v_b - v_a;
+            FlatVector axis = FlatVector(-(edge_vector.y), (edge_vector.x));
+            axis.normalize();
+
+            //计算多边形和圆在该轴上的投影
+            FlatVector project_polygon_a = ProjectVertices(axis, vertices_a);
+            FlatVector project_polygon_b = ProjectVertices(axis, vertices_b);
+
+            //判断投影是否重叠，如果不重叠说明没发生碰撞返回False
+            if (project_polygon_a.x >= project_polygon_b.y || project_polygon_b.x >= project_polygon_a.y) {
+                return data;
+            }
+
+            //如果碰撞处理碰撞
+            //计算投影的重叠深度
+            float axis_depth = std::min(project_polygon_b.y - project_polygon_a.x, project_polygon_a.y - project_polygon_b.x);
+
+            //如果深度小于当前最小深度，则更新法向量和深度
+            if (axis_depth < data.depth) {
+                data.depth = axis_depth;
+                data.normal = axis;
+            }
+        }
+
+        //遍历多边形B的每条边，重复上述过程
+        //遍历多边形的每条边
+        for (int i = 0; i < vertices_b.size(); i++) {
+            FlatVector v_a = vertices_b[i];
+            FlatVector v_b = vertices_b[int((i + 1) % vertices_b.size())];
+
+            //计算边的法向量
+            FlatVector edge_vector = v_b - v_a;
+            FlatVector axis = FlatVector(-(edge_vector.y), (edge_vector.x));
+            axis.normalize();
+
+            //计算多边形和圆在该轴上的投影
+            FlatVector project_polygon_a = ProjectVertices(axis, vertices_b);
+            FlatVector project_polygon_b = ProjectVertices(axis, vertices_a);
+
+            //判断投影是否重叠，如果不重叠说明没发生碰撞返回False
+            if (project_polygon_a.x >= project_polygon_b.y || project_polygon_b.x >= project_polygon_a.y) {
+                return data;
+            }
+
+            //如果碰撞处理碰撞
+            //计算投影的重叠深度
+            float axis_depth = std::min(project_polygon_b.y - project_polygon_a.x, project_polygon_a.y - project_polygon_b.x);
+
+            //如果深度小于当前最小深度，则更新法向量和深度
+            if (axis_depth < data.depth) {
+                data.depth = axis_depth;
+                data.normal = axis;
+            }
+        }
+
+        //计算重心到圆心的方向向量
+        FlatVector direction_vector = mass_center_b - mass_center_a;
+
+        //如果方向向量与法向量的点积为负，则取法向量的反方向
+        if (FlatVector::dot(direction_vector, data.normal) < 0) {
+            data.normal = -data.normal;
+        }
+
+        //更新碰撞结果
+        data.Collision = true;
+
+        return data;
+    }
 };
 
 
@@ -311,9 +460,9 @@ static std::vector<FlatVector> FindContactPoints(Body& body_a,Body& body_b) {
     std::vector<FlatVector> contact_points;
     Shape shape_type_a = body_a.shape_;
     Shape shape_type_b = body_b.shape_;
-
     if (shape_type_a == POLTGON) {
         if (shape_type_b == POLTGON) {
+            contact_points  = FindContactPoint::FindPolygonsContactPoints(body_a.vertices_, body_b.vertices_);
             return contact_points;
         }
         else if (shape_type_b == CIRCLE) {
@@ -344,7 +493,8 @@ static IntersectData  Collide(Body& body_a, Body& body_b) {
 
     if (shape_type_a == POLTGON) {
         if (shape_type_b == POLTGON) {
-        
+            intersect_data = Intersect::IntersectPoltgons(body_a.mass_center_, body_a.vertices_, body_b.mass_center_, body_b.vertices_);
+            return intersect_data;
         }
         else if (shape_type_b == CIRCLE) {
             intersect_data = Intersect::IntersectCirclePolygon(body_b.mass_center_,body_b.radius_,body_a.mass_center_,body_a.vertices_);
