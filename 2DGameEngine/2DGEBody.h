@@ -70,7 +70,7 @@ public:
 	bool stationary_ = false;
 
 	//物体的恢复系数
-	float restitusion_ = 0.0f;
+	float restitution_ = 0.0f;
 
 	//物体旋转的角度
 	float angle = 0.0f;
@@ -96,16 +96,28 @@ public:
 	//物体的加速度
 	FlatVector acceleration_ = { 0.0f,0.0f };
 
+	//固定静摩擦力
+	float inherent_static_friction_ = 1.0f;
+
+	//固定动摩擦力
+	float inherent_dynamic_friction_ = 0.8f;
+
+	//转动惯量
+	float rotational_inertia_ = 0.0f;
+
+	//转动惯量的倒数
+	float inverse_rotational_inertia_ = rotational_inertia_ > 0 ? 1 / rotational_inertia_ : 0;
+
 	//物体的析构函数
 	~Body();
 
 	//Circle构造函数
 	//依次传入参数：shape,radius，color,mass>0,mass_center,body_id（可选，但不能使用重复id可通过body_list查看所有物体的id）
-	Body(Shape shape, float radius, BodyColor color, float mass, FlatVector mass_center, int body_id);
+	Body(Shape shape, float radius, BodyColor color, float mass, FlatVector mass_center, int body_id, bool stationary, float restitution);
 
 	//Polygon构造函数，重载函数
 	//依次传入参数：shape,vertices，color,mass>0,mass_center,body_id（可选，但不能使用重复id可通过body_list查看所有物体的id）
-	Body(Shape shape, std::vector<FlatVector> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id);
+	Body(Shape shape, std::vector<FlatVector> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id, bool stationary, float restitution);
 
 	//传入二维向量v1，设定物体现在的速度为v1
 	void SetVelocity(const FlatVector v1);
@@ -154,10 +166,10 @@ public:
 	~BodyManager();
 	
 	//用于创建Shape为Circle的Body，需要传入mass_center以表示圆心
-	bool CreateBody(float radius                   , BodyColor color, float mass, FlatVector mass_center);
+	bool CreateBody(float radius                   , BodyColor color, float mass, FlatVector mass_center,bool stationary,float restitution);
 
 	//用于创建Shape为Polygon的Body，不需要传入位置，应为顶点确定后其位置也确定了。
-	bool CreateBody(std::vector<FlatVector> vertices, BodyColor color, float mass);
+	bool CreateBody(std::vector<FlatVector> vertices, BodyColor color, float mass, bool stationary, float restitution);
 
 	//使用body的id寻找Body，返回对应id的Body的迭代器
 	std::vector<Body>::iterator FindBody(const int body_id);
@@ -179,3 +191,16 @@ public:
 //全局函数获得物体的质心
 FlatVector GetMassCenter(Body& body);
 FlatVector GetMassCenter(std::vector<FlatVector> points);
+
+//计算多边形的转动惯量
+static float momentOfInertia(const std::vector<FlatVector>& points) {
+	float inertia = 0.0f;
+	int n = points.size();
+	for (int i = 0; i < n; ++i) {
+		int j = (i + 1) % n;
+		inertia += (points[i].x * points[i].x + points[i].x * points[j].x + points[j].x * points[j].x +
+			points[i].y * points[i].y + points[i].y * points[j].y + points[j].y * points[j].y) *
+			(points[i].x * points[j].y - points[j].x * points[i].y);
+	}
+	return inertia / 12.0;
+}

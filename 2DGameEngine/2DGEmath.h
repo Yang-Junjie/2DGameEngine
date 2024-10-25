@@ -100,7 +100,7 @@ struct FlatVector
     }
 
     //向量归一化
-    void normalize() {
+     void normalize() {
         float length = sqrt(this->x * this->x + this->y * this->y);
         if (length > VerySmallAmount) {
             this->x /= length;

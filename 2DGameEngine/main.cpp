@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
     BodyManager BodyManager1;
     
    
-    Gravity Gravity_Gen = FlatVector(0.0f, 9.8f);
+    Gravity Gravity_Gen = FlatVector(0.0f, 3.0f);
     
     BodyColor color = { 255, 100, 100, 255 };
     // 清除屏幕背景色
@@ -61,23 +61,35 @@ int main(int argc, char* argv[])
                                       {150.0f, 285.0f},
                                       {50.0f , 200.0f}};
 
-    std::vector<FlatVector> points1 = { {0.0f,0.0f},
-        { 100.0f,0.0f },{ 100.0f,100.0f },{ 0.0f,100.0f },
+    std::vector<FlatVector> points1 = { {10.0f,500.0f},
+                                        { 790.0f,500.0f },
+                                        { 790.0f,590.0f },
+                                        { 10.0f,590.0f },
 };
-    BodyManager1.CreateBody(points, color, 20.0f);
 
-    BodyManager1.CreateBody(points1, color, 10.0f);
-   // BodyManager1.CreateBody(points, color, 10.0f);
-    //BodyManager1.CreateBody(50.0f, color, 20.0f, FlatVector(400, 300));
-    ////BodyManager1.CreateBody(30.0f, color, 30.0f, FlatVector(100, 100));
-    //BodyManager1.CreateBody(100.0f, color, 20.0f, FlatVector(400, 300));
-    //BodyManager1.CreateBody(100.0f, color, 20.0f, FlatVector(400, 300));
-  //  BodyManager1.CreateBody(50.0f, color, 20.0f, FlatVector(200, 150));
+    std::vector<FlatVector> points2 = { {0.0f,0.0f},
+                                       { 100.0f,0.0f },
+                                       { 100.0f,100.0f },
+                                       { 0.0f,100.0f },
+    };
+  // BodyManager1.CreateBody(30.0f, color, 1.0f, FlatVector(0, 350),false,0.8);
+   BodyManager1.CreateBody(points2, color, 30.0f, false, 0.8);
+    BodyManager1.CreateBody(points1, color, 30.0f, true, 1);
+
+    /*for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            BodyManager1.CreateBody(10.0f, color, 1.0f, FlatVector(450+j*20, 250+i*20), false, 0.5);
+        }
+       
+    }*/
+   
+    //BodyManager1.CreateBody(points1, color, 10.0f, true, 0.5);
+   
     std::vector<Body>::iterator body1 = BodyManager1.FindBody(1);
-    std::vector<Body>::iterator body2 = BodyManager1.FindBody(2);
-    body2->MoveTo(FlatVector(400, 200));
-   // body2->Move(FlatVector(-1, -1));
-    //body3->MoveTo(FlatVector(50,100));
+   // body1->MoveTo(FlatVector(0, 350));
+   // std::vector<Body>::iterator body2 = BodyManager1.FindBody(2);
+  //  std::vector<Body>::iterator body3 = BodyManager1.FindBody(3);
+   
     
     
     
@@ -92,13 +104,11 @@ int main(int argc, char* argv[])
 
 
 
+    
 
 
 
-
-    bool show_demo_window = true;
-    bool button_pressed = false;
-
+    
 
     BodyManager1.CoutBodyList();
     bool quit = false;
@@ -115,23 +125,44 @@ int main(int argc, char* argv[])
               
                 quit = true;
             } 
-            else if (e.type == SDL_MOUSEMOTION) {
-                x = static_cast<float>(e.motion.x);
-                y = static_cast<float>(e.motion.y);
-                //printf("Mouse Position: (%d, %d)\n", x, y);
-                body1->MoveTo(FlatVector(x, y));
+            else if (e.type == SDL_KEYDOWN) {
+                switch (e.key.keysym.sym) {
+                case SDLK_UP:
+                    body1->SetVelocity(FlatVector(0.0f, -10.0f));
+                  //  printf("up");
+                    break;
+                case SDLK_DOWN:
+                    body1->SetVelocity(FlatVector(0.0f, 10.0f));
+                   // printf("down");
+                    break;
+                case SDLK_LEFT:
+                    body1->SetVelocity(FlatVector(-10.0f, 0.0f));
+                    //printf("left");
+                    break;
+                case SDLK_RIGHT:
+                    body1->SetVelocity(FlatVector(10.0f, 0.0f));
+                    //printf("right");
+                    break;
+                case SDLK_q:
+                    body1->angular_velocity_ = -1;
+                    break;
+
+                case SDLK_e:
+                    body1->angular_velocity_ = 1;
+                    std::cout << "E键被按下" << std::endl;
+                    break;
+                }
             }
         } 
-       // brush.DrawPiex(FlatVector(400.0f, 300.0f), color.r, color.g, color.b, color.a);;
       
-        body1->Rotation(1);
-      
+   //     std::cout << body1->velocity_ << std::endl;
        
-        // Gravity_Gen.ClearPreviousForce();
-        //world.SepareteBodies(*body1,*body2, FlatVector(-1, -1));
-        //body2->Move(FlatVector(-1, -1));
-        //Gravity_Gen.UpdateForce(body, 0.0f);
-        // std::cout << body->acceleration_ << std::endl;
+        
+       
+        
+      
+
+        
 
 
 
@@ -140,11 +171,12 @@ int main(int argc, char* argv[])
         brush.show();
         brush.Clear(0, 0, 0, 0);
         world.Interation(BodyManager1.body_list_, time);
-        BodyManager1.RenderAABB(brush);
+       // BodyManager1.RenderAABB(brush);
         BodyManager1.RenderBody(brush);
         
         float end = static_cast<float>(clock());
-        time = (end - start);
+        time = (end - start) / CLOCKS_PER_SEC;
+       
        
     }
 

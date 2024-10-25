@@ -5,18 +5,35 @@ Body::~Body() {
 
 }
 
-Body::Body(Shape shape, float radius, BodyColor color, float mass, FlatVector mass_center, int body_id) :
-	body_id_(body_id), shape_(shape), radius_(radius),    color_(color), mass_(mass), mass_center_(mass_center) {
+Body::Body(Shape shape, float radius, BodyColor color, float mass, FlatVector mass_center, int body_id, bool stationary, float restitution) :
+	body_id_(body_id), shape_(shape), radius_(radius),color_(color), restitution_(restitution), mass_center_(mass_center),stationary_(stationary) {
+	if (!stationary) {
+		this->mass_ = mass;
+		this->rotational_inertia_ = (1 / 12) * this->mass_ * this->radius_ * this->radius_;
+	}
+	else {
+		this->mass_ = 0.0f;
+		this->rotational_inertia_ = 0.0f;
+	}
 	if (this->mass_ > 0) {
 		this->inverse_mass_ = 1 / this->mass_;//有质量才有质量的倒数，inverseMass采用赋值
 	}
 }
 
-Body::Body(Shape shape, std::vector<FlatVector> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id):
-	body_id_(body_id), shape_(shape),color_(color), vertices_(vertices), mass_(mass), mass_center_(mass_center){
-	if (this->mass_ > 0) {
+Body::Body(Shape shape, std::vector<FlatVector> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id, bool stationary, float restitution):
+	body_id_(body_id), shape_(shape),color_(color),restitution_(restitution), vertices_(vertices), mass_center_(mass_center), stationary_(stationary){
+	if (!stationary) {
+		this->mass_ = mass;
+		this->rotational_inertia_ = momentOfInertia(this->vertices_);
+	}
+	else {
+		this->mass_ = 0.0f;
+		this->rotational_inertia_ = 0.0f;
+	}
+	if (this->mass_ > 0.0f) {
 		this->inverse_mass_ = 1 / this->mass_;//有质量才有质量的倒数，inverseMass采用赋值
 	}
+	
 }
 
 void Body::SetVelocity(const FlatVector v1)
@@ -98,6 +115,9 @@ void Body::Rotation(const float angle)
 	}
 }
 
+
+
+
 void Body::AddForce(const FlatVector F)
 {
 	/*由于力在物体上不会直接体现，直接将力转为加速度*/
@@ -130,12 +150,12 @@ BodyManager::~BodyManager()
 }
 
 
-bool BodyManager::CreateBody(float radius, BodyColor color, float mass, FlatVector mass_center)
+bool BodyManager::CreateBody(float radius, BodyColor color, float mass, FlatVector mass_center, bool stationary, float restitution)
 {
 	//创造圆形并添加至body_list_
 	if (mass > 0) {
 		this->id_count++;
-		Body b1(CIRCLE, radius, color, mass, mass_center, id_count);
+		Body b1(CIRCLE, radius, color, mass, mass_center, id_count, stationary, restitution);
 		this->body_list_.push_back(b1);
 		return true;
 	}
@@ -146,11 +166,12 @@ bool BodyManager::CreateBody(float radius, BodyColor color, float mass, FlatVect
 	
 }
 
-bool BodyManager::CreateBody(std::vector<FlatVector> vertices, BodyColor color,float mass) {
+bool BodyManager::CreateBody(std::vector<FlatVector> vertices, BodyColor color,float mass, bool stationary, float restitution) {
 	//创造多边形并添加至body_list_
 	if (mass > 0) {
 		this->id_count++;
-		Body b1(POLTGON, vertices, color, mass, GetMassCenter(vertices), id_count);
+		Body b1(POLTGON, vertices, color, mass, GetMassCenter(vertices), id_count, stationary, restitution);
+		
 		this->body_list_.push_back(b1);
 		return true;
 	}

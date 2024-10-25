@@ -4,6 +4,13 @@
 #include "2DGECollision.h"
 #include <utility>
 
+struct ContactData {
+	Body* body_a_ = nullptr;
+	Body* body_b_ = nullptr;
+	FlatVector normal_;
+	std::vector<FlatVector> contact_points_;
+};
+
 //模拟世界
 class World {
 public:
@@ -12,8 +19,8 @@ public:
 	float pass_time_ = 0;
 
 	//世界迭代器，数字越大碰撞检测、物理模拟进行的越精确，不过计算时间会变长
-	size_t interation_ = 10;
-	size_t copy_interation_ = 10;
+	size_t interation_ = 16;
+	size_t copy_interation_ = 16;
 
 	//世界中最多可存在的物体数
 	size_t max_number_body_ = 100;
@@ -55,5 +62,5 @@ private:
 
 	void NarrowPhase();
 	
-	
+	static void ResolveCollisionWithRotationAndFriction(ContactData &contact);
 };
