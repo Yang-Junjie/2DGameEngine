@@ -4,7 +4,7 @@
 #include <iostream>
 #include <SDL_stdinc.h>
 
-const float VerySmallAmount = 0.0005f;
+const float VerySmallAmount = 0.00005f;
 
 struct FlatTransform
 {
@@ -102,21 +102,28 @@ struct FlatVector
     //向量归一化
     void normalize() {
         float length = sqrt(this->x * this->x + this->y * this->y);
-        this->x = this->x / length;
-        this->y = this->y / length;
+        if (length > VerySmallAmount) {
+            this->x /= length;
+            this->y /= length;
+        }
+        else {
+            this->x = 0.0f;
+            this->y = 0.0f;
+        }
     }
 
     //向量归一化
     static FlatVector normalize(FlatVector v) {
         float length = FlatVector::len(v);
-        if (length != 0.0f) {
-            v.x = v.x / length;
-            v.y = v.y / length;
-            return v;
+        if (length > VerySmallAmount) {
+            v.x /= length;
+            v.y /= length;
         }
         else {
-            return FlatVector(0,0);
+            v.x = 0.0f;
+            v.y = 0.0f;
         }
+        return v;
     }
     
     //向量的点积
@@ -129,7 +136,7 @@ struct FlatVector
         return v1.x * v2.x + v1.y * v2.y;
     }
 
-    // 由于我们是二维所以叉乘后的向量我们无法的到方向，所以我们返回叉乘后的模
+    //向量的叉积
     float cross(const FlatVector& v) const {
         return this->x * v.y - this->y * v.x;
     }
@@ -144,27 +151,25 @@ struct FlatVector
         return v.x*v.x+v.y*v.y;
     }
 
-    //两个向量端点平移到一起后终点组成的向量的模长
-    static float Distance(const FlatVector v1, const FlatVector v2){
+    //两个向量的距离
+    static float Distance(const FlatVector v1, const FlatVector v2) {
         float dx = v1.x - v2.x;
         float dy = v1.y - v2.y;
-        return sqrt(dx*dx + dy*dy);
+        return sqrt(dx * dx + dy * dy);
     }
-    //两个向量端点平移到一起后终点组成的向量的模长的平方
+
+    //两个向量距离的平方
     static float DistanceSquared(const FlatVector v1, const FlatVector v2) {
         return (v1.x - v2.x) * (v1.x - v2.x) + (v1.y - v2.y) * (v1.y - v2.y);
     }
-    /* def NearlyEqualFv(a,b):
-        return SimplyVector.DistanceSquared(a,b)<VerySmallAmount*VerySmallAmount
-    
-    def NearlyEqual(a,b):
-        return abs(a - b) < VerySmallAmount*/
 
+    //非常小判断
     static bool NearlyEqualFv(const FlatVector a, const FlatVector b) {
         return FlatVector::DistanceSquared(a, b) < VerySmallAmount * VerySmallAmount;
     }
 
+    //非常小判断
     static bool NearlyEqual(const float a, const float b) {
-        return std::abs(a-b) < VerySmallAmount * VerySmallAmount;
+        return std::abs(a - b) < VerySmallAmount * VerySmallAmount;
     }
 };

@@ -64,9 +64,9 @@ int main(int argc, char* argv[])
     std::vector<FlatVector> points1 = { {0.0f,0.0f},
         { 100.0f,0.0f },{ 100.0f,100.0f },{ 0.0f,100.0f },
 };
-    BodyManager1.CreateBody(points1, color, 20.0f);
+    BodyManager1.CreateBody(points, color, 20.0f);
 
-    BodyManager1.CreateBody(points, color, 10.0f);
+    BodyManager1.CreateBody(points1, color, 10.0f);
    // BodyManager1.CreateBody(points, color, 10.0f);
     //BodyManager1.CreateBody(50.0f, color, 20.0f, FlatVector(400, 300));
     ////BodyManager1.CreateBody(30.0f, color, 30.0f, FlatVector(100, 100));
@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
         } 
        // brush.DrawPiex(FlatVector(400.0f, 300.0f), color.r, color.g, color.b, color.a);;
       
-       // body1->Rotation(1);
+        body1->Rotation(1);
       
        
         // Gravity_Gen.ClearPreviousForce();
