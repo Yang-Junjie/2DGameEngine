@@ -72,9 +72,11 @@ int main(int argc, char* argv[])
                                        { 100.0f,100.0f },
                                        { 0.0f,100.0f },
     };
-  // BodyManager1.CreateBody(30.0f, color, 1.0f, FlatVector(0, 350),false,0.8);
-   BodyManager1.CreateBody(points2, color, 30.0f, false, 0.8);
-    BodyManager1.CreateBody(points1, color, 30.0f, true, 1);
+  BodyManager1.CreateBody(30.0f, color, 10.0f, FlatVector(100, 350),false,0.8);
+   // BodyManager1.CreateBody(points2, color, 1.0f, false, 0.4);
+
+  BodyManager1.CreateBody(points2, color, 10.0f, false, 0.4);
+  BodyManager1.CreateBody(points1, color, 1.0f, true, 1);
 
     /*for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
@@ -85,17 +87,20 @@ int main(int argc, char* argv[])
    
     //BodyManager1.CreateBody(points1, color, 10.0f, true, 0.5);
    
+
     std::vector<Body>::iterator body1 = BodyManager1.FindBody(1);
+
    // body1->MoveTo(FlatVector(0, 350));
-   // std::vector<Body>::iterator body2 = BodyManager1.FindBody(2);
+    std::vector<Body>::iterator body2 = BodyManager1.FindBody(2);
+    
   //  std::vector<Body>::iterator body3 = BodyManager1.FindBody(3);
-   
+    body1->MoveTo(FlatVector(400, 300));
     
     
     
    
 
-
+  //  body1->velocity_ = FlatVector(0,10.0f);
 
 
 
@@ -110,7 +115,9 @@ int main(int argc, char* argv[])
 
     
 
+    
     BodyManager1.CoutBodyList();
+    BodyManager1.CoutBodyMass();
     bool quit = false;
     SDL_Event e;
     float x = 0.0f;
@@ -119,6 +126,7 @@ int main(int argc, char* argv[])
     // 运行主循环直到用户关闭窗口
     while (!quit) {
         float start = static_cast<float>(clock());
+        
         while (SDL_PollEvent(&e)) {
              // ImGui_ImplSDL2_ProcessEvent(&e);
             if (e.type == SDL_QUIT) {
@@ -157,12 +165,12 @@ int main(int argc, char* argv[])
       
    //     std::cout << body1->velocity_ << std::endl;
        
-        
        
-        
+       
+       
       
 
-        
+       // body1->angular_velocity_ += 0.01;
 
 
 

@@ -271,6 +271,7 @@ namespace Intersect {
     /*此函数将会判断2个物体的AABB是否相交*/
     static bool IntersectAABB(Body& bodyA, Body& bodyB)
     {
+       
         if (bodyA.vertices_aabb_[1].x <= bodyB.vertices_aabb_[0].x ||
             bodyB.vertices_aabb_[1].x <= bodyA.vertices_aabb_[0].x ||
             bodyA.vertices_aabb_[0].y <= bodyB.vertices_aabb_[2].y ||
@@ -483,6 +484,7 @@ namespace Intersect {
 static std::vector<FlatVector> FindContactPoints(Body& body_a,Body& body_b) {
     std::vector<FlatVector> contact_points;
     Shape shape_type_a = body_a.shape_;
+    
     Shape shape_type_b = body_b.shape_;
     if (shape_type_a == POLTGON) {
         if (shape_type_b == POLTGON) {

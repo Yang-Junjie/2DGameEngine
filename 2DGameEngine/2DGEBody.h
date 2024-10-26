@@ -85,7 +85,7 @@ public:
 	float mass_ = 0.0f;
 
 	//物体质量的倒数
-	float inverse_mass_ = mass_>0 ? 1/mass_ : 0 ;
+	float inverse_mass_ = 0.0f;
 
 	//position物体的位置
 	FlatVector mass_center_ = { 0.0f,0.0f };
@@ -106,7 +106,7 @@ public:
 	float rotational_inertia_ = 0.0f;
 
 	//转动惯量的倒数
-	float inverse_rotational_inertia_ = rotational_inertia_ > 0 ? 1 / rotational_inertia_ : 0;
+	float inverse_rotational_inertia_ = 0.0f;
 
 	//物体的析构函数
 	~Body();
@@ -186,6 +186,8 @@ public:
 	//打印Bodylist
 	void CoutBodyList();
 	
+	//打印Bodylist_mass
+	void CoutBodyMass();
 };
 
 //全局函数获得物体的质心

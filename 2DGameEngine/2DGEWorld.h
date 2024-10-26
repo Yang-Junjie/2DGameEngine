@@ -8,7 +8,9 @@ struct ContactData {
 	Body* body_a_ = nullptr;
 	Body* body_b_ = nullptr;
 	FlatVector normal_;
-	std::vector<FlatVector> contact_points_;
+	FlatVector contact1_;
+	FlatVector contact2_;
+	int contact_count_;
 };
 
 //Ä£ÄâÊÀ½ç

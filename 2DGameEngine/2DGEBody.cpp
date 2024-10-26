@@ -9,30 +9,38 @@ Body::Body(Shape shape, float radius, BodyColor color, float mass, FlatVector ma
 	body_id_(body_id), shape_(shape), radius_(radius),color_(color), restitution_(restitution), mass_center_(mass_center),stationary_(stationary) {
 	if (!stationary) {
 		this->mass_ = mass;
-		this->rotational_inertia_ = (1 / 12) * this->mass_ * this->radius_ * this->radius_;
+		this->rotational_inertia_ = (1 / 12) * this->mass_ * this->radius_ * this->radius_; 
+		this->inverse_mass_ = 1 / mass;
+		this->inverse_rotational_inertia_ = 1 / this->rotational_inertia_;
 	}
 	else {
-		this->mass_ = 0.0f;
-		this->rotational_inertia_ = 0.0f;
+		this->mass_ = 1e10f;
+		this->inverse_mass_ = 0.0f;
+		this->rotational_inertia_ = 1e10f;
+		this->inverse_rotational_inertia_ = 0.0f;
 	}
-	if (this->mass_ > 0) {
-		this->inverse_mass_ = 1 / this->mass_;//有质量才有质量的倒数，inverseMass采用赋值
-	}
+	//if (this->mass_ > 0) {
+	//	this->inverse_mass_ = 1 / this->mass_;//有质量才有质量的倒数，inverseMass采用赋值
+	//}
 }
 
 Body::Body(Shape shape, std::vector<FlatVector> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id, bool stationary, float restitution):
 	body_id_(body_id), shape_(shape),color_(color),restitution_(restitution), vertices_(vertices), mass_center_(mass_center), stationary_(stationary){
 	if (!stationary) {
 		this->mass_ = mass;
-		this->rotational_inertia_ = momentOfInertia(this->vertices_);
+		this->rotational_inertia_ = (1 / 12) * this->mass_ * this->radius_ * this->radius_;
+		this->inverse_mass_ = 1 / mass;
+		this->inverse_rotational_inertia_ = 1 / this->rotational_inertia_;
 	}
 	else {
-		this->mass_ = 0.0f;
-		this->rotational_inertia_ = 0.0f;
+		this->mass_ = 1e10f;
+		this->inverse_mass_ = 0.0f;
+		this->rotational_inertia_ = 1e10f;
+		this->inverse_rotational_inertia_ = 0.0f;
 	}
-	if (this->mass_ > 0.0f) {
-		this->inverse_mass_ = 1 / this->mass_;//有质量才有质量的倒数，inverseMass采用赋值
-	}
+	//if (this->mass_ > 0.0f) {
+	//	this->inverse_mass_ = 1 / this->mass_;//有质量才有质量的倒数，inverseMass采用赋值
+	//}
 	
 }
 
@@ -307,6 +315,13 @@ void BodyManager::CoutBodyList() {
 			}
 			std::cout <<"                  " << it->mass_center_ << std::endl;
 		}
+	}
+}
+
+void BodyManager::CoutBodyMass()
+{
+	for (auto& body : body_list_) {
+		std::cout << body.body_id_ << " mass:" << body.mass_ << " inverse_mass:" << body.inverse_mass_ << " state:" << body.stationary_ << std::endl;
 	}
 }
 

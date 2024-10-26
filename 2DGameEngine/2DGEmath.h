@@ -61,6 +61,29 @@ struct FlatVector
         return { this->x / scalar, this->y / scalar };
     }
 
+    FlatVector& operator+=(const FlatVector& other) {
+        this->x += other.x; // 将另一个对象的值加到当前对象上
+        this->y += other.y;
+        return *this; // 返回当前对象的引用
+    }
+
+    FlatVector& operator-=(const FlatVector& other) {
+        this->x -= other.x; // 将另一个对象的值加到当前对象上
+        this->y -= other.y;
+        return *this; // 返回当前对象的引用
+    }
+    FlatVector& operator*=(const FlatVector& other) {
+        this->x *= other.x; // 将另一个对象的值加到当前对象上
+        this->y *= other.y;
+        return *this; // 返回当前对象的引用
+    }
+
+    FlatVector& operator/=(const FlatVector& other) {
+        this->x /= other.x; // 将另一个对象的值加到当前对象上
+        this->y /= other.y;
+        return *this; // 返回当前对象的引用
+    }
+
     // 向量旋转
     static void Transform(float &x,float &y,const float angle)
     {
@@ -139,6 +162,10 @@ struct FlatVector
     //向量的叉积
     float cross(const FlatVector& v) const {
         return this->x * v.y - this->y * v.x;
+    }
+    
+    static float cross(const FlatVector& v1, const FlatVector& v2) {
+        return v1.x * v2.y - v1.y * v2.x;
     }
 
     //向量的模的平方
