@@ -1,8 +1,5 @@
 ﻿  2DGEWorld.cpp
-D:\C++\2DGameEngine\2DGameEngine\2DGEBody.h(200,8): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-  (编译源文件“2DGEWorld.cpp”)
-  
-D:\C++\2DGameEngine\2DGameEngine\2DGEBody.h(207,17): warning C4244: “return”: 从“double”转换到“float”，可能丢失数据
+D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(97,36): warning C4244: “return”: 从“double”转换到“float”，可能丢失数据
   (编译源文件“2DGEWorld.cpp”)
   
   2DGameEngine.vcxproj -> D:\C++\2DGameEngine\x64\Debug\2DGameEngine.exe

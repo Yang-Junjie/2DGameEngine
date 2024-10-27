@@ -21,8 +21,8 @@ int main(int argc, char* argv[])
     SDL_Window* window = SDL_CreateWindow("2DGameEngine",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
+        1000,
         800,
-        600,
         SDL_WINDOW_SHOWN);
     if (!window) {
         std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
@@ -55,16 +55,14 @@ int main(int argc, char* argv[])
     Brush brush(renderer);
     world.brush = brush;
     brush.Clear(0, 0, 0, 0);
-    std::vector<FlatVector> points = {{100.0f, 100.0f},
-                                      {200.0f, 100.0f},
-                                      {250.0f, 200.0f},
-                                      {150.0f, 285.0f},
-                                      {50.0f , 200.0f}};
+    std::vector<FlatVector> points = {{10.0f, 10.0f},
+                                      {20.0f, 10.0f},
+                                      {25.0f, 20.0f},
+                                      {15.0f, 28.0f},
+                                      {5.0f , 20.0f}};
 
-    std::vector<FlatVector> points1 = { {10.0f,500.0f},
-                                        { 790.0f,500.0f },
-                                        { 790.0f,590.0f },
-                                        { 10.0f,590.0f },
+    std::vector<FlatVector> points1 = { {10.0f ,790.0f},{ 990.0f,790.0f },
+                                        { 990.0f,800.0f },{ 10.0f,800.0f },
 };
 
     std::vector<FlatVector> points2 = { {0.0f,0.0f},
@@ -72,31 +70,25 @@ int main(int argc, char* argv[])
                                        { 100.0f,100.0f },
                                        { 0.0f,100.0f },
     };
-  BodyManager1.CreateBody(30.0f, color, 10.0f, FlatVector(100, 350),false,0.8);
-   // BodyManager1.CreateBody(points2, color, 1.0f, false, 0.4);
 
-  BodyManager1.CreateBody(points2, color, 10.0f, false, 0.4);
-  BodyManager1.CreateBody(points1, color, 1.0f, true, 1);
-
-    /*for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
-            BodyManager1.CreateBody(10.0f, color, 1.0f, FlatVector(450+j*20, 250+i*20), false, 0.5);
-        }
-       
-    }*/
+    std::vector<FlatVector> points3 = { {0.0f,0.0f},
+                                       { 500.0f,0.0f },
+                                       { 500.0f,50.0f },
+                                       { 0.0f,50.0f },
+    };
    
-    //BodyManager1.CreateBody(points1, color, 10.0f, true, 0.5);
+    //BodyManager1.CreateBody(points2, color, 1.0f, false, 0.4f);
    
+    BodyManager1.CreateBody(points1, color, 1.0f, true, 1.f);
+    
 
-    std::vector<Body>::iterator body1 = BodyManager1.FindBody(1);
+   // std::vector<Body>::iterator body1 = BodyManager1.FindBody(1);
 
-   // body1->MoveTo(FlatVector(0, 350));
-    std::vector<Body>::iterator body2 = BodyManager1.FindBody(2);
-    
-  //  std::vector<Body>::iterator body3 = BodyManager1.FindBody(3);
-    body1->MoveTo(FlatVector(400, 300));
-    
-    
+   // std::vector<Body>::iterator body3 = BodyManager1.FindBody(3);
+  
+
+   // body3->MoveTo(FlatVector(100, 300));
+    //body3->Rotation(30*(M_PI / 180.0));
     
    
 
@@ -116,16 +108,17 @@ int main(int argc, char* argv[])
     
 
     
-    BodyManager1.CoutBodyList();
-    BodyManager1.CoutBodyMass();
+   // BodyManager1.CoutBodyList();
+   // BodyManager1.CoutBodyMass();
     bool quit = false;
     SDL_Event e;
     float x = 0.0f;
     float y = 0.0f;
     float  time = 1.0f;
+    float timecount = 0;
     // 运行主循环直到用户关闭窗口
     while (!quit) {
-        float start = static_cast<float>(clock());
+        
         
         while (SDL_PollEvent(&e)) {
              // ImGui_ImplSDL2_ProcessEvent(&e);
@@ -133,46 +126,50 @@ int main(int argc, char* argv[])
               
                 quit = true;
             } 
-            else if (e.type == SDL_KEYDOWN) {
-                switch (e.key.keysym.sym) {
-                case SDLK_UP:
-                    body1->SetVelocity(FlatVector(0.0f, -10.0f));
-                  //  printf("up");
-                    break;
-                case SDLK_DOWN:
-                    body1->SetVelocity(FlatVector(0.0f, 10.0f));
-                   // printf("down");
-                    break;
-                case SDLK_LEFT:
-                    body1->SetVelocity(FlatVector(-10.0f, 0.0f));
-                    //printf("left");
-                    break;
-                case SDLK_RIGHT:
-                    body1->SetVelocity(FlatVector(10.0f, 0.0f));
-                    //printf("right");
-                    break;
-                case SDLK_q:
-                    body1->angular_velocity_ = -1;
-                    break;
+            else if (e.type == SDL_MOUSEBUTTONDOWN) {
+                // 检查是否是鼠标左键
+                if (e.button.button == SDL_BUTTON_LEFT) {
+                    // 获取鼠标点击的位置
+                    int x = e.button.x;
+                    int y = e.button.y;
+                    BodyManager1.CreateBody(points2, color, 1.0f, false, 0.4f);
+                    BodyManager1.FindBody(BodyManager1.body_list_.size())->MoveTo(FlatVector(x,y));
 
-                case SDLK_e:
-                    body1->angular_velocity_ = 1;
-                    std::cout << "E键被按下" << std::endl;
-                    break;
+                    //printf("Mouse left button clicked at (%d, %d)\n", x, y);
                 }
             }
-        } 
-      
-   //     std::cout << body1->velocity_ << std::endl;
-       
-       
-       
-       
-      
+            //else if (e.type == SDL_KEYDOWN) {
+            //    switch (e.key.keysym.sym) {
+            //    case SDLK_UP:
+            //        body1->SetVelocity(FlatVector(0.0f, -10.0f));
+            //      //  printf("up");
+            //        break;
+            //    case SDLK_DOWN:
+            //        body1->SetVelocity(FlatVector(0.0f, 10.0f));
+            //       // printf("down");
+            //        break;
+            //    case SDLK_LEFT:
+            //        body1->SetVelocity(FlatVector(-10.0f, 0.0f));
+            //        //printf("left");
+            //        break;
+            //    case SDLK_RIGHT:
+            //        body1->SetVelocity(FlatVector(10.0f, 0.0f));
+            //        //printf("right");
+            //        break;
+            //    case SDLK_q:
+            //        body1->angular_velocity_ = -0.1;
+            //        break;
 
-       // body1->angular_velocity_ += 0.01;
+            //    case SDLK_e:
+            //        body1->angular_velocity_ = 0.1;
+            //        std::cout << "E键被按下" << std::endl;
+            //        break;
 
-
+            //
+            //    }
+            }
+            
+        float start = static_cast<float>(clock());
 
 
         
@@ -184,7 +181,12 @@ int main(int argc, char* argv[])
         
         float end = static_cast<float>(clock());
         time = (end - start) / CLOCKS_PER_SEC;
-       
+        timecount += time;
+        if (timecount > 3) {
+            std::cout << 1 / time << std::endl;
+            std::cout <<"物体数" << BodyManager1.body_list_.size() << std::endl;
+            timecount = 0;
+        }
        
     }
 

@@ -119,9 +119,9 @@ void World::NarrowPhase()
 			
 			std::vector<FlatVector> contact_points = FindContactPoints(pair.first, pair.second);
 			
-			for (auto& contact_point : contact_points) {
+			/*for (auto& contact_point : contact_points) {
 				brush.DrawPoint(contact_point, 255, 255, 255, 25);
-			}
+			}*/
 			
 			//更新接触数据
 			ContactData contact_data;
@@ -313,8 +313,7 @@ void World::Interation(std::vector<Body>& body_lists,float time)
 		//从body_lists中拿出一个物体对其进行物理操作
 		for (auto& body : body_lists) {
 			if (!body.stationary_) {
-
-				
+				body.velocity_ += gravity_acceleration_ * time/10.0f;
 				FlatVector displacement = body.velocity_ * time;
 				float angle = body.angular_velocity_ * time;
 				
@@ -327,90 +326,12 @@ void World::Interation(std::vector<Body>& body_lists,float time)
 		//物理操作完后进入碰撞管线
 		
 		BroadPhase(body_lists);
-		
-		
-
-		//bug
-		
 		NarrowPhase();
-		
-
-		
 	}
 	
 }
-/*			FlatBody bodyA = contact.BodyA;
-            FlatBody bodyB = contact.BodyB;
-            FlatVector normal = contact.Normal;
-            FlatVector contact1 = contact.Contact1;
-            FlatVector contact2 = contact.Contact2;
-            int contactCount = contact.ContactCount;
 
-            float e = MathF.Min(bodyA.Restitution, bodyB.Restitution);
-
-            this.contactList[0] = contact1;
-            this.contactList[1] = contact2;
-
-            for(int i = 0; i < contactCount; i++)
-            {
-                this.impulseList[i] = FlatVector.Zero;
-                this.raList[i] = FlatVector.Zero;
-                this.rbList[i] = FlatVector.Zero;
-            }
-
-            for(int i = 0; i < contactCount; i++)
-            {
-                FlatVector ra = contactList[i] - bodyA.Position;
-                FlatVector rb = contactList[i] - bodyB.Position;
-
-                raList[i] = ra;
-                rbList[i] = rb;
-
-                FlatVector raPerp = new FlatVector(-ra.Y, ra.X);
-                FlatVector rbPerp = new FlatVector(-rb.Y, rb.X);
-
-                FlatVector angularLinearVelocityA = raPerp * bodyA.AngularVelocity;
-                FlatVector angularLinearVelocityB = rbPerp * bodyB.AngularVelocity;
-
-                FlatVector relativeVelocity = 
-                    (bodyB.LinearVelocity + angularLinearVelocityB) - 
-                    (bodyA.LinearVelocity + angularLinearVelocityA);
-
-                float contactVelocityMag = FlatMath.Dot(relativeVelocity, normal);
-
-                if (contactVelocityMag > 0f)
-                {
-                    continue;
-                }
-
-                float raPerpDotN = FlatMath.Dot(raPerp, normal);
-                float rbPerpDotN = FlatMath.Dot(rbPerp, normal);
-
-                float denom = bodyA.InvMass + bodyB.InvMass + 
-                    (raPerpDotN * raPerpDotN) * bodyA.InvInertia + 
-                    (rbPerpDotN * rbPerpDotN) * bodyB.InvInertia;
-
-                float j = -(1f + e) * contactVelocityMag;
-                j /= denom;
-                j /= (float)contactCount;
-
-                FlatVector impulse = j * normal;
-                impulseList[i] = impulse;
-            }
-
-            for(int i = 0; i < contactCount; i++)
-            {
-                FlatVector impulse = impulseList[i];
-                FlatVector ra = raList[i];
-                FlatVector rb = rbList[i];
-
-                bodyA.LinearVelocity += -impulse * bodyA.InvMass;
-                bodyA.AngularVelocity += -FlatMath.Cross(ra, impulse) * bodyA.InvInertia;
-                bodyB.LinearVelocity += impulse * bodyB.InvMass;
-                bodyB.AngularVelocity += FlatMath.Cross(rb, impulse) * bodyB.InvInertia;
-            }*/
-
-void World::ResolveCollisionWithRotationAndFriction(ContactData& contact) {
+void World::ResolveCollisionBasic(ContactData& contact) {
 	Body* bodyA = contact.body_a_;
 	Body* bodyB = contact.body_b_;
 	FlatVector normal = contact.normal_;
@@ -446,9 +367,213 @@ void World::ResolveCollisionWithRotationAndFriction(ContactData& contact) {
 	if (bodyB->inverse_mass_ > 0.0f) {
 		bodyB->velocity_ += impulse * bodyB->inverse_mass_;
 	}
-	
-	
+
 }
 
+void World::ResolveCollisionWithRotation(ContactData& contact) {
+	Body* bodyA = contact.body_a_;
+	Body* bodyB = contact.body_b_;
+	FlatVector normal = contact.normal_;
+	FlatVector contact_point1 = contact.contact1_;
+	FlatVector contact_point2 = contact.contact2_;
+	int contact_conut = contact.contact_count_;
+
+	float e = std::min(bodyA->restitution_, bodyB->restitution_);
+	this->contactList[0] = contact_point1;
+	this->contactList[1] = contact_point2;
+
+	for (int i = 0; i < contact_conut; i++)
+	{
+		this->impulseList[i] = FlatVector(0, 0);
+		this->raList[i] = FlatVector(0, 0);
+		this->rbList[i] = FlatVector(0, 0);
+	}
+
+	for (int i = 0; i < contact_conut; i++)
+	{
+		FlatVector ra = contactList[i] - bodyA->mass_center_;
+		FlatVector rb = contactList[i] - bodyB->mass_center_;
+
+		this->raList[i] = ra;
+		this->rbList[i] = rb;
+
+		FlatVector raPerp = FlatVector(-ra.y, ra.x);
+		raPerp.normalize();
+		FlatVector rbPerp = FlatVector(-rb.y, rb.x);
+		rbPerp.normalize();
+
+		FlatVector angularLinearVelocityA = raPerp * FlatVector::AngleToRadian(bodyA->angular_velocity_);
+		FlatVector angularLinearVelocityB = rbPerp * FlatVector::AngleToRadian(bodyB->angular_velocity_);
+
+		FlatVector relativeVelocity =
+			(bodyB->velocity_ + angularLinearVelocityB) -
+			(bodyA->velocity_ + angularLinearVelocityA);
+		//FlatVector relativeVelocity = bodyB->velocity_ - bodyA->velocity_;
+		float relativeVelocityDotNormal = FlatVector::dot(relativeVelocity, normal);
+
+		if (relativeVelocityDotNormal > 0.0f)
+		{
+			continue;
+		}
+
+		float raPerpDotN = FlatVector::dot(raPerp, normal);
+		float rbPerpDotN = FlatVector::dot(rbPerp, normal);
+
+		//float denominator = bodyA->inverse_mass_ + bodyB->inverse_mass_ +
+			//(raPerpDotN * raPerpDotN) * bodyA->inverse_rotational_inertia_ +
+		//	(rbPerpDotN * rbPerpDotN) * bodyB->inverse_rotational_inertia_;
+		float denominator = bodyA->inverse_mass_ + bodyB->inverse_mass_;
+		float j = -(1.0f + e) * relativeVelocityDotNormal/ denominator;
+		j /= (float)contact_conut;
+
+		FlatVector impulse = j * normal;
+		this->impulseList[i] = impulse;
+
+	}
+	for (int i = 0; i < contact_conut; i++)
+	{
+		FlatVector impulse = this->impulseList[i];
+		FlatVector ra = this->raList[i];
+		FlatVector rb = this->rbList[i];
+
+		bodyA->velocity_ += -impulse * bodyA->inverse_mass_;
+		//bodyA->angular_velocity_ += -FlatVector::cross(ra, impulse) * bodyA->inverse_rotational_inertia_;
+		bodyB->velocity_ += impulse * bodyB->inverse_mass_;
+		//bodyB->angular_velocity_ += FlatVector::cross(rb, impulse) * bodyB->inverse_rotational_inertia_;
+	}
+}
+
+void World::ResolveCollisionWithRotationAndFriction(ContactData& contact) {
+
+	Body* body_a = contact.body_a_;
+	Body* body_b = contact.body_b_;
+	FlatVector collision_normal = contact.normal_;
+	FlatVector contact_point1;
+
+	FlatVector contact_point2;
+	int number_of_contacts = contact.contact_count_;
+
+	if (number_of_contacts == 1) {
+		contact_point1 = contact.contact1_;
+	}
+	else {
+		contact_point1 = contact.contact1_;
+		contact_point2 = contact.contact2_;
+	}
+
+	float restitution_coefficient = std::min(body_a->restitution_, body_b->restitution_);  // 碰撞恢复系数
+
+	float static_friction_coefficient = (body_a->inherent_static_friction_ + body_b->inherent_static_friction_) * 0.5f;  // 静摩擦系数
+
+	float dynamic_friction_coefficient = (body_a->inherent_dynamic_friction_ + body_b->inherent_dynamic_friction_) * 0.5f;  // 动摩擦系数
+
+	std::vector<FlatVector> contact_points = { contact_point1, contact_point2 };  // 碰撞点列表
+	std::vector<FlatVector> friction_impulses(number_of_contacts);  // 摩擦冲量列表
+	std::vector<float> normal_impulses(number_of_contacts);  // 法向冲量列表
+	std::vector<FlatVector> impulses(number_of_contacts);  // 冲量列表
+	std::vector<FlatVector> position_to_center_a(number_of_contacts);  // 碰撞点到物体A质心的向量列表
+	std::vector<FlatVector> position_to_center_b(number_of_contacts);  // 碰撞点到物体B质心的向量列表
+	// 计算法向冲量
+	for (int i = 0; i < number_of_contacts; ++i) {
+
+		FlatVector position_from_a_to_contact = contact_points[i] - body_a->mass_center_;  // 碰撞点到物体A质心的向量
+
+
+		FlatVector position_from_b_to_contact = contact_points[i] - body_b->mass_center_;  // 碰撞点到物体B质心的向量
+
+		position_to_center_a[i] = position_from_a_to_contact;
+		position_to_center_b[i] = position_from_b_to_contact;
+		FlatVector perpendicular_to_position_a(-position_from_a_to_contact.y, position_from_a_to_contact.x);  // ra向量的法向量
+		FlatVector perpendicular_to_position_b(-position_from_b_to_contact.y, position_from_b_to_contact.x);  // rb向量的法向量
+		FlatVector angular_linear_velocity_a = perpendicular_to_position_a * body_a->angular_velocity_;  // 物体A的角速度对raPerp的贡献
+		//	std::cout << angular_linear_velocity_a << std::endl;
+		FlatVector angular_linear_velocity_b = perpendicular_to_position_b * body_b->angular_velocity_;  // 物体B的角速度对rbPerp的贡献
+		FlatVector relative_velocity = (body_b->velocity_ + angular_linear_velocity_b) - (body_a->velocity_ + angular_linear_velocity_a);  // 相对速度
+
+		float contact_velocity_magnitude = relative_velocity.dot(collision_normal);  // 相对速度在法线方向上的分量
+
+		if (contact_velocity_magnitude > 0) {
+			continue;
+		}
+		float perpendicular_dot_normal_a = perpendicular_to_position_a.dot(collision_normal);  // raPerp向量与法线向量的点积
+		float perpendicular_dot_normal_b = perpendicular_to_position_b.dot(collision_normal);  // rbPerp向量与法线向量的点积
+
+		float denominator = body_a->inverse_mass_ + body_b->inverse_mass_ +
+			(perpendicular_dot_normal_a * perpendicular_dot_normal_a) * body_a->inverse_rotational_inertia_ +
+			(perpendicular_dot_normal_b * perpendicular_dot_normal_b) * body_b->inverse_rotational_inertia_;  // 冲量计算的分母
+		
+		
+		
+
+		float normal_impulse = -(1 + restitution_coefficient) * contact_velocity_magnitude / denominator / number_of_contacts;  // 冲量大小
+
+		normal_impulses[i] = normal_impulse;
+
+		FlatVector impulse = normal_impulse * collision_normal;  // 冲量向量
+
+		impulses[i] = impulse;
+	}
+	// 应用法向冲量
+	for (int i = 0; i < number_of_contacts; ++i) {
+		FlatVector impulse = impulses[i];
+		FlatVector position_from_a_to_contact = position_to_center_a[i];
+		FlatVector position_from_b_to_contact = position_to_center_b[i];
+		body_a->velocity_ = body_a->velocity_ + (-impulse * body_a->inverse_mass_);  // 物体A线速度增量
+		body_a->angular_velocity_ += -position_from_a_to_contact.cross(impulse) * body_a->inverse_rotational_inertia_;  // 物体A角速度增量
+		body_b->velocity_ = body_b->velocity_ + impulse * body_b->inverse_mass_;  // 物体B线速度增量
+		body_b->angular_velocity_ += position_from_b_to_contact.cross(impulse) * body_b->inverse_rotational_inertia_;  // 物体B角速度增量
+	}
+	// 计算摩擦冲量
+	for (int i = 0; i < number_of_contacts; ++i) {
+
+		FlatVector position_from_a_to_contact = contact_points[i] - body_a->mass_center_;  // 碰撞点到物体A质心的向量
+		FlatVector position_from_b_to_contact = contact_points[i] - body_b->mass_center_;  // 碰撞点到物体B质心的向量
+		position_to_center_a[i] = position_from_a_to_contact;
+		position_to_center_b[i] = position_from_b_to_contact;
+		FlatVector perpendicular_to_position_a(-position_from_a_to_contact.y, position_from_a_to_contact.x);  // ra向量的法向量
+		FlatVector perpendicular_to_position_b(-position_from_b_to_contact.y, position_from_b_to_contact.x);  // rb向量的法向量
+		FlatVector angular_linear_velocity_a = perpendicular_to_position_a * body_a->angular_velocity_;  // 物体A的角速度对raPerp的贡献
+		FlatVector angular_linear_velocity_b = perpendicular_to_position_b * body_b->angular_velocity_;  // 物体B的角速度对rbPerp的贡献
+		FlatVector relative_velocity = (body_b->velocity_ + angular_linear_velocity_b) - (body_a->velocity_ + angular_linear_velocity_a);  // 相对速度
+		FlatVector tangent_direction = relative_velocity - relative_velocity.dot(collision_normal) * collision_normal;  // 切向方向
+		if (FlatVector::NearlyEqualFv(tangent_direction, FlatVector(0.0f, 0.0f))) {
+			continue;
+		}
+		else {
+			tangent_direction = FlatVector::normalize(tangent_direction);  // 归一化切向向量
+		}
+		float perpendicular_dot_tangent_a = perpendicular_to_position_a.dot(tangent_direction);  // raPerp向量与切向向量的点积
+		float perpendicular_dot_tangent_b = perpendicular_to_position_b.dot(tangent_direction);  // rbPerp向量与切向向量的点积
+		float denominator = body_a->inverse_mass_ + body_b->inverse_mass_ +
+			(perpendicular_dot_tangent_a * perpendicular_dot_tangent_a) * body_a->inverse_rotational_inertia_ +
+			(perpendicular_dot_tangent_b * perpendicular_dot_tangent_b) * body_b->inverse_rotational_inertia_;  // 冲量计算的分母
+		float tangential_impulse = -relative_velocity.dot(tangent_direction) / denominator / number_of_contacts;  // 切向冲量大小
+		float normal_impulse = normal_impulses[i];  // 法向冲量大小
+		
+		if (std::abs(tangential_impulse) <= normal_impulse * static_friction_coefficient) {  // 根据静摩擦系数判断是否满足静摩擦条件
+			FlatVector friction_impulse = tangential_impulse * tangent_direction;  // 静摩擦冲量
+
+			friction_impulses[i] = friction_impulse;
+		}
+		else {
+			FlatVector friction_impulse = -normal_impulse * tangent_direction * dynamic_friction_coefficient;  // 动摩擦冲量
+
+			friction_impulses[i] = friction_impulse;
+		}
+	}
+	// 应用摩擦冲量
+	for (int i = 0; i < number_of_contacts; ++i) {
+		FlatVector friction_impulse = friction_impulses[i];
+		FlatVector position_from_a_to_contact = position_to_center_a[i];
+		FlatVector position_from_b_to_contact = position_to_center_b[i];
+
+		body_a->velocity_ +=  -friction_impulse * body_a->inverse_mass_;  // 物体A线速度增量
+		//std::cout << position_from_b_to_contact << std::endl;
+		body_a->angular_velocity_ += -position_from_a_to_contact.cross(friction_impulse) * body_a->inverse_rotational_inertia_;  // 物体A角速度增量
+		body_b->velocity_ = body_b->velocity_ + friction_impulse * body_b->inverse_mass_;  // 物体B线速度增量
+		body_b->angular_velocity_ += position_from_b_to_contact.cross(friction_impulse) * body_b->inverse_rotational_inertia_;  // 物体B角速度增量
+	}
+
+}
    
 

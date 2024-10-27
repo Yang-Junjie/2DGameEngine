@@ -97,10 +97,10 @@ public:
 	FlatVector acceleration_ = { 0.0f,0.0f };
 
 	//固定静摩擦力
-	float inherent_static_friction_ = 1.0f;
+	float inherent_static_friction_ = 0.5f;
 
 	//固定动摩擦力
-	float inherent_dynamic_friction_ = 0.8f;
+	float inherent_dynamic_friction_ = 0.3f;
 
 	//转动惯量
 	float rotational_inertia_ = 0.0f;
@@ -193,16 +193,7 @@ public:
 //全局函数获得物体的质心
 FlatVector GetMassCenter(Body& body);
 FlatVector GetMassCenter(std::vector<FlatVector> points);
+static float polygonArea(const std::vector<FlatVector>& vertices);
 
-//计算多边形的转动惯量
-static float momentOfInertia(const std::vector<FlatVector>& points) {
-	float inertia = 0.0f;
-	int n = points.size();
-	for (int i = 0; i < n; ++i) {
-		int j = (i + 1) % n;
-		inertia += (points[i].x * points[i].x + points[i].x * points[j].x + points[j].x * points[j].x +
-			points[i].y * points[i].y + points[i].y * points[j].y + points[j].y * points[j].y) *
-			(points[i].x * points[j].y - points[j].x * points[i].y);
-	}
-	return inertia / 12.0;
-}
+
+static float MomentOfInertia(const std::vector<FlatVector>& points, const float& density);

@@ -35,7 +35,10 @@ public:
 
 	//世界中的重力加速度
 	FlatVector gravity_acceleration_ = { 0.0f,9.8f };
-
+	std::vector<FlatVector> contactList = { {0.0f,0.0f},{0.0f,0.0f} };
+	std::vector<FlatVector> impulseList = { {0.0f,0.0f},{0.0f,0.0f} };;
+	std::vector<FlatVector> raList = { {0.0f,0.0f},{0.0f,0.0f} };;
+	std::vector<FlatVector> rbList = { {0.0f,0.0f},{0.0f,0.0f} };;
 	World();
 	~World();
 
@@ -65,4 +68,7 @@ private:
 	void NarrowPhase();
 	
 	static void ResolveCollisionWithRotationAndFriction(ContactData &contact);
+	static void ResolveCollisionBasic(ContactData& contact);
+	void ResolveCollisionWithRotation(ContactData& contact);
+	
 };

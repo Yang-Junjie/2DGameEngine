@@ -85,15 +85,17 @@ struct FlatVector
     }
 
     // 向量旋转
-    static void Transform(float &x,float &y,const float angle)
+    static void Transform(float &x,float &y,const float radian)
     {
-        float cos_angle = static_cast<float>(std::cos(angle * (M_PI / 180.0)));
-        float sin_angle = static_cast<float>(std::sin(angle * (M_PI / 180.0)));
+        float cos_angle = static_cast<float>(std::cos(radian ));
+        float sin_angle = static_cast<float>(std::sin(radian ));
         float temp_x = cos_angle * x - sin_angle * y;
         y = sin_angle * x + cos_angle * y;
         x = temp_x;
     }
-
+    static float AngleToRadian(float angle) {
+        return (float)angle * M_PI / 180.0;
+    }
     // 判断两个向量是否相等
     bool operator==(const FlatVector& other) const
     {

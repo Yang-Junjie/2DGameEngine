@@ -8,10 +8,15 @@ Body::~Body() {
 Body::Body(Shape shape, float radius, BodyColor color, float mass, FlatVector mass_center, int body_id, bool stationary, float restitution) :
 	body_id_(body_id), shape_(shape), radius_(radius),color_(color), restitution_(restitution), mass_center_(mass_center),stationary_(stationary) {
 	if (!stationary) {
+		if (mass == 0.0f || radius == 0.0f) {
+			std::cerr << "Error: Mass or radius is zero." << std::endl;
+			return;
+		}
 		this->mass_ = mass;
-		this->rotational_inertia_ = (1 / 12) * this->mass_ * this->radius_ * this->radius_; 
-		this->inverse_mass_ = 1 / mass;
-		this->inverse_rotational_inertia_ = 1 / this->rotational_inertia_;
+		this->rotational_inertia_ = (1.0f / 12.0f) * mass * radius * radius;
+		
+		this->inverse_mass_ = 1.0f / mass;
+		this->inverse_rotational_inertia_ = 1.0f / this->rotational_inertia_;
 	}
 	else {
 		this->mass_ = 1e10f;
@@ -19,18 +24,27 @@ Body::Body(Shape shape, float radius, BodyColor color, float mass, FlatVector ma
 		this->rotational_inertia_ = 1e10f;
 		this->inverse_rotational_inertia_ = 0.0f;
 	}
-	//if (this->mass_ > 0) {
-	//	this->inverse_mass_ = 1 / this->mass_;//有质量才有质量的倒数，inverseMass采用赋值
-	//}
+	
 }
 
 Body::Body(Shape shape, std::vector<FlatVector> vertices, BodyColor color, float mass, FlatVector mass_center, int body_id, bool stationary, float restitution):
 	body_id_(body_id), shape_(shape),color_(color),restitution_(restitution), vertices_(vertices), mass_center_(mass_center), stationary_(stationary){
 	if (!stationary) {
+		if (mass == 0.0f) {
+			std::cerr << "Error: Massis zero." << std::endl;
+			return;
+		}
 		this->mass_ = mass;
-		this->rotational_inertia_ = (1 / 12) * this->mass_ * this->radius_ * this->radius_;
-		this->inverse_mass_ = 1 / mass;
-		this->inverse_rotational_inertia_ = 1 / this->rotational_inertia_;
+		if (vertices.size() == 4) {
+			this->rotational_inertia_ = (1.0f / 12.0f) * mass * ((vertices[1].x - vertices[0].x) * (vertices[1].x - vertices[0].x) + (vertices[1].y - vertices[2].y) * (vertices[1].y - vertices[2].y));
+		}
+		else {
+			this->rotational_inertia_ = 1.0f;//待制作
+		}
+		
+		//std::cout << "Rotational Inertia: " << this->rotational_inertia_ << std::endl;
+		this->inverse_mass_ = 1.0f / mass;
+		this->inverse_rotational_inertia_ = 1.0f / this->rotational_inertia_;
 	}
 	else {
 		this->mass_ = 1e10f;
@@ -38,9 +52,7 @@ Body::Body(Shape shape, std::vector<FlatVector> vertices, BodyColor color, float
 		this->rotational_inertia_ = 1e10f;
 		this->inverse_rotational_inertia_ = 0.0f;
 	}
-	//if (this->mass_ > 0.0f) {
-	//	this->inverse_mass_ = 1 / this->mass_;//有质量才有质量的倒数，inverseMass采用赋值
-	//}
+	
 	
 }
 
@@ -409,14 +421,68 @@ FlatVector GetMassCenter(std::vector<FlatVector> points)
 		return FlatVector(cx, cy);
 }
 
+static float polygonArea(const std::vector<FlatVector>& vertices) {
+	float area = 0;
+	for (size_t i = 0; i < vertices.size(); ++i) {
+		float xi = vertices[i].x;
+		float yi = vertices[i].y;
+		float xi1 = vertices[(i + 1) % vertices.size()].x;
+		float yi1 = vertices[(i + 1) % vertices.size()].y;
+		area += xi * yi1 - xi1 * yi;
+	}
+	return (float)(std::abs(area) / 2.0f);
+}
 
 
 
+static float MomentOfInertia(const std::vector<FlatVector>& points, const float& density) {
+	if (points.size() < 3) {
+		throw std::invalid_argument("至少需要3个顶点来形成一个多边形");
+	}
+	float momentOfInertia = 0.0f;
 
+	for (size_t i = 1; i < points.size() - 1; ++i) {
+		const FlatVector& p1 = points[0];
+		const FlatVector& p2 = points[i];
+		const FlatVector& p3 = points[i + 1];
 
+		float w = (p2 - p1).len();
+		float w1 = std::abs((p1 - p2).dot(p3 - p2) / w);
+		float w2 = std::abs(w - w1);
 
+		float signedTriArea = (float)((p3 - p1).cross(p2 - p1) / 2.0f);
+		float h = 2.0f * std::abs(signedTriArea) / w;
 
+		FlatVector p4 = p2 + (p1 - p2) * (w1 / w);
 
+		FlatVector cm1 = { (p2.x + p3.x + p4.x) / 3.0f, (p2.y + p3.y + p4.y) / 3.0f };
+		FlatVector cm2 = { (p1.x + p3.x + p4.x) / 3.0f, (p1.y + p3.y + p4.y) / 3.0f };
 
+		float I1 = density * w1 * h * ((h * h / 4.0f) + (w1 * w1 / 12.0f));
+		float I2 = density * w2 * h * ((h * h / 4.0f) + (w2 * w2 / 12.0f));
+		float m1 = 0.5 * w1 * h * density;
+		float m2 = 0.5 * w2 * h * density;
 
+		float I1cm = I1 - (m1 * (cm1 - p3).len() * (cm1 - p3).len());
+		float I2cm = I2 - (m2 * (cm2 - p3).len() * (cm2 - p3).len());
+
+		float momentOfInertiaPart1 = I1cm + (m1 * (cm1 - FlatVector(0, 0)).len() * (cm1 - FlatVector(0, 0)).len());
+		float momentOfInertiaPart2 = I2cm + (m2 * (cm2 - FlatVector(0, 0)).len() * (cm2 - FlatVector(0, 0)).len());
+
+		if ((p1 - p3).cross(p4 - p3) > 0) {
+			momentOfInertia += momentOfInertiaPart1;
+		}
+		else {
+			momentOfInertia -= momentOfInertiaPart1;
+		}
+		if ((p4 - p3).cross(p2 - p3) > 0) {
+			momentOfInertia += momentOfInertiaPart2;
+		}
+		else {
+			momentOfInertia -= momentOfInertiaPart2;
+		}
+	}
+
+	return (float)std::abs(momentOfInertia);
+}
 
