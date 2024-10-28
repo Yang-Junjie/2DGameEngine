@@ -116,6 +116,7 @@ int main(int argc, char* argv[])
     float y = 0.0f;
     float  time = 1.0f;
     float timecount = 0;
+    std::vector<FlatVector> points9;
     // 运行主循环直到用户关闭窗口
     while (!quit) {
         
@@ -129,13 +130,21 @@ int main(int argc, char* argv[])
             else if (e.type == SDL_MOUSEBUTTONDOWN) {
                 // 检查是否是鼠标左键
                 if (e.button.button == SDL_BUTTON_LEFT) {
-                    // 获取鼠标点击的位置
-                    int x = e.button.x;
-                    int y = e.button.y;
-                    BodyManager1.CreateBody(points2, color, 1.0f, false, 0.4f);
-                    BodyManager1.FindBody(BodyManager1.body_list_.size())->MoveTo(FlatVector(x,y));
+                    //// 获取鼠标点击的位置
+                    int x = (float)e.button.x;
+                    int y = (float)e.button.y;
+                    //BodyManager1.CreateBody(points2, color, 1.0f, false, 0.4f);
+                    //BodyManager1.FindBody(BodyManager1.body_list_.size())->MoveTo(FlatVector(x,y));
 
-                    //printf("Mouse left button clicked at (%d, %d)\n", x, y);
+                    points9.push_back(FlatVector(x, y));
+                }
+            }
+            else if (e.type == SDL_KEYDOWN) {
+                switch (e.key.keysym.sym) {
+                case SDLK_UP:
+                    BodyManager1.CreateBody(points9, color, 1.0f, false, 0.4f);
+                    points9.clear();
+                    break;
                 }
             }
             //else if (e.type == SDL_KEYDOWN) {

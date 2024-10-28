@@ -1,5 +1,10 @@
-﻿  2DGEWorld.cpp
+﻿  main.cpp
 D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(97,36): warning C4244: “return”: 从“double”转换到“float”，可能丢失数据
-  (编译源文件“2DGEWorld.cpp”)
+  (编译源文件“main.cpp”)
   
+D:\C++\2DGameEngine\2DGameEngine\main.cpp(134,27): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DGameEngine\2DGameEngine\main.cpp(135,27): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DGameEngine\2DGameEngine\main.cpp(139,53): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+D:\C++\2DGameEngine\2DGameEngine\main.cpp(139,50): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+  LINK : 没有找到 D:\C++\2DGameEngine\x64\Debug\2DGameEngine.exe 或上一个增量链接没有生成它；正在执行完全链接
   2DGameEngine.vcxproj -> D:\C++\2DGameEngine\x64\Debug\2DGameEngine.exe
