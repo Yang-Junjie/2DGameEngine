@@ -79,6 +79,10 @@ void World::BroadPhase(std::vector<Body>& body_lists) {
 				// 如果相交则进行标记
 				colored[body_a.body_id_] = true;
 				colored[body_b.body_id_] = true;
+				if (&body_a < &body_b) {
+					std::swap(body_a, body_b);
+				}
+
 
 				// 并将其放入即将接触物体列表中
 				std::pair<Body&, Body&> pair_body(body_a, body_b);

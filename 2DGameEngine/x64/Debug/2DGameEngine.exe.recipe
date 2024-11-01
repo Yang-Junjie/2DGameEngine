@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>D:\C++\2DGameEngine\x64\Debug\2DGameEngine.exe</FullPath>
+      <FullPath>D:\C++\2DPhysicsEngine\x64\Debug\2DGameEngine.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

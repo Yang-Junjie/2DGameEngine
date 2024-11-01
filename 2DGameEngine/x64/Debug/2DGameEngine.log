@@ -1,10 +1,101 @@
-﻿  main.cpp
-D:\C++\2DGameEngine\2DGameEngine\2DGEmath.h(97,36): warning C4244: “return”: 从“double”转换到“float”，可能丢失数据
+﻿  2DGEBody.cpp
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEmath.h(97,36): warning C4244: “return”: 从“double”转换到“float”，可能丢失数据
+  (编译源文件“2DGEBody.cpp”)
+  
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEBody.cpp(463,12): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEBody.cpp(464,12): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+  2DGEDraw.cpp
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEmath.h(97,36): warning C4244: “return”: 从“double”转换到“float”，可能丢失数据
+  (编译源文件“2DGEDraw.cpp”)
+  
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(25,45): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(25,42): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(31,50): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(31,46): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(31,42): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(31,38): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(42,38): warning C4244: “初始化”: 从“float”转换到“int32_t”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(42,28): warning C4244: “初始化”: 从“float”转换到“const int32_t”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(44,15): warning C4244: “初始化”: 从“float”转换到“int32_t”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(53,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(53,54): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(54,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(54,54): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(55,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(55,54): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(56,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(56,54): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(57,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(57,54): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(58,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(58,54): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(59,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(59,54): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(60,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(60,54): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(80,38): warning C4244: “初始化”: 从“float”转换到“int32_t”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(80,28): warning C4244: “初始化”: 从“float”转换到“const int32_t”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(82,15): warning C4244: “初始化”: 从“float”转换到“int32_t”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(91,59): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(91,50): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(92,59): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(92,50): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(93,59): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(93,50): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(94,59): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(94,50): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(95,59): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(95,50): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(96,59): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(96,50): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(97,59): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(97,50): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(98,59): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(98,50): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(118,16): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(120,20): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(125,65): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(125,57): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(133,16): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(135,20): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(140,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(140,58): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(149,133): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(149,98): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(149,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(149,54): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(158,16): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(160,20): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(165,65): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(165,57): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(176,16): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(178,20): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(183,67): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEDraw.cpp(183,58): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+  2DGEForceGen.cpp
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEmath.h(97,36): warning C4244: “return”: 从“double”转换到“float”，可能丢失数据
+  (编译源文件“2DGEForceGen.cpp”)
+  
+  2DGEWorld.cpp
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEmath.h(97,36): warning C4244: “return”: 从“double”转换到“float”，可能丢失数据
+  (编译源文件“2DGEWorld.cpp”)
+  
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_impl_opengl3.cpp
+  imgui_impl_sdl2.cpp
+  imgui_impl_win32.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  main.cpp
+D:\C++\2DPhysicsEngine\2DGameEngine\2DGEmath.h(97,36): warning C4244: “return”: 从“double”转换到“float”，可能丢失数据
   (编译源文件“main.cpp”)
   
-D:\C++\2DGameEngine\2DGameEngine\main.cpp(134,27): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\main.cpp(135,27): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\main.cpp(139,53): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
-D:\C++\2DGameEngine\2DGameEngine\main.cpp(139,50): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
-  LINK : 没有找到 D:\C++\2DGameEngine\x64\Debug\2DGameEngine.exe 或上一个增量链接没有生成它；正在执行完全链接
-  2DGameEngine.vcxproj -> D:\C++\2DGameEngine\x64\Debug\2DGameEngine.exe
+D:\C++\2DPhysicsEngine\2DGameEngine\main.cpp(134,27): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\main.cpp(135,27): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\main.cpp(139,53): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+D:\C++\2DPhysicsEngine\2DGameEngine\main.cpp(139,50): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+  正在生成代码...
+  LINK : 没有找到 D:\C++\2DPhysicsEngine\x64\Debug\2DGameEngine.exe 或上一个增量链接没有生成它；正在执行完全链接
+  2DGameEngine.vcxproj -> D:\C++\2DPhysicsEngine\x64\Debug\2DGameEngine.exe
